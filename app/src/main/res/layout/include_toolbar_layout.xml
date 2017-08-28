@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+                                   android:id="@+id/toolBar"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="?attr/actionBarSize"
+                                   android:background="?attr/colorPrimary"
+                                   android:title=""
+                                   android:titleTextColor="@android:color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white"/>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true">
+
+            <TextView
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/right1_tv"
+                android:layout_width="22dp"
+                android:layout_marginLeft="@dimen/space_3"
+                android:layout_marginRight="@dimen/space_3"
+                android:layout_height="22dp"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/space_3"
+                android:layout_marginRight="@dimen/space_3"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/right2_tv"
+                android:layout_width="22dp"
+                android:layout_height="22dp"/>
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginRight="@dimen/space_3"
+                android:layout_marginLeft="@dimen/space_3"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/right3_tv"
+                android:layout_width="22dp"
+                android:layout_height="22dp"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>
