@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by wubo on 2017/6/13.
- * 具有Rx订阅管理的Activiity,子类加上泛型
+ * 具有Rx订阅管理的Activiity,基本使用rx请求的继承它来管理
  */
 
 public abstract class RxManageActivity<P extends BaseViewManager> extends BaseActivity<P> {

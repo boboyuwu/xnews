@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.boboyuwu.xnews.dagger.component.DaggerFragmentComponent;
 import com.boboyuwu.xnews.dagger.component.FragmentComponent;
 import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
 import com.boboyuwu.xnews.mvp.view.BaseView;

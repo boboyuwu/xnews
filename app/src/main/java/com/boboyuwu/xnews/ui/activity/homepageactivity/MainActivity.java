@@ -1,5 +1,7 @@
 package com.boboyuwu.xnews.ui.activity.homepageactivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.boboyuwu.common.util.Constants;
+import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.mvp.presenter.MainActivityPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
@@ -36,6 +39,13 @@ public class MainActivity  extends RxManageActivity<MainActivityPresenter> imple
 
     private void findViews() {
         mFragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+    }
+
+    public static void startMainActivity(Context context,Bundle bundle){
+        Intent intent = new Intent(context, MainActivity.class);
+        if(bundle!=null)
+        intent.putExtra(Keys.BUNDLE,bundle);
+        context.startActivity(intent);
     }
 
     private void initFragmentTabHost() {
