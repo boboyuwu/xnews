@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.boboyuwu.common.util.Constants;
 import com.boboyuwu.common.util.ToastUtil;
+import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.dagger.component.ActivityComponent;
 import com.boboyuwu.xnews.dagger.component.DaggerActivityComponent;
-import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
+import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
 import javax.inject.Inject;
@@ -21,7 +21,7 @@ import javax.inject.Inject;
  * base中抽出最核心的,最原始的,不包含第三方的所有共用的东西
  */
 
-public abstract class BaseActivity <P extends BaseViewManager>extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity <P extends BaseActivityPresenter>extends AppCompatActivity implements BaseView {
     @Inject
     protected P mPresenter;
     @Override
@@ -37,7 +37,7 @@ public abstract class BaseActivity <P extends BaseViewManager>extends AppCompatA
 
     protected void jumpActivity(Class clazz, Bundle bundle){
         Intent intent= new Intent(this,clazz);
-        intent.putExtra(Constants.BUNDLE,bundle);
+        intent.putExtra(Keys.BUNDLE,bundle);
         startActivity(intent);
     }
 
@@ -62,6 +62,9 @@ public abstract class BaseActivity <P extends BaseViewManager>extends AppCompatA
             throw ex;
         }
     }
+
+    //去掉顶部状态栏,全屏
+
 
 
     @Override

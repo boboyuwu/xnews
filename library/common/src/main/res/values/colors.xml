@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--上拉加载更多库用到color-->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="color_ff">#F0F0F0</color>
+    <color name="color_white">#FFFFFF</color>
+
+
+    <color name="color_00">#8A000000</color>
+
+    <color name="gray">#A7A7A7</color>
+
+    <color name="gray1">#444444</color>
+
+    <!-- 蓝色 -->
+    <color name="blue">#35B4ED</color>
+
+    <!--橙色-->
+    <color name="spark_orange">#FFFF5722</color>
+
+</resources>

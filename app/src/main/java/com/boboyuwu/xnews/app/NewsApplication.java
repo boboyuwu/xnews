@@ -12,15 +12,17 @@ import com.boboyuwu.xnews.dagger.module.AppModule;
 public class NewsApplication extends BaseApplication {
 
     private static AppComponent mAppComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
        //初始化一次
     }
 
+
     public static AppComponent getAppComponent(){
         if(null==mAppComponent){
-            mAppComponent= DaggerAppComponent.builder().appModule(new AppModule(getInstance())).build();
+            mAppComponent= DaggerAppComponent.builder().appModule(new AppModule(getApplication())).build();
         }
         return mAppComponent;
     }

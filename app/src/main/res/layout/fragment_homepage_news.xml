@@ -8,6 +8,7 @@
     <include layout="@layout/include_toolbar_layout"/>
 
     <LinearLayout
+        android:background="@color/spark_orange"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="35dp">
@@ -19,9 +20,11 @@
             android:layout_height="match_parent"/>
 
         <ImageView
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_add"
             android:id="@+id/add_iv"
-            android:layout_width="35dp"
-            android:layout_height="35dp"/>
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
 
     </LinearLayout>
 

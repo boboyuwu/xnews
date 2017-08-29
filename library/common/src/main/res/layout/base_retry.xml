@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/errorStateRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/network_exception" />
+
+        <TextView
+            android:id="@+id/errorStateContentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_sl"
+            android:gravity="center"
+            android:text="@string/network_exception"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/font_m" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/btn_retry"
+            android:layout_marginTop="@dimen/space_xxl"
+            android:paddingBottom="@dimen/space_m"
+            android:paddingLeft="@dimen/space_sl"
+            android:paddingRight="@dimen/space_sl"
+            android:paddingTop="@dimen/space_m"
+            android:text="@string/reload"
+            android:textColor="@color/blue" />
+
+    </LinearLayout>
+
+</RelativeLayout>

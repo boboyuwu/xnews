@@ -8,7 +8,7 @@ import android.animation.PropertyValuesHolder;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
+import com.boboyuwu.xnews.mvp.presenter.MainActivityPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
 import com.example.boboyuwu.zhihunews.R;
 
@@ -16,7 +16,7 @@ import com.example.boboyuwu.zhihunews.R;
  * Created by wubo on 2017/6/10.
  */
 
-public class SplashActivity <P extends BaseViewManager>extends RxManageActivity <P>{
+public class SplashActivity extends RxManageActivity <MainActivityPresenter>{
 
     private TextView mLogoTv;
 
@@ -44,7 +44,7 @@ public class SplashActivity <P extends BaseViewManager>extends RxManageActivity 
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0.3f, 1f);
         ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mLogoTv, alpha, scaleX, scaleY);
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setTarget(objectAnimator);
+        animatorSet.playTogether(objectAnimator);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         animatorSet.setDuration(2000);
         animatorSet.addListener(new Animator.AnimatorListener() {

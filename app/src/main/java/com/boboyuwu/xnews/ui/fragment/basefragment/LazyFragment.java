@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
+import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
 
 
 /**
@@ -17,7 +17,7 @@ import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
  * 否则Fragment没有创建是拿不到Bundle等传递过来的值的
  */
 
-public abstract class LazyFragment<P extends BaseViewManager> extends RxManageFragment<P>{
+public abstract class LazyFragment<P extends BaseActivityPresenter> extends RxManageFragment<P>{
 
     private boolean mHasViewCreate;
     private boolean mHasViewCreateAndUserVisible;
