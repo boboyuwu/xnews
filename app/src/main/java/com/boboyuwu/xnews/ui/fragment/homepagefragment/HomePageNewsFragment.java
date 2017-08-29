@@ -26,6 +26,6 @@ public class HomePageNewsFragment extends SupportToolBarFragment{
     @Override
     protected void init() {
         super.init();
-        
+
     }
 }
