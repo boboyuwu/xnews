@@ -1,7 +1,7 @@
 package com.boboyuwu.xnews.dagger.component;
 
 
-import com.boboyuwu.xnews.dagger.module.FragmentModule;
+import com.boboyuwu.xnews.dagger.module.HomePageNewsFragmentModule;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsTabFragment;
 import com.boboyuwu.xnews.ui.fragment.minefragment.MineFragment;
@@ -13,7 +13,9 @@ import dagger.Component;
 /**
  * Created by wubo on 2017/6/15.
  */
-@Component(modules = FragmentModule.class)
+@Component(modules = HomePageNewsFragmentModule.class
+
+          )
 public interface FragmentComponent {
 
     void injectFragment(HomePageNewsFragment homePageNewsFragment);

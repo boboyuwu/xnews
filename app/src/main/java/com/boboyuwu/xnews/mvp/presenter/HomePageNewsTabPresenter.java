@@ -6,11 +6,11 @@ import javax.inject.Inject;
  * Created by wubo on 2017/8/28.
  */
 
-public class MainActivityPresenter extends BaseActivityPresenter{
-
+public class HomePageNewsTabPresenter extends BaseActivityPresenter{
 
     @Inject
-    public MainActivityPresenter(){
+    public HomePageNewsTabPresenter(){
 
     }
+
 }

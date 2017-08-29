@@ -3,8 +3,6 @@ package com.boboyuwu.xnews.mvp.presenter;
 
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
-import javax.inject.Inject;
-
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -16,7 +14,7 @@ public class BaseActivityPresenter<T extends BaseView> {
 
     protected T mBaseView;
     private CompositeDisposable mCompositeDisposable=new CompositeDisposable();
-    @Inject
+    /*@Inject*/
     public BaseActivityPresenter(){
 
     }

@@ -1,6 +1,9 @@
 package com.boboyuwu.xnews.ui.fragment.homepagefragment;
 
-import com.boboyuwu.xnews.mvp.presenter.MainActivityPresenter;
+import android.widget.ImageView;
+import android.widget.TableLayout;
+
+import com.boboyuwu.xnews.mvp.presenter.HomePageNewsTabPresenter;
 import com.boboyuwu.xnews.ui.fragment.basefragment.SupportToolBarFragment;
 import com.example.boboyuwu.zhihunews.R;
 
@@ -8,7 +11,11 @@ import com.example.boboyuwu.zhihunews.R;
  * Created by wubo on 2017/8/28.
  */
 
-public class HomePageNewsFragment extends SupportToolBarFragment<MainActivityPresenter>{
+public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsTabPresenter> {
+
+    private TableLayout mTableyaout;
+    private ImageView mAddIv;
+
     @Override
     protected void initInject() {
         getFragmentComponent().injectFragment(this);
@@ -32,6 +39,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<MainActivityPre
     }
 
     private void findViews() {
-
+        mTableyaout = getView(R.id.tableyaout);
+        mAddIv = getView(R.id.add_iv);
     }
 }

@@ -101,5 +101,6 @@ public abstract class BaseActivity <P extends BaseActivityPresenter>extends AppC
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+        mPresenter.deleteDispose();
     }
 }
