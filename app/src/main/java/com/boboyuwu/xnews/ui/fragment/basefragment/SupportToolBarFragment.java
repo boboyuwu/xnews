@@ -1,10 +1,11 @@
 package com.boboyuwu.xnews.ui.fragment.basefragment;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
+import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
 import com.example.boboyuwu.zhihunews.R;
 
 
@@ -12,7 +13,7 @@ import com.example.boboyuwu.zhihunews.R;
  * Created by wubo on 2017/7/5.
  */
 
-public abstract class SupportToolBarFragment<P extends BaseViewManager> extends RxManageFragment<P>{
+public abstract class SupportToolBarFragment<P extends BaseActivityPresenter> extends RxManageFragment<P>{
 
     private Toolbar mToolbar;
     private TextView mTitleTv;
@@ -31,18 +32,22 @@ public abstract class SupportToolBarFragment<P extends BaseViewManager> extends 
     //继承这个activity的toolbar id设置为资源id中的toolBar
     private void initToolBar() {
         mToolbar = getView(R.id.toolBar);
-        if (mToolbar != null && mActivity!=null) {
+        AppCompatActivity activity = mActivity.get();
+        if (mToolbar != null && activity!=null) {
             mTitleTv = (TextView) mToolbar.findViewById(R.id.title_tv);
             mRight1Tv = (TextView) mToolbar.findViewById(R.id.right1_tv);
             mRight2Tv = (TextView) mToolbar.findViewById(R.id.right2_tv);
             mRight3Tv = (TextView) mToolbar.findViewById(R.id.right3_tv);
             mToolbar.setTitle("");
-            mActivity.setSupportActionBar(mToolbar);
+            activity.setSupportActionBar(mToolbar);
         }
     }
 
+    protected void setToolBarTitle(String title){
+        setToolBarTitle(title,getResources().getColor(R.color.color_white));
+    }
 
-    protected void setToolBarTitle(String title) {
+    protected void setToolBarTitle(String title,int color) {
         if (mToolbar == null) {
             throw new RuntimeException("this method must set the toolbar id be toolbar!");
         }
@@ -59,6 +64,9 @@ public abstract class SupportToolBarFragment<P extends BaseViewManager> extends 
         mToolbar.setBackgroundColor(color);
     }
 
+    protected void setToolBarRight1Text(String text) {
+        setToolBarRight1Text(text,getResources().getColor(R.color.color_white));
+    }
 
     protected void setToolBarRight1Text(String text, int color) {
         if (mRight1Tv != null) {
@@ -66,6 +74,10 @@ public abstract class SupportToolBarFragment<P extends BaseViewManager> extends 
             mRight1Tv.setTextColor(color);
             mRight1Tv.setText(text);
         }
+    }
+
+    protected void setToolBarRight2Text(String text) {
+        setToolBarRight2Text(text,getResources().getColor(R.color.color_white));
     }
 
     protected void setToolBarRight2Text(String text, int color) {
@@ -76,6 +88,10 @@ public abstract class SupportToolBarFragment<P extends BaseViewManager> extends 
         }
     }
 
+
+    protected void setToolBarRight3Text(String text) {
+        setToolBarRight3Text(text,getResources().getColor(R.color.color_white));
+    }
 
     protected void setToolBarRight3Text(String text, int color) {
         if (mRight3Tv != null) {

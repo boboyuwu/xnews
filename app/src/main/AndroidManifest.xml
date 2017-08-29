@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.boboyuwu.zhihunews">
 
+
     <application
         android:name="com.boboyuwu.xnews.app.NewsApplication"
         android:allowBackup="true"

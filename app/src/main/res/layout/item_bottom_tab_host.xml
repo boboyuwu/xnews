@@ -8,13 +8,14 @@
         android:id="@+id/icon_iv"
         android:src="@android:drawable/alert_dark_frame"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="25dp"
+        android:layout_height="25dp"/>
 
     <TextView
+        android:textColor="@color/gray"
+        android:textSize="@dimen/sp_11"
         android:id="@+id/text_tv"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="wwww"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>

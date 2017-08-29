@@ -8,18 +8,18 @@ import android.app.Application;
 
 public class BaseApplication extends Application {
 
-    protected static BaseApplication mNewsApplication;
+    protected static BaseApplication mBaseApplication;
+    //protected static BaseApplication mBaseApplication;
     @Override
     public void onCreate() {
         super.onCreate();
         //init
-        mNewsApplication=this;
+        mBaseApplication=this;
     }
 
 
-
-    public static BaseApplication getInstance(){
-        return mNewsApplication;
+    public static BaseApplication getApplication(){
+        return mBaseApplication;
     }
 
 

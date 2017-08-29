@@ -12,6 +12,6 @@ import com.boboyuwu.common.app.BaseApplication;
 public class ToastUtil {
 
     public static void showToast(String text){
-        Toast.makeText(BaseApplication.getInstance(),text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(BaseApplication.getApplication(),text, Toast.LENGTH_SHORT).show();
     }
 }

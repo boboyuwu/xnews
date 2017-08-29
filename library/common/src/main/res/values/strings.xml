@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">common</string>
+    <!-- <string name="app_name">Library</string>-->
+
+
+    上拉加载库String
+    <string name="app_name">RecyclerView</string>
+
+    <string name="header_text">The Header</string>
+    <string name="footer_text">The Footer</string>
+
+    <!--footer-->
+    <string name="list_footer_loading">加载中…</string>
+    <string name="list_footer_network_error">网络连接失败,点击重试!</string>
+    <string name="list_footer_end">已加载全部</string>
+
+
+
+
+    <string name="you_have_no_product">咦,未找到您搜索的产品</string>
+    <string name="find_product">您可以进入找产品进行下订单哟~~</string>
+
+    <string name="reload">重新加载</string>
+    <string name="network_exception">网络异常</string>
 </resources>

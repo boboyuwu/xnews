@@ -6,6 +6,4 @@ package com.boboyuwu.xnews.mvp.view;
 
 public interface HomePageView {
 
-
-
 }

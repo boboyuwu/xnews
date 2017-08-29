@@ -8,7 +8,7 @@ package com.boboyuwu.xnews.api;
  */
 
 
-public class ZhiHuUrl {
+public interface HomePageApiService {
 
     public static final String HOST="http://news-at.zhihu.com/api/4/";
 

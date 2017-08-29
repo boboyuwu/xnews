@@ -10,22 +10,21 @@ import io.reactivex.disposables.Disposable;
  * Created by wubo on 2017/6/10.
  */
 
-public class BaseActivityPresenter<T extends BaseView> implements BaseViewManager<T> {
+public class BaseActivityPresenter<T extends BaseView> {
 
     protected T mBaseView;
     private CompositeDisposable mCompositeDisposable=new CompositeDisposable();
+    /*@Inject*/
     public BaseActivityPresenter(){
 
     }
     /**每一个Activity或者Fragment都生成了自己的对象,所以每个对象的mBaseView成员都赋值了自己
      当detachView的时候只是解除了自己对象里的成员变量,对别的对象成员变量并没有影响
      */
-    @Override
     public void attachView(T baseView) {
         mBaseView = baseView;
     }
 
-    @Override
     public void detachView() {
         mBaseView=null;
     }

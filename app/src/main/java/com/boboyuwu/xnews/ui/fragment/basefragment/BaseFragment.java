@@ -9,8 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.boboyuwu.xnews.dagger.component.DaggerFragmentComponent;
 import com.boboyuwu.xnews.dagger.component.FragmentComponent;
-import com.boboyuwu.xnews.mvp.presenter.BaseViewManager;
+import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
 import java.lang.ref.WeakReference;
@@ -21,8 +22,8 @@ import javax.inject.Inject;
  * Created by wubo on 2017/6/14.
  */
 
-public abstract class BaseFragment<P extends BaseViewManager> extends Fragment implements BaseView {
-    protected AppCompatActivity mActivity;
+public abstract class BaseFragment<P extends BaseActivityPresenter> extends Fragment implements BaseView {
+    protected WeakReference<AppCompatActivity> mActivity;
     private View mContainerView;
     @Inject
     protected P mPresenter;
@@ -30,7 +31,7 @@ public abstract class BaseFragment<P extends BaseViewManager> extends Fragment i
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mActivity= (AppCompatActivity) new WeakReference(context).get();
+        mActivity= new WeakReference(context);
        // setHasOptionsMenu(true);
     }
 
