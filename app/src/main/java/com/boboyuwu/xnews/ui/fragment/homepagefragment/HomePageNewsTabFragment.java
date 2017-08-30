@@ -1,6 +1,6 @@
 package com.boboyuwu.xnews.ui.fragment.homepagefragment;
 
-import com.boboyuwu.xnews.mvp.presenter.HomePageNewsTabPresenter;
+import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.fragment.basefragment.LazyFragment;
 
 /**
@@ -8,7 +8,7 @@ import com.boboyuwu.xnews.ui.fragment.basefragment.LazyFragment;
  */
 
 
-public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsTabPresenter> {
+public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter> {
     @Override
     protected void initInject() {
         getFragmentComponent().injectFragment(this);

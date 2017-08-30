@@ -10,7 +10,7 @@ import com.boboyuwu.common.util.ToastUtil;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.dagger.component.ActivityComponent;
 import com.boboyuwu.xnews.dagger.component.DaggerActivityComponent;
-import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
+import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
 import javax.inject.Inject;
@@ -21,7 +21,7 @@ import javax.inject.Inject;
  * base中抽出最核心的,最原始的,不包含第三方的所有共用的东西
  */
 
-public abstract class BaseActivity <P extends BaseActivityPresenter>extends AppCompatActivity implements BaseView {
+public abstract class BaseActivity <P extends BasePresenter>extends AppCompatActivity implements BaseView {
     @Inject
     protected P mPresenter;
     @Override

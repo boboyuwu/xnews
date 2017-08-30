@@ -1,7 +1,10 @@
 package com.boboyuwu.xnews.dagger.component;
 
 
+import com.boboyuwu.xnews.api.HomeNewsApi;
 import com.boboyuwu.xnews.dagger.module.AppModule;
+import com.boboyuwu.xnews.dagger.module.HttpModule;
+import com.boboyuwu.xnews.mvp.model.helper.GreenDaoHelper;
 
 import javax.inject.Singleton;
 
@@ -13,9 +16,12 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = AppModule.class)
+@Component(modules = {AppModule.class, HttpModule.class})
 public interface AppComponent {
     //SPHelper getSPHelper();
     //RetrofitHelper getRetrofitHelper();
     //DBHelper getDBHelper();
+    HomeNewsApi getHomeNewsApi();
+    GreenDaoHelper getGreenDaoHelper();
+
 }

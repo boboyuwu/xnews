@@ -3,7 +3,7 @@ package com.boboyuwu.xnews.ui.activity.baseactivity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
+import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -13,7 +13,7 @@ import io.reactivex.disposables.Disposable;
  * 具有Rx订阅管理的Activiity,基本使用rx请求的继承它来管理
  */
 
-public abstract class RxManageActivity<P extends BaseActivityPresenter> extends BaseActivity<P> {
+public abstract class RxManageActivity<P extends BasePresenter> extends BaseActivity<P> {
     private final CompositeDisposable mCompositeDisposable=new CompositeDisposable();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

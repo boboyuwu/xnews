@@ -27,6 +27,8 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
         public final static Property Id = new Property(0, long.class, "Id", true, "_id");
         public final static Property ChannelName = new Property(1, String.class, "channelName", false, "CHANNEL_NAME");
         public final static Property ChannelId = new Property(2, String.class, "channelId", false, "CHANNEL_ID");
+        public final static Property ChannelType = new Property(3, String.class, "channelType", false, "CHANNEL_TYPE");
+        public final static Property IsFixChannel = new Property(4, boolean.class, "isFixChannel", false, "IS_FIX_CHANNEL");
     };
 
 
@@ -44,7 +46,9 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"CHANNEL_NEWS_BEAN\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: Id
                 "\"CHANNEL_NAME\" TEXT," + // 1: channelName
-                "\"CHANNEL_ID\" TEXT);"); // 2: channelId
+                "\"CHANNEL_ID\" TEXT," + // 2: channelId
+                "\"CHANNEL_TYPE\" TEXT," + // 3: channelType
+                "\"IS_FIX_CHANNEL\" INTEGER NOT NULL );"); // 4: isFixChannel
     }
 
     /** Drops the underlying database table. */
@@ -67,6 +71,12 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
         if (channelId != null) {
             stmt.bindString(3, channelId);
         }
+ 
+        String channelType = entity.getChannelType();
+        if (channelType != null) {
+            stmt.bindString(4, channelType);
+        }
+        stmt.bindLong(5, entity.getIsFixChannel() ? 1L: 0L);
     }
 
     @Override
@@ -83,6 +93,12 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
         if (channelId != null) {
             stmt.bindString(3, channelId);
         }
+ 
+        String channelType = entity.getChannelType();
+        if (channelType != null) {
+            stmt.bindString(4, channelType);
+        }
+        stmt.bindLong(5, entity.getIsFixChannel() ? 1L: 0L);
     }
 
     @Override
@@ -95,7 +111,9 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
         ChannelNewsBean entity = new ChannelNewsBean( //
             cursor.getLong(offset + 0), // Id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // channelName
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // channelId
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // channelId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // channelType
+            cursor.getShort(offset + 4) != 0 // isFixChannel
         );
         return entity;
     }
@@ -105,6 +123,8 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
         entity.setId(cursor.getLong(offset + 0));
         entity.setChannelName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setChannelId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setChannelType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIsFixChannel(cursor.getShort(offset + 4) != 0);
      }
     
     @Override

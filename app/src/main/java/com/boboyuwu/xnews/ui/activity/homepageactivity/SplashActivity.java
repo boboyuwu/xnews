@@ -8,7 +8,7 @@ import android.animation.PropertyValuesHolder;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.mvp.presenter.HomePageNewsTabPresenter;
+import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
 import com.example.boboyuwu.zhihunews.R;
 
@@ -16,7 +16,7 @@ import com.example.boboyuwu.zhihunews.R;
  * Created by wubo on 2017/6/10.
  */
 
-public class SplashActivity extends RxManageActivity <HomePageNewsTabPresenter>{
+public class SplashActivity extends RxManageActivity <HomePageNewsPresenter>{
 
     private TextView mLogoTv;
 

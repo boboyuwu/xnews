@@ -5,7 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
+import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
 
 
@@ -13,7 +13,7 @@ import com.example.boboyuwu.zhihunews.R;
  * Created by wubo on 2017/7/5.
  */
 
-public abstract class SupportToolBarFragment<P extends BaseActivityPresenter> extends RxManageFragment<P>{
+public abstract class SupportToolBarFragment<P extends BasePresenter> extends RxManageFragment<P>{
 
     private Toolbar mToolbar;
     private TextView mTitleTv;

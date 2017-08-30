@@ -10,8 +10,6 @@ import com.boboyuwu.xnews.greendao.gen.DaoSession;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * Created by wubo on 2017/8/29.
  */
@@ -20,7 +18,6 @@ public class GreenDaoHelper implements DBHelper{
 
     private DaoSession mDaoSession;
 
-    @Inject
     public GreenDaoHelper(){
         // 通过 DaoMaster 的内部类 DevOpenHelper，你可以得到一个便利的 SQLiteOpenHelper 对象。
         // 可能你已经注意到了，你并不需要去编写「CREATE TABLE」这样的 SQL 语句，因为 greenDAO 已经帮你做了。
@@ -34,6 +31,9 @@ public class GreenDaoHelper implements DBHelper{
     }
 
 
+    /**
+     * 存放当前最新的添加频道
+     * */
     @Override
     public void setChannel(List<ChannelNewsBean> list) {
         ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();

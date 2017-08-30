@@ -8,14 +8,15 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by wubo on 2017/6/10.
+ * 所有的presenter继承BasePresenter，BasePresenter自动管理Rx,如果不继承BasePresenter，Rx订阅解绑需要自己去实现
  */
 
-public class BaseActivityPresenter<T extends BaseView> {
+public class BasePresenter<T extends BaseView> {
 
     protected T mBaseView;
     private CompositeDisposable mCompositeDisposable=new CompositeDisposable();
     /*@Inject*/
-    public BaseActivityPresenter(){
+    public BasePresenter(){
 
     }
     /**每一个Activity或者Fragment都生成了自己的对象,所以每个对象的mBaseView成员都赋值了自己
@@ -42,9 +43,5 @@ public class BaseActivityPresenter<T extends BaseView> {
         }
     }
 
-  /*  public BaseActivityPresenter(T baseView){
-
-        mBaseView = baseView;
-    }*/
 
 }

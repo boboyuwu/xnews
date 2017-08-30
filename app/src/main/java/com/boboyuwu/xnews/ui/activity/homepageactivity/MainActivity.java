@@ -13,7 +13,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.boboyuwu.xnews.common.constants.Keys;
-import com.boboyuwu.xnews.mvp.presenter.HomePageNewsTabPresenter;
+import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
 import com.boboyuwu.xnews.ui.fragment.minefragment.MineFragment;
@@ -21,7 +21,7 @@ import com.boboyuwu.xnews.ui.fragment.videofragment.VideoFragment;
 import com.boboyuwu.xnews.ui.fragment.womanphotofragment.WomanPhotoFragment;
 import com.example.boboyuwu.zhihunews.R;
 
-public class MainActivity extends RxManageActivity<HomePageNewsTabPresenter> implements OnTabChangeListener {
+public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implements OnTabChangeListener {
     private FragmentTabHost mFragmentTabHost;
     private String[] mTabs = {"首页", "美女", "视频", "我"};
     private int[] unSelectedImages = {R.mipmap.ic_home_normal, R.mipmap.ic_girl_normal, R.mipmap.ic_video_normal, R.mipmap.ic_care_normal};

@@ -4,7 +4,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
+import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
 
 /**
@@ -14,7 +14,7 @@ import com.example.boboyuwu.zhihunews.R;
  * 这个类需要好好设计一下
  */
 
-public abstract class SupportToolBarActivity<P extends BaseActivityPresenter> extends RxManageActivity<P> {
+public abstract class SupportToolBarActivity<P extends BasePresenter> extends RxManageActivity<P> {
 
     private Toolbar mToolbar;
     private TextView mTitleTv;

@@ -1,7 +1,7 @@
 package com.boboyuwu.xnews.ui.fragment.basefragment;
 
 
-import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
+import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -10,7 +10,7 @@ import io.reactivex.disposables.Disposable;
  * Created by wubo on 2017/6/14.
  */
 
-public abstract class RxManageFragment <P extends BaseActivityPresenter>extends BaseFragment<P> {
+public abstract class RxManageFragment <P extends BasePresenter>extends BaseFragment<P> {
     private final CompositeDisposable mCompositeDisposable=new CompositeDisposable();
     @Override
     protected void init() {

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.boboyuwu.xnews.dagger.component.DaggerFragmentComponent;
 import com.boboyuwu.xnews.dagger.component.FragmentComponent;
-import com.boboyuwu.xnews.mvp.presenter.BaseActivityPresenter;
+import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
 import java.lang.ref.WeakReference;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
  * Created by wubo on 2017/6/14.
  */
 
-public abstract class BaseFragment<P extends BaseActivityPresenter> extends Fragment implements BaseView {
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements BaseView {
     protected WeakReference<AppCompatActivity> mActivity;
     private View mContainerView;
     @Inject

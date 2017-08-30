@@ -3,11 +3,13 @@ package com.boboyuwu.xnews.dagger.module;
 import android.content.Context;
 
 import com.boboyuwu.common.loadmorerecyclerview.NetworkUtils;
+import com.boboyuwu.xnews.api.HomeNewsApi;
 import com.boboyuwu.xnews.common.constants.ConstantsPath;
 
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -43,6 +45,7 @@ public class HttpModule {
     public Retrofit.Builder provideRetrofitBuilder(){
         return new Retrofit.Builder();
     }
+
 
     @Singleton
     @Provides
@@ -111,5 +114,24 @@ public class HttpModule {
                       .client(okHttpClient)
                       .baseUrl(baseUrl)
                       .build();
+    }
+
+    /**
+     *  获取Api接口实现代理
+     *  每个Api接口获取各自的类型Retrofit
+     */
+
+    @Provides
+    @Singleton
+    public HomeNewsApi provideHomeNewsApi(@Named("HomeNews") Retrofit retrofit){
+            return retrofit.create(HomeNewsApi.class);
+    }
+
+
+    @Provides
+    @Singleton
+    @Named("HomeNews")
+    public Retrofit provideHomeNewsRetrofit(OkHttpClient okHttpClient,Retrofit.Builder builder){
+        return provideRetrofit(okHttpClient,builder,HomeNewsApi.HOST);
     }
 }
