@@ -47,4 +47,9 @@ public class GreenDaoHelper implements DBHelper{
         ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
         return channelNewsBeanDao.queryBuilder().build().list();
     }
+
+    public void clearAllChannel(){
+        ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
+        channelNewsBeanDao.deleteAll();
+    }
 }

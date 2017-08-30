@@ -1,5 +1,6 @@
 package com.boboyuwu.xnews.ui.fragment.homepagefragment;
 
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -11,6 +12,7 @@ import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.fragment.basefragment.SupportToolBarFragment;
 import com.example.boboyuwu.zhihunews.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
 
     private TableLayout mTableyaout;
     private ImageView mAddIv;
+    private List<ChannelNewsBean> mChannels;
+    private ViewPager mViewpager;
 
     @Override
     protected void initInject() {
@@ -45,6 +49,15 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         super.init();
         findViews();
         initNewsChannelTab();
+        initView();
+    }
+
+    private void initView() {
+        setTabLayout();
+    }
+
+    private void setTabLayout() {
+
     }
 
     /**
@@ -52,8 +65,9 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
      * */
     private void initNewsChannelTab() {
         GreenDaoHelper greenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
-        List<ChannelNewsBean> channel = greenDaoHelper.getChannel();
-        if(channel==null){
+        mChannels = greenDaoHelper.getChannel();
+        ArrayList<ChannelNewsBean> channelList = new ArrayList<>();
+        if(mChannels ==null){
             List<String> channelName = Arrays.asList(getResources().getStringArray(R.array.news_channel_name_static));
             List<String> channelId = Arrays.asList(getResources().getStringArray(R.array.news_channel_id_static));
             for (int i = 0; i < channelName.size(); i++) {
@@ -68,12 +82,19 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
                     channelNewsBean.setChannelType(ChannelNewsBean.OTHER);
                 }
                 channelNewsBean.setIsFixChannel(true);
+                channelList.add(channelNewsBean);
             }
+        }else{
+            channelList.addAll(mChannels);
+            //清空之前所有存储的频道
+            greenDaoHelper.clearAllChannel();
         }
+        greenDaoHelper.setChannel(channelList);
     }
 
     private void findViews() {
         mTableyaout = getView(R.id.tableyaout);
         mAddIv = getView(R.id.add_iv);
+        mViewpager = getView(R.id.viewpager);
     }
 }
