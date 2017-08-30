@@ -1,9 +1,9 @@
 package com.boboyuwu.xnews.api;
 
-import com.boboyuwu.xnews.beans.HeadLineNews;
-
 import io.reactivex.Flowable;
+import okhttp3.ResponseBody;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by wubo on 2017/7/5.
@@ -23,7 +23,8 @@ public interface HomeNewsApi {
      * 获取新闻列表
      */
     @GET("nc/article/{channelType}/{channelId}/{pageIndex}-20.html")
-    public Flowable<HeadLineNews> getHomePageNewsList(String channelType, String channelId, String pageIndex);
+    public Flowable<ResponseBody> getHomePageNewsList(@Path("channelType") String channelType,
+                                                      @Path("channelId")String channelId, @Path("pageIndex")String pageIndex);
 
 
 }

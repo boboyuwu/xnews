@@ -1,5 +1,6 @@
 package com.boboyuwu.xnews.ui.fragment.helper;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 /**
@@ -9,7 +10,7 @@ import android.support.v4.app.Fragment;
 
 public interface FragmentFactory{
 
-          Fragment createFragment(String tab);
-          Fragment createFragment(int tab);
+          Fragment createFragment(String tab, Bundle bundle);
+          Fragment createFragment(int tab,Bundle bundle);
 
 }

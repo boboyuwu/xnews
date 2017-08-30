@@ -29,8 +29,6 @@ public class ChannelNewsBean implements Serializable{
     private String channelId;
     private String channelType;
     private boolean isFixChannel;
-
-
     public boolean getIsFixChannel() {
         return this.isFixChannel;
     }
@@ -75,9 +73,7 @@ public class ChannelNewsBean implements Serializable{
     }
 
 
-
-
-
+   
     
 
 }
