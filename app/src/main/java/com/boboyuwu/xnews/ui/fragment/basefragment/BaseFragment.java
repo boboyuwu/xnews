@@ -117,5 +117,6 @@ public abstract class BaseFragment<P extends BaseActivityPresenter> extends Frag
     public void onDestroy() {
         super.onDestroy();
         mPresenter.detachView();
+        mPresenter.deleteDispose();
     }
 }
