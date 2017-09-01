@@ -65,19 +65,19 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         HomePageNewsTabFragmentIml homePageNewsTabFragmentIml = new HomePageNewsTabFragmentIml();
         for (ChannelNewsBean channelNewsBean : mChannelList) {
             Bundle bundle = new Bundle();
-            bundle.putString(Keys.CHANNEL_ID, channelNewsBean.getChannelId());
-            bundle.putString(Keys.CHANNEL_TYPE, channelNewsBean.getChannelType());
+            bundle.putSerializable(Keys.CHANNEL,  channelNewsBean);
+            //bundle.putString(Keys.CHANNEL_TYPE, channelNewsBean.getChannelType());
             mFragments.add(homePageNewsTabFragmentIml.createFragment(channelNewsBean.getChannelId(), bundle));
         }
     }
 
     private void initView() {
-        setTabLayout();
         setViewPager();
+        setTabLayout();
     }
 
     private void setViewPager() {
-        mViewpager.setAdapter(new BaseTabLayoutFragmentAdapter(getFragmentManager(),mFragments) {
+        mViewpager.setAdapter(new BaseTabLayoutFragmentAdapter(getChildFragmentManager(),mFragments) {
             @Override
             public CharSequence getTitle(int position) {
                 return mChannelList.get(position).getChannelName();

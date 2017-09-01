@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.boboyuwu.common.util.ToastUtil;
+import com.boboyuwu.common.util.ToastUtils;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.dagger.component.ActivityComponent;
 import com.boboyuwu.xnews.dagger.component.DaggerActivityComponent;
@@ -74,7 +74,7 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
 
     @Override
     public void onSucess(String msg) {
-        ToastUtil.showToast(msg);
+
     }
 
     @Override
@@ -84,7 +84,7 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
 
     @Override
     public void onError(String msg) {
-        ToastUtil.showToast(msg);
+        ToastUtils.showShort(msg);
     }
 
     @Override

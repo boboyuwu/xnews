@@ -22,27 +22,24 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:26.+'
     testCompile 'junit:junit:4.12'
-
-
     //GreenDao
     compile 'org.greenrobot:greendao:3.0.1'
     compile 'org.greenrobot:greendao-generator:3.0.0'
     //RxAndroid的依赖包
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.android.support:design:26.0.0-alpha1'
-
-    //Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    //Retrofit  2.0.1+okhttp 3.2.0
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     //OkHttp
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.8.1'
     compile 'com.github.boboyuwu:PinnedHeaderItemDecoration:V1.0.1'
+    compile 'com.android.support:support-v4:26.0.0-alpha1'
 }

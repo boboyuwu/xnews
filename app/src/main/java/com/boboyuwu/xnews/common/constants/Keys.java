@@ -14,6 +14,7 @@ public class Keys {
     public static final String BOTTOM_TAB="bottom_tab";
 
     //channel id  type
+    public static final String CHANNEL="channel";
     public static final String CHANNEL_ID="channel_id";
     public static final String CHANNEL_TYPE="channel_type";
 }

@@ -8,6 +8,7 @@ import com.boboyuwu.xnews.common.constants.ConstantsPath;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -100,6 +101,7 @@ public class HttpModule {
         Cache cache = new Cache(cacheFile, cacheSize);
         OkHttpClient okHttpClient = builder
                 .cache(cache)
+                .connectTimeout(3, TimeUnit.SECONDS)
                 .addNetworkInterceptor(interceptor)
                 .build();
         return okHttpClient;

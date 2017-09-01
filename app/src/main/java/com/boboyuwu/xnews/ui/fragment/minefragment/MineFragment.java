@@ -16,7 +16,7 @@ public class MineFragment extends SupportToolBarFragment<HomePageNewsPresenter>{
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_homepage_news;
+        return R.layout.fragment_homepage_news_list;
     }
 
     @Override

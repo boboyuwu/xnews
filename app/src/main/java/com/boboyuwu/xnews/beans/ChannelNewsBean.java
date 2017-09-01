@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 
 @Entity
-public class ChannelNewsBean implements Serializable{
+public class ChannelNewsBean implements Serializable {
 
     @Transient
     public static final String HEADLINE="headline";
@@ -72,8 +72,5 @@ public class ChannelNewsBean implements Serializable{
     public ChannelNewsBean() {
     }
 
-
-   
-    
 
 }

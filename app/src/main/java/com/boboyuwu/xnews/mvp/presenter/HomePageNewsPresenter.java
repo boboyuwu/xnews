@@ -1,5 +1,6 @@
 package com.boboyuwu.xnews.mvp.presenter;
 
+import com.boboyuwu.xnews.beans.HeadLineNews;
 import com.boboyuwu.xnews.common.utils.RxUtil;
 import com.boboyuwu.xnews.mvp.model.HomePageNewsModel;
 import com.boboyuwu.xnews.mvp.view.HomePageView;
@@ -7,7 +8,6 @@ import com.boboyuwu.xnews.mvp.view.HomePageView;
 import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
-import okhttp3.ResponseBody;
 
 /**
  * Created by wubo on 2017/8/28.
@@ -30,15 +30,19 @@ public class HomePageNewsPresenter extends BasePresenter <HomePageView>{
      * */
     public void getHomePageNewsList(String channelType, String channelId, String pageIndex){
         addDispose(mHomePageNewsModel.getHomePageNewsList(channelType,channelId,pageIndex)
-                .compose(RxUtil.<ResponseBody>schedulerOnIoThread())
-                .subscribe(new Consumer<ResponseBody>() {
-            @Override
-            public void accept(ResponseBody headLineNews) throws Exception {
+                .compose(RxUtil.<HeadLineNews>schedulerOnIoThread())
+                .subscribe(new Consumer<HeadLineNews>() {
+                    @Override
+                    public void accept(HeadLineNews headLineNews) throws Exception {
+                        mBaseView.onLoadNewsList(headLineNews.getT1348647909107());
+                    }
 
-                
-            }
-        }));
-
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                       mBaseView.onError(throwable.toString());
+                    }
+                }));
     }
 
 }

@@ -24,8 +24,8 @@ import com.example.boboyuwu.zhihunews.R;
 public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implements OnTabChangeListener {
     private FragmentTabHost mFragmentTabHost;
     private String[] mTabs = {"首页", "美女", "视频", "我"};
-    private int[] unSelectedImages = {R.mipmap.ic_home_normal, R.mipmap.ic_girl_normal, R.mipmap.ic_video_normal, R.mipmap.ic_care_normal};
-    private int[] selectedImages = {R.mipmap.ic_home_selected, R.mipmap.ic_girl_selected, R.mipmap.ic_video_selected, R.mipmap.ic_care_selected};
+    private int[] mUnSelectedImages = {R.mipmap.ic_home_normal, R.mipmap.ic_girl_normal, R.mipmap.ic_video_normal, R.mipmap.ic_care_normal};
+    private int[] mSelectedImages = {R.mipmap.ic_home_selected, R.mipmap.ic_girl_selected, R.mipmap.ic_video_selected, R.mipmap.ic_care_selected};
     private Class[] mFragments = {HomePageNewsFragment.class, WomanPhotoFragment.class, VideoFragment.class, MineFragment.class};
 
 
@@ -55,21 +55,16 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
     public static void startMainActivity(Context context, Bundle bundle) {
         Intent intent = new Intent(context, MainActivity.class);
         if (bundle != null)
-            intent.putExtra(Keys.BUNDLE, bundle);
+        intent.putExtra(Keys.BUNDLE, bundle);
         context.startActivity(intent);
     }
 
     private void initFragmentTabHost() {
+        mFragmentTabHost.setup(MainActivity.this, getSupportFragmentManager(), android.R.id.tabcontent);
         for (int i = 0; i < mTabs.length; i++) {
-            mFragmentTabHost.setup(MainActivity.this, getSupportFragmentManager(), android.R.id.tabcontent);
-            TextView icon = new TextView(this);
-            icon.setText(mTabs[i]);
             View tabView = getTabView(i);
             TabHost.TabSpec tabSpec = mFragmentTabHost.newTabSpec(mTabs[i]).setIndicator(tabView);
-
-            Bundle bundle = new Bundle();
-            bundle.putString(Keys.BOTTOM_TAB, mTabs[i]);
-            mFragmentTabHost.addTab(tabSpec, mFragments[i], bundle);
+            mFragmentTabHost.addTab(tabSpec, mFragments[i], null);
             mBottomTabSparse.put(i, tabView);
         }
     }
@@ -79,7 +74,7 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
         TextView text_tv = (TextView) inflate.findViewById(R.id.text_tv);
         ImageView icon_iv = (ImageView) inflate.findViewById(R.id.icon_iv);
         text_tv.setText(mTabs[i]);
-        icon_iv.setImageResource(unSelectedImages[i]);
+        icon_iv.setImageResource(mUnSelectedImages[i]);
         return inflate;
     }
 
@@ -122,10 +117,10 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
             ImageView icon_iv =tabView.findViewById(R.id.icon_iv);
             if (i == indexSelected) {
                 text_tv.setTextColor(getResources().getColor(R.color.spark_orange));
-                icon_iv.setImageResource(selectedImages[indexSelected]);
+                icon_iv.setImageResource(mSelectedImages[indexSelected]);
             } else {
                 text_tv.setTextColor(getResources().getColor(R.color.gray));
-                icon_iv.setImageResource(unSelectedImages[i]);
+                icon_iv.setImageResource(mUnSelectedImages[i]);
             }
         }
     }

@@ -14,7 +14,6 @@ import dagger.Component;
  * Created by wubo on 2017/6/15.
  */
 @Component(modules = HomePageNewsFragmentModule.class
-
           )
 public interface FragmentComponent {
 

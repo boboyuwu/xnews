@@ -9,8 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.boboyuwu.common.loadingandretrymanager.LoadingAndRetryManager;
-import com.boboyuwu.common.loadingandretrymanager.OnLoadingAndRetryListener;
+import com.boboyuwu.common.util.ToastUtils;
 import com.boboyuwu.xnews.dagger.component.DaggerFragmentComponent;
 import com.boboyuwu.xnews.dagger.component.FragmentComponent;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
@@ -29,7 +28,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     private View mContainerView;
     @Inject
     protected P mPresenter;
-    protected LoadingAndRetryManager mLoadingAndRetryManager;
+   // protected LoadingAndRetryManager mLoadingAndRetryManager;
 
     //activity依附上来
     @Override
@@ -43,7 +42,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initInject();
-        mLoadingAndRetryManager = new LoadingAndRetryManager(mActivity.get(), mOnLoadingAndRetryListener);
+        //mLoadingAndRetryManager = new LoadingAndRetryManager(mActivity.get(), mOnLoadingAndRetryListener);
         if(mPresenter==null)
             throw new RuntimeException("请实现initInject方法,使用getActivityComponent()获取ActivityComponent对象调用injectFragment" +
                     "方法将自己传递进去!");
@@ -51,13 +50,13 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
 
-    OnLoadingAndRetryListener mOnLoadingAndRetryListener=new OnLoadingAndRetryListener() {
+ /*   OnLoadingAndRetryListener mOnLoadingAndRetryListener=new OnLoadingAndRetryListener() {
         @Override
         public void setRetryEvent(View retryView) {
           //  setRetryEvent(retryView);
         }
 
-    };
+    };*/
 
     //有需要请重写这个方法
    /* protected void setRetryEvent(View retryView){
@@ -119,7 +118,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     @Override
     public void onError(String msg) {
-
+        ToastUtils.showShort(msg);
     }
 
     @Override
