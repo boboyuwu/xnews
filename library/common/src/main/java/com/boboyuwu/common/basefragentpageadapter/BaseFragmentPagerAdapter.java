@@ -33,4 +33,6 @@ public class BaseFragmentPagerAdapter extends FragmentPagerAdapter{
         return mList.size();
     }
 
+
+
 }

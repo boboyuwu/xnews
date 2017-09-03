@@ -1,9 +1,12 @@
 package com.boboyuwu.xnews.mvp.presenter;
 
-import com.boboyuwu.xnews.beans.HeadLineNews;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
 import com.boboyuwu.xnews.common.utils.RxUtil;
 import com.boboyuwu.xnews.mvp.model.HomePageNewsModel;
 import com.boboyuwu.xnews.mvp.view.HomePageView;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -26,21 +29,48 @@ public class HomePageNewsPresenter extends BasePresenter <HomePageView>{
     }
 
     /**
-     * 获取首页新闻列表
+     * 首页新闻列表分页加载
      * */
-    public void getHomePageNewsList(String channelType, String channelId, String pageIndex){
+    public void getHomePageMoreNewsList(String channelType, String channelId, String pageIndex){
         addDispose(mHomePageNewsModel.getHomePageNewsList(channelType,channelId,pageIndex)
-                .compose(RxUtil.<HeadLineNews>schedulerOnIoThread())
-                .subscribe(new Consumer<HeadLineNews>() {
+                .compose(RxUtil.<Map<String, List<HeadLineNewsBean>>>schedulerOnIoThread())
+                .subscribe(new Consumer<Map<String, List<HeadLineNewsBean>>>() {
                     @Override
-                    public void accept(HeadLineNews headLineNews) throws Exception {
-                        mBaseView.onLoadNewsList(headLineNews.getT1348647909107());
+                    public void accept(Map<String, List<HeadLineNewsBean>> headLineNews) throws Exception {
+                        for (String s : headLineNews.keySet()) {
+                            mBaseView.onLoadNewsList(headLineNews.get(s));
+                        }
                     }
 
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                        mBaseView.onError(throwable.toString());
+                    }
+                }));
+    }
+
+
+
+
+    /**
+     * 下拉刷新或者第一次加载
+     * */
+    public void getHomePageNewsList(final String channelType, String channelId, String pageIndex){
+        addDispose(mHomePageNewsModel.getHomePageNewsList(channelType,channelId,pageIndex)
+                .compose(RxUtil.<Map<String, List<HeadLineNewsBean>>>schedulerOnIoThread())
+                .subscribe(new Consumer<Map<String, List<HeadLineNewsBean>>>() {
+                    @Override
+                    public void accept(Map<String, List<HeadLineNewsBean>> headLineNews) throws Exception {
+                        for (String s : headLineNews.keySet()) {
+                            mBaseView.onLoadNewsList(headLineNews.get(s));
+                        }
+                    }
+
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        mBaseView.onError(throwable.toString());
                     }
                 }));
     }

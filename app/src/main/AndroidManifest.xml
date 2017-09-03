@@ -20,6 +20,7 @@
         </activity>
 
         <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.MainActivity"></activity>
+        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity"></activity>
     </application>
 
 </manifest>

@@ -1,25 +1,27 @@
 package com.boboyuwu.xnews.beans;
 
+import android.os.Parcel;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wubo on 2017/8/30.
  */
 
-public class HeadLineNews {
+public class HeadLineNews implements android.os.Parcelable {
+    //
+    // list T1348649580692   headline T1348647909107
+    private List<HeadLineNewsBean> mHeadLineNewsBeanList;
 
-
-    private List<T1348647909107Bean> T1348647909107;
-
-    public List<T1348647909107Bean> getT1348647909107() {
-        return T1348647909107;
+    public List<HeadLineNewsBean> getHeadLineNewsList() {
+        return mHeadLineNewsBeanList;
     }
 
-    public void setT1348647909107(List<T1348647909107Bean> T1348647909107) {
-        this.T1348647909107 = T1348647909107;
+    public void setHeadLineNewsList(List<HeadLineNewsBean> headLineNewsList) {
+        mHeadLineNewsBeanList = headLineNewsList;
     }
-
-    public static class T1348647909107Bean {
+    public static class HeadLineNewsBean implements android.os.Parcelable {
         /**
          * imgextra : [{"imgsrc":"http://cms-bucket.nosdn.127.net/5283488080eb434c9b44124b4ce7db8020170831120016.jpeg"},{"imgsrc":"http://cms-bucket.nosdn.127.net/1b714caa0d93484087b71a85cc2eb3d220170831120015.png"}]
          * template : normal1
@@ -394,7 +396,7 @@ public class HeadLineNews {
             this.ads = ads;
         }
 
-        public static class ImgextraBean {
+        public static class ImgextraBean implements android.os.Parcelable {
             /**
              * imgsrc : http://cms-bucket.nosdn.127.net/5283488080eb434c9b44124b4ce7db8020170831120016.jpeg
              */
@@ -408,9 +410,38 @@ public class HeadLineNews {
             public void setImgsrc(String imgsrc) {
                 this.imgsrc = imgsrc;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.imgsrc);
+            }
+
+            public ImgextraBean() {
+            }
+
+            protected ImgextraBean(Parcel in) {
+                this.imgsrc = in.readString();
+            }
+
+            public static final Creator<ImgextraBean> CREATOR = new Creator<ImgextraBean>() {
+                @Override
+                public ImgextraBean createFromParcel(Parcel source) {
+                    return new ImgextraBean(source);
+                }
+
+                @Override
+                public ImgextraBean[] newArray(int size) {
+                    return new ImgextraBean[size];
+                }
+            };
         }
 
-        public static class AdsBean {
+        public static class AdsBean implements android.os.Parcelable {
             /**
              * subtitle :
              * skipType : photoset
@@ -484,6 +515,179 @@ public class HeadLineNews {
             public void setUrl(String url) {
                 this.url = url;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(this.subtitle);
+                dest.writeString(this.skipType);
+                dest.writeString(this.skipID);
+                dest.writeString(this.tag);
+                dest.writeString(this.title);
+                dest.writeString(this.imgsrc);
+                dest.writeString(this.url);
+            }
+
+            public AdsBean() {
+            }
+
+            protected AdsBean(Parcel in) {
+                this.subtitle = in.readString();
+                this.skipType = in.readString();
+                this.skipID = in.readString();
+                this.tag = in.readString();
+                this.title = in.readString();
+                this.imgsrc = in.readString();
+                this.url = in.readString();
+            }
+
+            public static final Creator<AdsBean> CREATOR = new Creator<AdsBean>() {
+                @Override
+                public AdsBean createFromParcel(Parcel source) {
+                    return new AdsBean(source);
+                }
+
+                @Override
+                public AdsBean[] newArray(int size) {
+                    return new AdsBean[size];
+                }
+            };
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.template);
+            dest.writeString(this.skipID);
+            dest.writeString(this.lmodify);
+            dest.writeString(this.postid);
+            dest.writeString(this.source);
+            dest.writeString(this.title);
+            dest.writeString(this.mtime);
+            dest.writeInt(this.hasImg);
+            dest.writeString(this.topic_background);
+            dest.writeString(this.digest);
+            dest.writeString(this.photosetID);
+            dest.writeString(this.boardid);
+            dest.writeString(this.alias);
+            dest.writeInt(this.hasAD);
+            dest.writeString(this.imgsrc);
+            dest.writeString(this.ptime);
+            dest.writeString(this.daynum);
+            dest.writeInt(this.hasHead);
+            dest.writeInt(this.order);
+            dest.writeInt(this.votecount);
+            dest.writeByte(this.hasCover ? (byte) 1 : (byte) 0);
+            dest.writeString(this.docid);
+            dest.writeString(this.tname);
+            dest.writeInt(this.priority);
+            dest.writeString(this.ename);
+            dest.writeInt(this.replyCount);
+            dest.writeInt(this.imgsum);
+            dest.writeByte(this.hasIcon ? (byte) 1 : (byte) 0);
+            dest.writeString(this.skipType);
+            dest.writeString(this.cid);
+            dest.writeString(this.url_3w);
+            dest.writeString(this.url);
+            dest.writeString(this.ltitle);
+            dest.writeString(this.subtitle);
+            dest.writeString(this.specialID);
+            dest.writeList(this.imgextra);
+            dest.writeList(this.ads);
+        }
+
+        public HeadLineNewsBean() {
+        }
+
+        protected HeadLineNewsBean(Parcel in) {
+            this.template = in.readString();
+            this.skipID = in.readString();
+            this.lmodify = in.readString();
+            this.postid = in.readString();
+            this.source = in.readString();
+            this.title = in.readString();
+            this.mtime = in.readString();
+            this.hasImg = in.readInt();
+            this.topic_background = in.readString();
+            this.digest = in.readString();
+            this.photosetID = in.readString();
+            this.boardid = in.readString();
+            this.alias = in.readString();
+            this.hasAD = in.readInt();
+            this.imgsrc = in.readString();
+            this.ptime = in.readString();
+            this.daynum = in.readString();
+            this.hasHead = in.readInt();
+            this.order = in.readInt();
+            this.votecount = in.readInt();
+            this.hasCover = in.readByte() != 0;
+            this.docid = in.readString();
+            this.tname = in.readString();
+            this.priority = in.readInt();
+            this.ename = in.readString();
+            this.replyCount = in.readInt();
+            this.imgsum = in.readInt();
+            this.hasIcon = in.readByte() != 0;
+            this.skipType = in.readString();
+            this.cid = in.readString();
+            this.url_3w = in.readString();
+            this.url = in.readString();
+            this.ltitle = in.readString();
+            this.subtitle = in.readString();
+            this.specialID = in.readString();
+            this.imgextra = new ArrayList<ImgextraBean>();
+            in.readList(this.imgextra, ImgextraBean.class.getClassLoader());
+            this.ads = new ArrayList<AdsBean>();
+            in.readList(this.ads, AdsBean.class.getClassLoader());
+        }
+
+        public static final Creator<HeadLineNewsBean> CREATOR = new Creator<HeadLineNewsBean>() {
+            @Override
+            public HeadLineNewsBean createFromParcel(Parcel source) {
+                return new HeadLineNewsBean(source);
+            }
+
+            @Override
+            public HeadLineNewsBean[] newArray(int size) {
+                return new HeadLineNewsBean[size];
+            }
+        };
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(this.mHeadLineNewsBeanList);
+    }
+
+    public HeadLineNews() {
+    }
+
+    protected HeadLineNews(Parcel in) {
+        this.mHeadLineNewsBeanList = in.createTypedArrayList(HeadLineNewsBean.CREATOR);
+    }
+
+    public static final Creator<HeadLineNews> CREATOR = new Creator<HeadLineNews>() {
+        @Override
+        public HeadLineNews createFromParcel(Parcel source) {
+            return new HeadLineNews(source);
+        }
+
+        @Override
+        public HeadLineNews[] newArray(int size) {
+            return new HeadLineNews[size];
+        }
+    };
 }

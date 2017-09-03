@@ -35,7 +35,7 @@ public class GreenDaoHelper implements DBHelper{
      * 存放当前最新的添加频道
      * */
     @Override
-    public void setChannel(List<ChannelNewsBean> list) {
+    public void setChannelList(List<ChannelNewsBean> list) {
         ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
         for (ChannelNewsBean channelNewsBean : list) {
             channelNewsBeanDao.insert(channelNewsBean);
@@ -43,13 +43,24 @@ public class GreenDaoHelper implements DBHelper{
     }
 
     @Override
+    public void setChannel(ChannelNewsBean channel) {
+        ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
+        channelNewsBeanDao.insertOrReplace(channel);
+    }
+
+
+    @Override
     public List<ChannelNewsBean> getChannel() {
         ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
         return channelNewsBeanDao.queryBuilder().build().list();
     }
 
+    @Override
     public void clearAllChannel(){
         ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
         channelNewsBeanDao.deleteAll();
     }
+
+
+
 }

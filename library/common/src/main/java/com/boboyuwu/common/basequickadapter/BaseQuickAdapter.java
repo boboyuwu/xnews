@@ -103,9 +103,6 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends R
         return super.getItemViewType(position);
     }
 
-    public void setLayoutParams(ViewGroup.MarginLayoutParams layoutParams){
-        mLayoutParams = layoutParams;
-    }
 
     @Override
     public BaseAdapterHelper onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -115,9 +112,6 @@ public abstract class BaseQuickAdapter<T, H extends BaseAdapterHelper> extends R
             view = LayoutInflater.from(viewGroup.getContext()).inflate(layoutId, viewGroup, false);
         } else {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(layoutResId, viewGroup, false);
-            if(mLayoutParams!=null){
-                view.setLayoutParams(mLayoutParams);
-            }
         }
         view.setOnClickListener(this);
         view.setOnLongClickListener(this);

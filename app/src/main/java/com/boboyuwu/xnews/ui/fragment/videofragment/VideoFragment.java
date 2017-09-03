@@ -16,11 +16,11 @@ public class VideoFragment extends SupportToolBarFragment<HomePageNewsPresenter>
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_homepage_news_list;
+        return R.layout.fragment_video;
     }
 
     @Override
     protected void setToolBar() {
-
+        setToolBarTitle("XNews视频");
     }
 }

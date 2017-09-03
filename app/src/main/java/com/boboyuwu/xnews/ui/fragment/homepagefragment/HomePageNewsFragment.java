@@ -5,6 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.boboyuwu.common.basefragentpageadapter.BaseTabLayoutFragmentAdapter;
@@ -13,6 +15,7 @@ import com.boboyuwu.xnews.beans.ChannelNewsBean;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.mvp.model.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
+import com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity;
 import com.boboyuwu.xnews.ui.fragment.basefragment.SupportToolBarFragment;
 import com.boboyuwu.xnews.ui.fragment.helper.HomePageNewsTabFragmentIml;
 import com.example.boboyuwu.zhihunews.R;
@@ -25,7 +28,7 @@ import java.util.List;
  * Created by wubo on 2017/8/28.
  */
 
-public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPresenter> {
+public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPresenter> implements OnClickListener {
 
     private TabLayout mTabLayout;
     private ImageView mAddIv;
@@ -46,9 +49,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
 
     @Override
     protected void setToolBar() {
-        setToolBarColor(getResources().getColor(R.color.spark_orange));
         setToolBarTitle("XNews新闻");
-        setToolBarColor(getResources().getColor(R.color.spark_orange));
     }
 
     @Override
@@ -58,6 +59,12 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         initNewsChannelTab();
         initFragment();
         initView();
+        setListener();
+    }
+
+    private void setListener() {
+
+        mAddIv.setOnClickListener(this);
     }
 
     private void initFragment() {
@@ -65,7 +72,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         HomePageNewsTabFragmentIml homePageNewsTabFragmentIml = new HomePageNewsTabFragmentIml();
         for (ChannelNewsBean channelNewsBean : mChannelList) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Keys.CHANNEL,  channelNewsBean);
+            bundle.putSerializable(Keys.CHANNEL, channelNewsBean);
             //bundle.putString(Keys.CHANNEL_TYPE, channelNewsBean.getChannelType());
             mFragments.add(homePageNewsTabFragmentIml.createFragment(channelNewsBean.getChannelId(), bundle));
         }
@@ -77,7 +84,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
     }
 
     private void setViewPager() {
-        mViewpager.setAdapter(new BaseTabLayoutFragmentAdapter(getChildFragmentManager(),mFragments) {
+        mViewpager.setAdapter(new BaseTabLayoutFragmentAdapter(getChildFragmentManager(), mFragments) {
             @Override
             public CharSequence getTitle(int position) {
                 return mChannelList.get(position).getChannelName();
@@ -94,10 +101,9 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
      */
     private void initNewsChannelTab() {
         GreenDaoHelper greenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
-        //greenDaoHelper.clearAllChannel();
         List<ChannelNewsBean> channels = greenDaoHelper.getChannel();
         mChannelList = new ArrayList<>();
-        if (channels == null || (channels!=null && channels.size()<=0)) {
+        if (channels == null || (channels != null && channels.size() <= 0)) {
             List<String> channelName = Arrays.asList(getResources().getStringArray(R.array.news_channel_name_static));
             List<String> channelId = Arrays.asList(getResources().getStringArray(R.array.news_channel_id_static));
             for (int i = 0; i < channelName.size(); i++) {
@@ -112,19 +118,29 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
                     channelNewsBean.setChannelType(ChannelNewsBean.OTHER);
                 }
                 channelNewsBean.setIsFixChannel(true);
+                channelNewsBean.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MINE);
+                greenDaoHelper.setChannel(channelNewsBean);
                 mChannelList.add(channelNewsBean);
             }
         } else {
             mChannelList.addAll(channels);
-            //清空之前所有存储的频道
-           // greenDaoHelper.clearAllChannel();
         }
-       // greenDaoHelper.setChannel(mChannelList);
+        greenDaoHelper.clearAllChannel();
+        greenDaoHelper.setChannelList(mChannelList);
     }
 
     private void findViews() {
         mTabLayout = getView(R.id.tablayout);
         mAddIv = getView(R.id.add_iv);
         mViewpager = getView(R.id.viewpager);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.add_iv:
+                AddChannelActivity.startAddChannelActivity(mActivity.get(),null);
+                break;
+        }
     }
 }

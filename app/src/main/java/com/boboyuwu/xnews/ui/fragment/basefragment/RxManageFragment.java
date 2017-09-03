@@ -15,12 +15,8 @@ public abstract class RxManageFragment <P extends BasePresenter>extends BaseFrag
     @Override
     protected void init() {
         super.init();
-        setListener();
     }
 
-    protected void setListener() {
-
-    }
 
     //添加rx 订阅关系
     protected void addDispose(Disposable disposable){

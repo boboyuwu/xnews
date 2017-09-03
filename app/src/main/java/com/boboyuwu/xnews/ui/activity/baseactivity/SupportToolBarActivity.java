@@ -2,6 +2,8 @@ package com.boboyuwu.xnews.ui.activity.baseactivity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
@@ -14,13 +16,14 @@ import com.example.boboyuwu.zhihunews.R;
  * 这个类需要好好设计一下
  */
 
-public abstract class SupportToolBarActivity<P extends BasePresenter> extends RxManageActivity<P> {
+public abstract class SupportToolBarActivity<P extends BasePresenter> extends RxManageActivity<P> implements OnClickListener {
 
     private Toolbar mToolbar;
     private TextView mTitleTv;
     private TextView mRight1Tv;
     private TextView mRight2Tv;
     private TextView mRight3Tv;
+    private ImageView mBackIv;
 
     @Override
     protected void init() {
@@ -33,13 +36,22 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     private void initToolBar() {
         mToolbar = getView(R.id.toolBar);
         if (mToolbar != null) {
-            mTitleTv = (TextView) mToolbar.findViewById(R.id.title_tv);
-            mRight1Tv = (TextView) mToolbar.findViewById(R.id.right1_tv);
-            mRight2Tv = (TextView) mToolbar.findViewById(R.id.right2_tv);
-            mRight3Tv = (TextView) mToolbar.findViewById(R.id.right3_tv);
-            mToolbar.setTitle("");
+            mTitleTv = mToolbar.findViewById(R.id.title_tv);
+            mRight1Tv =  mToolbar.findViewById(R.id.right1_tv);
+            mRight2Tv = mToolbar.findViewById(R.id.right2_tv);
+            mRight3Tv =  mToolbar.findViewById(R.id.right3_tv);
+            mBackIv = mToolbar.findViewById(R.id.back_iv);
             setSupportActionBar(mToolbar);
         }
+    }
+
+
+    protected void setBackPress(){
+        mBackIv.setVisibility(View.VISIBLE);
+        mBackIv.setOnClickListener(this);
+    }
+    protected void onBack() {
+        finish();
     }
 
 
@@ -59,6 +71,8 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
         }
         mToolbar.setBackgroundColor(color);
     }
+
+
 
 
     protected void setToolBarRight1Text(String text, int color) {
@@ -111,5 +125,14 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     //继承者可以在init中设置bar或者重写这个方法设置bar
     protected void setToolBar() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.back_iv:
+                onBack();
+                break;
+        }
     }
 }

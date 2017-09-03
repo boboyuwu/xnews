@@ -21,8 +21,6 @@ public abstract class LazyFragment<P extends BasePresenter> extends RxManageFrag
 
     private boolean mHasViewCreate;
     private boolean mHasViewCreateAndUserVisible;
-    //加载完成数据要设置为false
-    protected boolean mIsFirstLoadData=true;
     //true显示 false隐藏 执行在onAttch之前
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -33,8 +31,7 @@ public abstract class LazyFragment<P extends BasePresenter> extends RxManageFrag
             mHasViewCreateAndUserVisible=false;
         }
 
-        if(mHasViewCreateAndUserVisible && mIsFirstLoadData){
-            mIsFirstLoadData=false;
+        if(mHasViewCreateAndUserVisible){
             onLazyLoadData();
         }
     }

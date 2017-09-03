@@ -16,11 +16,11 @@ public class WomanPhotoFragment extends SupportToolBarFragment<HomePageNewsPrese
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_homepage_news_list;
+        return R.layout.fragment_woman;
     }
 
     @Override
     protected void setToolBar() {
-
+        setToolBarTitle("XNews美女");
     }
 }

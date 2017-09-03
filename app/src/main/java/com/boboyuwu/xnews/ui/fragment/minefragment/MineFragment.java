@@ -16,11 +16,11 @@ public class MineFragment extends SupportToolBarFragment<HomePageNewsPresenter>{
 
     @Override
     protected int getLayout() {
-        return R.layout.fragment_homepage_news_list;
+        return R.layout.fragment_mine;
     }
 
     @Override
     protected void setToolBar() {
-
+        setToolBarTitle("XNews我");
     }
 }

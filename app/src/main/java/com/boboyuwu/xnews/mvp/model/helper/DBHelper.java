@@ -13,7 +13,9 @@ import java.util.List;
 public interface DBHelper {
 
     //插入和查询当前所有频道
-    void setChannel(List<ChannelNewsBean> list);
+    void setChannelList(List<ChannelNewsBean> list);
+    void setChannel(ChannelNewsBean channel);
+    void clearAllChannel();
     List<ChannelNewsBean> getChannel();
 
 }

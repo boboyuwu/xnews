@@ -2,7 +2,6 @@ package com.boboyuwu.xnews.beans;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
@@ -21,14 +20,43 @@ public class ChannelNewsBean implements Serializable {
     public static final String HOUSE="house";
     @Transient
     public static final String OTHER="list";
+
+
+    /**
+     * 是title还是channel
+     * */
     @Transient
-    private static final long serialVersionUID = 1L;
-    @Id
-    private long Id;
+    public static final int TYPE_TITLE=1;
+    @Transient
+    public static final int TYPE_CHANNEL=2;
+    /**
+     * 是我的频道还是更多频道
+     * */
+    @Transient
+    public static final int CHANNEL_TYPE_MINE=11;
+    @Transient
+    public static final int CHANNEL_TYPE_MORE=22;
+
+  /*  @Id
+    private long Id;*/
     private String channelName;
     private String channelId;
     private String channelType;
     private boolean isFixChannel;
+    private int type;
+    private int channelManagerType;
+    public int getChannelManagerType() {
+        return this.channelManagerType;
+    }
+    public void setChannelManagerType(int channelManagerType) {
+        this.channelManagerType = channelManagerType;
+    }
+    public int getType() {
+        return this.type;
+    }
+    public void setType(int type) {
+        this.type = type;
+    }
     public boolean getIsFixChannel() {
         return this.isFixChannel;
     }
@@ -53,24 +81,23 @@ public class ChannelNewsBean implements Serializable {
     public void setChannelName(String channelName) {
         this.channelName = channelName;
     }
-    public long getId() {
-        return this.Id;
-    }
-    public void setId(long Id) {
-        this.Id = Id;
-    }
-    @Generated(hash = 1380931854)
-    public ChannelNewsBean(long Id, String channelName, String channelId,
-            String channelType, boolean isFixChannel) {
-        this.Id = Id;
+    @Generated(hash = 1639382036)
+    public ChannelNewsBean(String channelName, String channelId,
+            String channelType, boolean isFixChannel, int type,
+            int channelManagerType) {
         this.channelName = channelName;
         this.channelId = channelId;
         this.channelType = channelType;
         this.isFixChannel = isFixChannel;
+        this.type = type;
+        this.channelManagerType = channelManagerType;
     }
     @Generated(hash = 796839396)
     public ChannelNewsBean() {
     }
+
+
+   
 
 
 }

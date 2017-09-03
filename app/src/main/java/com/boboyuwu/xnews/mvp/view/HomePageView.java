@@ -1,7 +1,7 @@
 package com.boboyuwu.xnews.mvp.view;
 
 
-import com.boboyuwu.xnews.beans.HeadLineNews.T1348647909107Bean;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
 
 import java.util.List;
 
@@ -11,5 +11,6 @@ import java.util.List;
 
 public interface HomePageView extends BaseView{
 
-    void onLoadNewsList(List<T1348647909107Bean> list);
+    void onLoadNewsList(List<HeadLineNewsBean> list);
+    void onLoadMoreNewsList(List<HeadLineNewsBean> list);
 }

@@ -2,7 +2,10 @@ package com.boboyuwu.xnews.mvp.model;
 
 import com.boboyuwu.xnews.api.HomeNewsApi;
 import com.boboyuwu.xnews.app.NewsApplication;
-import com.boboyuwu.xnews.beans.HeadLineNews;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
+
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 
@@ -19,7 +22,7 @@ public class HomePageNewsModel {
     /**
      * 获取首页新闻列表
      * */
-    public Flowable<HeadLineNews> getHomePageNewsList(String channelType, String channelId, String pageIndex){
+    public Flowable<Map<String, List<HeadLineNewsBean>>>getHomePageNewsList(String channelType, String channelId, String pageIndex){
         return mHomeNewsApi.getHomePageNewsList(channelType,channelId,pageIndex);
     }
 }

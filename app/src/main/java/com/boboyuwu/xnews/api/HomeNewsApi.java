@@ -1,6 +1,9 @@
 package com.boboyuwu.xnews.api;
 
-import com.boboyuwu.xnews.beans.HeadLineNews;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
+
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Flowable;
 import retrofit2.http.GET;
@@ -24,9 +27,9 @@ public interface HomeNewsApi {
      * 获取新闻列表
      */
     @GET("nc/article/{channelType}/{channelId}/{pageIndex}-20.html")
-    public Flowable<HeadLineNews> getHomePageNewsList(@Path("channelType") String channelType,
-                                                      @Path("channelId")String channelId,
-                                                      @Path("pageIndex")String pageIndex);
+    public Flowable<Map<String, List<HeadLineNewsBean>>>getHomePageNewsList(@Path("channelType") String channelType,
+                                                                            @Path("channelId")String channelId,
+                                                                            @Path("pageIndex")String pageIndex);
 
 
 }
