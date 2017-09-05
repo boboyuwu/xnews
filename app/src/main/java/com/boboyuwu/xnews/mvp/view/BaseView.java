@@ -1,5 +1,7 @@
 package com.boboyuwu.xnews.mvp.view;
 
+import com.boboyuwu.xnews.common.utils.RxSubscriberState;
+
 /**
  * Created by wubo on 2017/6/10.
  * 定义view的基类
@@ -8,11 +10,10 @@ package com.boboyuwu.xnews.mvp.view;
 
 public interface BaseView {
 
-
-    void onSucess();
-    void onSucess(String msg);
-    void onError();
-    void onError(String msg);
+    //记载数据时发生错误
+    void onError(RxSubscriberState msg);
+    //加载更多数据时发生了错误
+    void onLoadMoreError(RxSubscriberState msg);
     void showDialog();
     void disMissDialog();
 

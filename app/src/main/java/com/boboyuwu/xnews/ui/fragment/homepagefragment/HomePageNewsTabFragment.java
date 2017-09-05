@@ -6,6 +6,8 @@ import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.boboyuwu.common.basequickadapter.BaseAdapterHelper;
 import com.boboyuwu.common.basequickadapter.QuickAdapter;
@@ -18,6 +20,7 @@ import com.boboyuwu.common.widget.LoadingFooter.StateInfo;
 import com.boboyuwu.xnews.beans.ChannelNewsBean;
 import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
 import com.boboyuwu.xnews.common.constants.Keys;
+import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.mvp.view.HomePageView;
 import com.boboyuwu.xnews.ui.fragment.basefragment.LazyFragment;
@@ -90,21 +93,20 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
     private EndlessRecyclerOnScrollListener mEndlessRecyclerOnScrollListener=new EndlessRecyclerOnScrollListener(){
         @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
+        public void onLoadNextPage(View view) {
+            super.onLoadNextPage(view);
             StateEnum state = RecyclerViewStateUtils.getFooterViewState(mRecyclerview);
             if (state == StateEnum.Loading) {
                 return;
             }
             if(state==StateEnum.NetWorkError) {
-                loadMoreError();
+                //loadMoreError();
                 return ;
             }
             if (state == StateEnum.TheEnd) {
                 return;
             } else {
-                //loadDataPageCurr++;
-                RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.Loading,null), null);
+                loadDataPageCurr+=20;
                 loadMore();
             }
         }
@@ -112,17 +114,13 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
     private void loadMore() {
         if(NetworkUtils.isNetAvailable(mActivity.get())){
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.Loading,"正在加载中..."), null);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.Loading,"正在加载中......"), null);
             mPresenter.getHomePageMoreNewsList(mChannelNewsBean.getChannelType(),mChannelNewsBean.getChannelId(),String.valueOf(loadDataPageCurr));
         }else{
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError,"网络异常,请点击重试!"), null);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError,"网络异常,请点击重试!"), mOnClickListener);
         }
     }
 
-    //设置点击事件提供点击重试
-    private void loadMoreError() {
-
-    }
 
 
     private void findViews() {
@@ -178,6 +176,7 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     @Override
     public void onLoadNewsList(List<HeadLineNewsBean> list) {
         //排序时间
+        RecyclerViewStateUtils.setFooterViewState( mRecyclerview,new StateInfo(StateEnum.Normal,null));
         sortData(list);
         mQuickAdapter.replaceAll(list);
     }
@@ -201,6 +200,8 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
     @Override
     public void onLoadMoreNewsList(List<HeadLineNewsBean> list) {
+        RecyclerViewStateUtils.setFooterViewState( mRecyclerview,new StateInfo(StateEnum.Normal,null));
+        mQuickAdapter.getData().addAll(list);
         mQuickAdapter.notifyItemRangeInserted(mQuickAdapter.getData().size(),list.size());
     }
 
@@ -209,6 +210,23 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         loadDataPageCurr=0;
         mPresenter.getHomePageNewsList(mChannelNewsBean.getChannelType(),mChannelNewsBean.getChannelId(),String.valueOf(loadDataPageCurr));
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    private OnClickListener mOnClickListener=new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            loadMore();
+        }
+    };
+
+    @Override
+    public void onLoadMoreError(RxSubscriberState msg) {
+        super.onLoadMoreError(msg);
+        if(msg.getErrorType()==RxSubscriberState.NETWORK_ERROR){
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError,"网络异常,请点击重试!"), mOnClickListener);
+        }else{
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError,"请求失败,请点击重试!"), mOnClickListener);
+        }
     }
 }
 

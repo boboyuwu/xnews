@@ -69,9 +69,9 @@ public class LoadingFooter extends RelativeLayout {
      * @param showView 是否展示当前View
      */
     public void setState(State status, boolean showView) {
-        if (mStateEnum == status.getStateEnum()) {
+       /* if (mStateEnum == status.getStateEnum()) {
             return;
-        }
+        }*/
         mStateEnum = status.getStateEnum();
 
         switch (status.getStateEnum()) {
@@ -107,16 +107,20 @@ public class LoadingFooter extends RelativeLayout {
 
                     mLoadingProgress = (ProgressBar) mLoadingView.findViewById(R.id.loading_progress);
                     mLoadingText = (TextView) mLoadingView.findViewById(R.id.loading_text);
+                    if(!TextUtils.isEmpty(status.getText())){
+                        mLoadingText.setText(status.getText());
+                    }
                 } else {
                     mLoadingView.setVisibility(VISIBLE);
+                    if(!TextUtils.isEmpty(status.getText())){
+                        mLoadingText.setText(status.getText());
+                    }
                 }
 
                 mLoadingView.setVisibility(showView ? VISIBLE : GONE);
 
                 mLoadingProgress.setVisibility(View.VISIBLE);
-                if(!TextUtils.isEmpty(status.getText())){
-                    mLoadingText.setText(status.getText());
-                }
+
                 break;
             case TheEnd:
                 setOnClickListener(null);
@@ -137,6 +141,9 @@ public class LoadingFooter extends RelativeLayout {
                     }
                 } else {
                     mTheEndView.setVisibility(VISIBLE);
+                    if(!TextUtils.isEmpty(status.getText())){
+                        mTheEndText.setText(status.getText());
+                    }
                 }
 
                 mTheEndView.setVisibility(showView ? VISIBLE : GONE);
@@ -160,6 +167,9 @@ public class LoadingFooter extends RelativeLayout {
                     }
                 } else {
                     mNetworkErrorView.setVisibility(VISIBLE);
+                    if(!TextUtils.isEmpty(status.getText())){
+                        mNetworkErrorText.setText(status.getText());
+                    }
                 }
 
                 mNetworkErrorView.setVisibility(showView ? VISIBLE : GONE);

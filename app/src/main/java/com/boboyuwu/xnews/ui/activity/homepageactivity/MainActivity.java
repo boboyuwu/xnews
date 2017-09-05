@@ -13,6 +13,7 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.boboyuwu.xnews.common.constants.Keys;
+import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
@@ -124,7 +125,6 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
             }
         }
     }
-
 
 
 }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boboyuwu.common.util.ToastUtils;
+import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.dagger.component.DaggerFragmentComponent;
 import com.boboyuwu.xnews.dagger.component.FragmentComponent;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
@@ -101,24 +102,15 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         }
     }
 
-    @Override
-    public void onSucess() {
 
+    @Override
+    public void onError(RxSubscriberState msg) {
+        ToastUtils.showShort(msg.getErrorMsg());
     }
 
     @Override
-    public void onSucess(String msg) {
+    public void onLoadMoreError(RxSubscriberState msg) {
 
-    }
-
-    @Override
-    public void onError() {
-
-    }
-
-    @Override
-    public void onError(String msg) {
-        ToastUtils.showShort(msg);
     }
 
     @Override

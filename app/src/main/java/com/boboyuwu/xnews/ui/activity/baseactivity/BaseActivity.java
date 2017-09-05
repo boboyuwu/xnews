@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.boboyuwu.common.util.ToastUtils;
 import com.boboyuwu.xnews.common.constants.Keys;
+import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.dagger.component.ActivityComponent;
 import com.boboyuwu.xnews.dagger.component.DaggerActivityComponent;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
@@ -66,25 +66,14 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
     //去掉顶部状态栏,全屏
 
 
-
     @Override
-    public void onSucess() {
+    public void onError(RxSubscriberState msg) {
 
     }
 
     @Override
-    public void onSucess(String msg) {
+    public void onLoadMoreError(RxSubscriberState msg) {
 
-    }
-
-    @Override
-    public void onError() {
-
-    }
-
-    @Override
-    public void onError(String msg) {
-        ToastUtils.showShort(msg);
     }
 
     @Override
