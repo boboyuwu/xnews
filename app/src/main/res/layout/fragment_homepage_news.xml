@@ -9,17 +9,16 @@
     <include layout="@layout/include_toolbar_layout"/>
 
     <LinearLayout
-        android:background="@color/spark_orange"
+        android:id="@+id/tablayout_ll"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="35dp">
 
         <android.support.design.widget.TabLayout
-            app:tabSelectedTextColor="@android:color/white"
-            app:tabIndicatorColor="@android:color/white"
             android:id="@+id/tablayout"
             android:layout_weight="1"
             android:layout_width="0dp"
+            app:tabMode="scrollable"
             android:layout_height="match_parent"/>
 
         <ImageView

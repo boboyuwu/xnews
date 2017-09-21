@@ -17,10 +17,11 @@ import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
  * 否则Fragment没有创建是拿不到Bundle等传递过来的值的
  */
 
-public abstract class LazyFragment<P extends BasePresenter> extends RxManageFragment<P>{
+public abstract class LazyFragment<P extends BasePresenter> extends LoadingAndRetryFragment<P>{
 
     private boolean mHasViewCreate;
     private boolean mHasViewCreateAndUserVisible;
+
     //true显示 false隐藏 执行在onAttch之前
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -45,5 +46,5 @@ public abstract class LazyFragment<P extends BasePresenter> extends RxManageFrag
 
     //子类调用这个方法就可以实现懒加载,那么第一个Fragment怎么办呢?
     // 在init方法中判断isVisibleToUser  以及初始数据是否为Null如果不为null表示请求过接口 如果为null并且isVisibleToUser为true即可加载数据
-    protected abstract  void onLazyLoadData();
+    protected abstract void onLazyLoadData();
 }

@@ -9,8 +9,6 @@ import android.support.v4.app.Fragment;
  */
 
 public interface FragmentFactory{
-
           Fragment createFragment(String tab, Bundle bundle);
           Fragment createFragment(int tab,Bundle bundle);
-
 }

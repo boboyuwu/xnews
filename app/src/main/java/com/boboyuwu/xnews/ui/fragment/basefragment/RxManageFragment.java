@@ -8,15 +8,11 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by wubo on 2017/6/14.
+ * 提供使用Rx管理的基类
  */
 
 public abstract class RxManageFragment <P extends BasePresenter>extends BaseFragment<P> {
     private final CompositeDisposable mCompositeDisposable=new CompositeDisposable();
-    @Override
-    protected void init() {
-        super.init();
-    }
-
 
     //添加rx 订阅关系
     protected void addDispose(Disposable disposable){

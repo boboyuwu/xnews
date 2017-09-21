@@ -3,15 +3,12 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
              android:background="@drawable/add_channel_selector"
-             android:paddingTop="5dp"
-             android:paddingLeft="5dp">
+             android:padding="5dp">
 
     <TextView
-
         android:id="@+id/normal_tv"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="头条"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

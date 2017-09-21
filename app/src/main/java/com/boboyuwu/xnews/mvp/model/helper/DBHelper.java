@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * Created by wubo on 2017/6/15.
- *  操作数据库Helper接口,具体实现是GreendaoHelper
+ *  操作数据库Helper接口,   具体实现是 GreendaoHelper
  *  规范所有数据库操作
  */
 
@@ -16,6 +16,6 @@ public interface DBHelper {
     void setChannelList(List<ChannelNewsBean> list);
     void setChannel(ChannelNewsBean channel);
     void clearAllChannel();
-    List<ChannelNewsBean> getChannel();
+    List<ChannelNewsBean> getChannelList();
 
 }

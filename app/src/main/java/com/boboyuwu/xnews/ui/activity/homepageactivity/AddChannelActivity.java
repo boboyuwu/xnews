@@ -19,10 +19,12 @@ import android.view.View.OnClickListener;
 import com.boboyuwu.common.basequickadapter.BaseAdapterHelper;
 import com.boboyuwu.common.basequickadapter.MultiItemTypeSupport;
 import com.boboyuwu.common.basequickadapter.QuickAdapter;
-import com.boboyuwu.xnews.app.NewsApplication;
+import com.boboyuwu.common.util.RxBus;
+import com.boboyuwu.common.util.RxBusEventKeys;
+import com.boboyuwu.common.util.SizeUtils;
 import com.boboyuwu.xnews.beans.ChannelNewsBean;
 import com.boboyuwu.xnews.common.constants.Keys;
-import com.boboyuwu.xnews.mvp.model.helper.GreenDaoHelper;
+import com.boboyuwu.xnews.common.utils.ChannelTypeUtil;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.SupportToolBarActivity;
 import com.example.boboyuwu.zhihunews.R;
@@ -38,6 +40,7 @@ import io.reactivex.functions.Predicate;
 
 /**
  * Created by wubo on 2017/9/2.
+ * 频道管理界面
  */
 
 public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPresenter> {
@@ -45,7 +48,6 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
     private RecyclerView mRecyclerView;
     private QuickAdapter<ChannelNewsBean> mQuickAdapter;
     private ArrayList<ChannelNewsBean> mChannelList;
-
     @Override
     protected int getLayout() {
         return R.layout.activity_add_channel;
@@ -63,13 +65,44 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
     protected void setToolBar() {
         super.setToolBar();
         setToolBarTitle("频道管理");
-        setBackPress();
+        setToolBarRight1Text("确定");
+        enableBackPress();
     }
 
+
+    @Override
+    public void onBackClick() {
+        backAndUpdateChannel();
+    }
+
+    @Override
+    protected void onRight1Click() {
+        super.onRight1Click();
+        backAndUpdateChannel();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backAndUpdateChannel();
+    }
+
+    private void backAndUpdateChannel(){
+        //跟新首页的所有频道到数据库
+        List<ChannelNewsBean> channels = mQuickAdapter.getData();
+        int moreChannelPosition = getMoreChannelPosition(channels);
+        List<ChannelNewsBean> mineChannels = channels.subList(1, moreChannelPosition);
+        mGreenDaoHelper.setChannelList(mineChannels);
+        RxBus.get().post(RxBusEventKeys.UPDATE_CHANNEL,true);
+        finish();
+    }
+
+
+    //初始化频道
     private void initChannel() {
-        mChannelList = new ArrayList<>();
-        GreenDaoHelper greenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
-        List<ChannelNewsBean> channel = greenDaoHelper.getChannel();
+        mChannelList = new ArrayList();
+        final List<ChannelNewsBean> channel = mGreenDaoHelper.getChannelList();
+        //mine title
         ChannelNewsBean mineChannelTitle = new ChannelNewsBean();
         mineChannelTitle.setType(ChannelNewsBean.TYPE_TITLE);
         mineChannelTitle.setChannelName("我的频道");
@@ -81,6 +114,7 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
             mChannelList.add(newsBean);
         }
 
+        //more title
         ChannelNewsBean moreChannelTitle = new ChannelNewsBean();
         moreChannelTitle.setType(ChannelNewsBean.TYPE_TITLE);
         moreChannelTitle.setChannelName("更多频道");
@@ -93,17 +127,20 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
             ChannelNewsBean channelNewsBean = new ChannelNewsBean();
             channelNewsBean.setChannelName(channelName.get(i));
             channelNewsBean.setChannelId(channelId.get(i));
+            channelNewsBean.setChannelType(ChannelTypeUtil.getChannelType(channelId.get(i)));
             moreChannelList.add(channelNewsBean);
         }
+        //过滤频道
         addDispose(Observable.fromIterable(moreChannelList).filter(new Predicate<ChannelNewsBean>() {
             @Override
             public boolean test(ChannelNewsBean channelNewsBean) throws Exception {
-                boolean flag;
-                if (mChannelList.contains(channelNewsBean.getChannelName()))
-                    flag = false;
-                else
-                    flag = true;
-                return flag;
+                boolean hasMoreContainMineDate=false;
+                for (ChannelNewsBean newsBean : channel) {
+                    if(TextUtils.equals(newsBean.getChannelName(),channelNewsBean.getChannelName())){
+                        hasMoreContainMineDate=true;
+                    }
+                }
+                return !hasMoreContainMineDate;
             }
         }).subscribe(new Consumer<ChannelNewsBean>() {
             @Override
@@ -136,9 +173,7 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
                         }
                     });
                 }
-
             }
-
             @Override
             protected void convert(BaseAdapterHelper helper, ChannelNewsBean item) {
                 int layoutPosition = helper.getLayoutPosition();
@@ -148,19 +183,24 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
                         break;
                     case ChannelNewsBean.TYPE_CHANNEL:
                         processChannel(helper, item);
+                        processChannelClick(helper, item);
                         break;
                 }
             }
         };
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
         mRecyclerView.addItemDecoration(new ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.top = 5;
-                outRect.bottom = 5;
-                outRect.left = 10;
+                outRect.top = SizeUtils.dp2px(5);
+                outRect.left = SizeUtils.dp2px(10);
             }
         });
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -170,30 +210,34 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
 
     }
 
-    private void processChannel(BaseAdapterHelper helper, ChannelNewsBean item) {
-        helper.getTextView(R.id.normal_tv).setText(item.getChannelName());
-        processClick(helper, item);
-        helper.itemView.setEnabled(item.getIsFixChannel() ? false : true);
-    }
-
-    private void processClick(final BaseAdapterHelper helper, final ChannelNewsBean item) {
+    private void processChannelClick(final BaseAdapterHelper helper, final ChannelNewsBean item) {
         helper.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                //将更多频道移动到我的频道
-                //swapChannel(helper,item);
+                swapChannel(helper,item);
             }
         });
+
+    }
+
+    private void processChannel(BaseAdapterHelper helper, ChannelNewsBean item) {
+        helper.getTextView(R.id.normal_tv).setText(item.getChannelName());
+        helper.itemView.setEnabled(item.getIsFixChannel() ? false : true);
     }
 
     private void swapChannel(BaseAdapterHelper helper, ChannelNewsBean item) {
         List<ChannelNewsBean> data = mQuickAdapter.getData();
-        for (int i = 0; i < data.size(); i++) {
-            if (TextUtils.equals(data.get(i).getChannelName(), "更多频道")) {
-                ChannelNewsBean channelNewsBean = data.get(i);
-                data.remove(channelNewsBean);
-                data.add(i - 1, channelNewsBean);
-            }
+        if(item.getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MORE){
+            //移动到我的频道
+            int moreChannelPosition = getMoreChannelPosition(data);
+            data.remove(item);
+            data.add(moreChannelPosition,item);
+            item.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MINE);
+        }else if(item.getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MINE){
+            //移动到更多频道
+            data.remove(item);
+            data.add(data.size(),item);
+            item.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MORE);
         }
         mQuickAdapter.notifyDataSetChanged();
     }
@@ -242,27 +286,45 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
         context.startActivity(intent);
     }
 
+    private static int getMoreChannelPosition(List<ChannelNewsBean> list){
+        int position=0;
+        for (int i = 0; i < list.size(); i++) {
+            if (TextUtils.equals(list.get(i).getChannelName(), "更多频道")) {
+                position = i;
+            }
+        }
+        return position;
+    }
 
+    /**
+     *   自己实现的一套CallBack
+     * */
     static class ChannelManagerCallBack extends ItemTouchHelper.Callback {
-        private QuickAdapter <ChannelNewsBean>mQuickAdapter;
+        private static final String TAG = "ChannelManagerCallBack";
+        private QuickAdapter<ChannelNewsBean> mQuickAdapter;
 
-        public ChannelManagerCallBack(QuickAdapter  <ChannelNewsBean>quickAdapter){
+        public ChannelManagerCallBack(QuickAdapter<ChannelNewsBean> quickAdapter) {
 
             mQuickAdapter = quickAdapter;
         }
+
         @Override
         public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
+            int adapterPosition = viewHolder.getAdapterPosition();
+            ChannelNewsBean channelNewsBean = mQuickAdapter.getData().get(adapterPosition);
             int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN
-                    |ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT ;
-            return makeMovementFlags(dragFlags,0);
+                    | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+            return (channelNewsBean.getIsFixChannel()||
+                    channelNewsBean.getChannelManagerType()!=ChannelNewsBean.CHANNEL_TYPE_MINE)
+                    ?makeMovementFlags(0, 0):makeMovementFlags(dragFlags, 0);
         }
 
         @Override
         public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder, ViewHolder target) {
             int layoutPosition = viewHolder.getLayoutPosition();
             int targetPosition = target.getLayoutPosition();
-            Collections.swap(mQuickAdapter.getData(),layoutPosition,targetPosition);
-            mQuickAdapter.notifyItemMoved(layoutPosition,targetPosition);
+            Collections.swap(mQuickAdapter.getData(), layoutPosition, targetPosition);
+            mQuickAdapter.notifyItemMoved(layoutPosition, targetPosition);
             return false;
         }
 
@@ -270,47 +332,31 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
         public void onSwiped(ViewHolder viewHolder, int direction) {
 
         }
-
         @Override
         public boolean canDropOver(RecyclerView recyclerView, ViewHolder current, ViewHolder target) {
             List<ChannelNewsBean> data = mQuickAdapter.getData();
             int currentPosition = current.getLayoutPosition();
             int targetPosition = target.getLayoutPosition();
-            int moreChannelTitlePosition=0;
-            for (int i = 0; i < data.size(); i++) {
-                if(TextUtils.equals(data.get(i).getChannelName(),"更多频道")){
-                    moreChannelTitlePosition=i;
+            int moreChannelTitlePosition = getMoreChannelPosition(data);
+            boolean moveFlag = false;
+            if (data.get(currentPosition).getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MINE) {
+                if ( !data.get(currentPosition).getIsFixChannel() &&
+                     !data.get(targetPosition).getIsFixChannel() &&
+                     targetPosition < moreChannelTitlePosition && targetPosition > 0) {
+                    moveFlag = true;
+                } else {
+                    moveFlag = false;
                 }
             }
-            boolean moveFlag=false;
-
-            if(data.get(currentPosition).getChannelManagerType()==ChannelNewsBean.CHANNEL_TYPE_MINE){
-
-                if(mQuickAdapter.getItemViewType(currentPosition)!=ChannelNewsBean.TYPE_TITLE&&
-                        !data.get(target.getLayoutPosition()).getIsFixChannel()&&
-                        currentPosition<moreChannelTitlePosition){
-                    moveFlag=true;
-                }else{
-                    moveFlag=false;
+        /*    if (data.get(currentPosition).getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MORE) {
+                if (targetPosition > moreChannelTitlePosition) {
+                    moveFlag = true;
+                } else {
+                    moveFlag = false;
                 }
-
-            }
-
-
-            if(data.get(currentPosition).getChannelManagerType()==ChannelNewsBean.CHANNEL_TYPE_MORE){
-                if(mQuickAdapter.getItemViewType(currentPosition)!=ChannelNewsBean.TYPE_TITLE&&
-                        !data.get(target.getLayoutPosition()).getIsFixChannel()&&
-                        currentPosition>moreChannelTitlePosition){
-                    moveFlag=true;
-                }else{
-                    moveFlag=false;
-                }
-
-            }
+            }*/
             return moveFlag;
         }
-
-
     }
 
 

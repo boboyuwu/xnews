@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/alpha_100_white" />
+    <item android:drawable="@drawable/item_widget_view_selector" android:bottom="1.0px" />
+</layer-list>

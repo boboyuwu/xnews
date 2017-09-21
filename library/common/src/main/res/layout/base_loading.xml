@@ -1,12 +1,22 @@
-<FrameLayout android:id="@+id/id_loading_and_retry"
-                                    xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:tools="http://schemas.android.com/tools"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
-  <!--  <ProgressBar
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/id_loading_and_retry"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center">
+
+    <ProgressBar
+        android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        />-->
-
-</FrameLayout>
+        android:indeterminateDrawable="@drawable/loading_circle_progressbar"/>
+   <!-- android:textColor="?attr/dayNightOneTextColor"-->
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="@string/list_footer_loading"
+        android:textSize="@dimen/dp_14"/>
+</LinearLayout>

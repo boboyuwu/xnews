@@ -44,6 +44,7 @@ public class HomePageNewsPresenter extends BasePresenter <HomePageView>{
                         }
                     }
                 }));
+
     }
 
 

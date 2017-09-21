@@ -15,7 +15,7 @@ import com.boboyuwu.xnews.beans.ChannelNewsBean;
 /** 
  * DAO for table "CHANNEL_NEWS_BEAN".
 */
-public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Void> {
+public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Long> {
 
     public static final String TABLENAME = "CHANNEL_NEWS_BEAN";
 
@@ -24,12 +24,13 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Void> {
      * Can be used for QueryBuilder and for referencing column names.
     */
     public static class Properties {
-        public final static Property ChannelName = new Property(0, String.class, "channelName", false, "CHANNEL_NAME");
-        public final static Property ChannelId = new Property(1, String.class, "channelId", false, "CHANNEL_ID");
-        public final static Property ChannelType = new Property(2, String.class, "channelType", false, "CHANNEL_TYPE");
-        public final static Property IsFixChannel = new Property(3, boolean.class, "isFixChannel", false, "IS_FIX_CHANNEL");
-        public final static Property Type = new Property(4, int.class, "type", false, "TYPE");
-        public final static Property ChannelManagerType = new Property(5, int.class, "channelManagerType", false, "CHANNEL_MANAGER_TYPE");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property ChannelName = new Property(1, String.class, "channelName", false, "CHANNEL_NAME");
+        public final static Property ChannelId = new Property(2, String.class, "channelId", false, "CHANNEL_ID");
+        public final static Property ChannelType = new Property(3, String.class, "channelType", false, "CHANNEL_TYPE");
+        public final static Property IsFixChannel = new Property(4, boolean.class, "isFixChannel", false, "IS_FIX_CHANNEL");
+        public final static Property Type = new Property(5, int.class, "type", false, "TYPE");
+        public final static Property ChannelManagerType = new Property(6, int.class, "channelManagerType", false, "CHANNEL_MANAGER_TYPE");
     };
 
 
@@ -45,12 +46,13 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CHANNEL_NEWS_BEAN\" (" + //
-                "\"CHANNEL_NAME\" TEXT," + // 0: channelName
-                "\"CHANNEL_ID\" TEXT," + // 1: channelId
-                "\"CHANNEL_TYPE\" TEXT," + // 2: channelType
-                "\"IS_FIX_CHANNEL\" INTEGER NOT NULL ," + // 3: isFixChannel
-                "\"TYPE\" INTEGER NOT NULL ," + // 4: type
-                "\"CHANNEL_MANAGER_TYPE\" INTEGER NOT NULL );"); // 5: channelManagerType
+                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"CHANNEL_NAME\" TEXT," + // 1: channelName
+                "\"CHANNEL_ID\" TEXT," + // 2: channelId
+                "\"CHANNEL_TYPE\" TEXT," + // 3: channelType
+                "\"IS_FIX_CHANNEL\" INTEGER NOT NULL ," + // 4: isFixChannel
+                "\"TYPE\" INTEGER NOT NULL ," + // 5: type
+                "\"CHANNEL_MANAGER_TYPE\" INTEGER NOT NULL );"); // 6: channelManagerType
     }
 
     /** Drops the underlying database table. */
@@ -63,85 +65,101 @@ public class ChannelNewsBeanDao extends AbstractDao<ChannelNewsBean, Void> {
     protected final void bindValues(DatabaseStatement stmt, ChannelNewsBean entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
         String channelName = entity.getChannelName();
         if (channelName != null) {
-            stmt.bindString(1, channelName);
+            stmt.bindString(2, channelName);
         }
  
         String channelId = entity.getChannelId();
         if (channelId != null) {
-            stmt.bindString(2, channelId);
+            stmt.bindString(3, channelId);
         }
  
         String channelType = entity.getChannelType();
         if (channelType != null) {
-            stmt.bindString(3, channelType);
+            stmt.bindString(4, channelType);
         }
-        stmt.bindLong(4, entity.getIsFixChannel() ? 1L: 0L);
-        stmt.bindLong(5, entity.getType());
-        stmt.bindLong(6, entity.getChannelManagerType());
+        stmt.bindLong(5, entity.getIsFixChannel() ? 1L: 0L);
+        stmt.bindLong(6, entity.getType());
+        stmt.bindLong(7, entity.getChannelManagerType());
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, ChannelNewsBean entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
         String channelName = entity.getChannelName();
         if (channelName != null) {
-            stmt.bindString(1, channelName);
+            stmt.bindString(2, channelName);
         }
  
         String channelId = entity.getChannelId();
         if (channelId != null) {
-            stmt.bindString(2, channelId);
+            stmt.bindString(3, channelId);
         }
  
         String channelType = entity.getChannelType();
         if (channelType != null) {
-            stmt.bindString(3, channelType);
+            stmt.bindString(4, channelType);
         }
-        stmt.bindLong(4, entity.getIsFixChannel() ? 1L: 0L);
-        stmt.bindLong(5, entity.getType());
-        stmt.bindLong(6, entity.getChannelManagerType());
+        stmt.bindLong(5, entity.getIsFixChannel() ? 1L: 0L);
+        stmt.bindLong(6, entity.getType());
+        stmt.bindLong(7, entity.getChannelManagerType());
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0);
     }    
 
     @Override
     public ChannelNewsBean readEntity(Cursor cursor, int offset) {
         ChannelNewsBean entity = new ChannelNewsBean( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // channelName
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // channelId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // channelType
-            cursor.getShort(offset + 3) != 0, // isFixChannel
-            cursor.getInt(offset + 4), // type
-            cursor.getInt(offset + 5) // channelManagerType
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // channelName
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // channelId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // channelType
+            cursor.getShort(offset + 4) != 0, // isFixChannel
+            cursor.getInt(offset + 5), // type
+            cursor.getInt(offset + 6) // channelManagerType
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, ChannelNewsBean entity, int offset) {
-        entity.setChannelName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setChannelId(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setChannelType(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setIsFixChannel(cursor.getShort(offset + 3) != 0);
-        entity.setType(cursor.getInt(offset + 4));
-        entity.setChannelManagerType(cursor.getInt(offset + 5));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setChannelName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setChannelId(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setChannelType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIsFixChannel(cursor.getShort(offset + 4) != 0);
+        entity.setType(cursor.getInt(offset + 5));
+        entity.setChannelManagerType(cursor.getInt(offset + 6));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(ChannelNewsBean entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(ChannelNewsBean entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(ChannelNewsBean entity) {
-        return null;
+    public Long getKey(ChannelNewsBean entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -499,7 +499,6 @@ public final class ToastUtils {
                 return view;
             }
         }
-        Log.e(TAG, "getViewFromWR: ", new NullPointerException("The custom view of toast is null"));
         return null;
     }
 }

@@ -10,7 +10,7 @@ import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 
 public interface BaseView {
 
-    //记载数据时发生错误
+    //加载数据时发生错误
     void onError(RxSubscriberState msg);
     //加载更多数据时发生了错误
     void onLoadMoreError(RxSubscriberState msg);

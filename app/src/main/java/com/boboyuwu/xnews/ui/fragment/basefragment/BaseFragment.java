@@ -29,46 +29,32 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     private View mContainerView;
     @Inject
     protected P mPresenter;
-   // protected LoadingAndRetryManager mLoadingAndRetryManager;
+
 
     //activity依附上来
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity= new WeakReference(context);
-       // setHasOptionsMenu(true);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initInject();
-        //mLoadingAndRetryManager = new LoadingAndRetryManager(mActivity.get(), mOnLoadingAndRetryListener);
         if(mPresenter==null)
             throw new RuntimeException("请实现initInject方法,使用getActivityComponent()获取ActivityComponent对象调用injectFragment" +
                     "方法将自己传递进去!");
         mPresenter.attachView(this);
     }
 
-
- /*   OnLoadingAndRetryListener mOnLoadingAndRetryListener=new OnLoadingAndRetryListener() {
-        @Override
-        public void setRetryEvent(View retryView) {
-          //  setRetryEvent(retryView);
-        }
-
-    };*/
-
-    //有需要请重写这个方法
-   /* protected void setRetryEvent(View retryView){
-
-    }*/
-
     protected FragmentComponent getFragmentComponent(){
         return DaggerFragmentComponent.builder().build();
     }
 
-    //注入对象
+    /**
+     *  使用了Dagger2框架所以强制集成的类实现此方法初始化注入对象
+     */
     protected abstract void initInject() ;
 
     @Nullable
@@ -82,13 +68,24 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mContainerView = view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         //当view创建成功
+        preInit();
         init();
     }
 
     protected abstract int getLayout();
 
     protected void init() {
+
+    }
+
+    //初始化之前执行
+    protected void preInit(){
 
     }
 

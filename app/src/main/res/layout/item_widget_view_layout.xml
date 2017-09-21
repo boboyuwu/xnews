@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rl_layout"
+                android:background="@drawable/item_widget_view_layer">
+
+    <TextView
+        android:id="@+id/leftOneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textColor="@color/alpha_05_gray"
+        android:textSize="16sp" >
+    </TextView>
+
+    <TextView
+        android:id="@+id/rightOneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/rightOneImg"
+        android:layout_centerVertical="true"
+        android:textColor="@color/alpha_105_white"
+        android:textSize="12sp" >
+    </TextView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/rightOneImg"
+        android:src="@mipmap/arrow_right"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:visibility="invisible">
+    </ImageView>
+
+    <com.boboyuwu.common.widget.SwitchView
+        android:id="@+id/switchView"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="30dp"/>
+
+
+</RelativeLayout>
+

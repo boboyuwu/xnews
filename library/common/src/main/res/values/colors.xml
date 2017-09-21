@@ -73,6 +73,10 @@
     <color name="alpha_85_white">#D9FFFFFF</color>
     <color name="alpha_90_white">#E6FFFFFF</color>
     <color name="alpha_95_white">#F2FFFFFF</color>
+    <color name="alpha_100_white">#FFd9d9d9</color>
+    <color name="alpha_105_white">#ABA7A2</color>
+
+
 
     <color name="alpha_05_black">#0D000000</color>
     <color name="alpha_10_black">#1A000000</color>
@@ -93,4 +97,9 @@
     <color name="alpha_85_black">#D9000000</color>
     <color name="alpha_90_black">#E6000000</color>
     <color name="alpha_95_black">#F2000000</color>
+
+
+
+    <color name="alpha_05_gray">#424242</color>
+    <color name="alpha_10_gray">#666666</color>
 </resources>

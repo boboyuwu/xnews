@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--针对筛选界面条目控件-->
+    <declare-styleable name="WidgetItemView">
+        <attr name="leftOneText" format="string"/>
+        <attr name="leftOneTextTopMargin" format="dimension"/>
+        <attr name="leftOneTextBottomMargin" format="dimension"/>
+        <attr name="leftOneTextLeftMargin" format="dimension"/>
+        <attr name="leftOneTextRightMargin" format="dimension"/>
+        <attr name="leftOneTextMargin" format="dimension"/>
+
+        <attr name="rightOneText" format="string"/>
+        <attr name="rightOneTextTopMargin" format="dimension"/>
+        <attr name="rightOneTextBottomMargin" format="dimension"/>
+        <attr name="rightOneTextLeftMargin" format="dimension"/>
+        <attr name="rightOneTextRightMargin" format="dimension"/>
+        <attr name="rightOneTextMargin" format="dimension"/>
+
+
+        <attr name="rightOneImg" format="reference"/>
+        <attr name="showRightOneImg" format="boolean"/>
+        <attr name="showSwitchView" format="boolean"/>
+
+        <attr name="rightOneImgTopMargin" format="dimension"/>
+        <attr name="rightOneImgBottomMargin" format="dimension"/>
+        <attr name="rightOneImgLeftMargin" format="dimension"/>
+        <attr name="rightOneImgRightMargin" format="dimension"/>
+        <attr name="rightOneImgMargin" format="dimension"/>
+
+        <!--设置所有的内边距-->
+        <attr name="wpadding" format="dimension"/>
+
+        <attr name="paddingTop" format="dimension"/>
+        <attr name="paddingBottom" format="dimension"/>
+        <attr name="paddingLeft" format="dimension"/>
+        <attr name="paddingRight" format="dimension"/>
+
+        <attr name="leftOneTextColor" format="color"/>
+        <attr name="rightOneTextColor" format="color"/>
+    </declare-styleable>
+
+</resources>

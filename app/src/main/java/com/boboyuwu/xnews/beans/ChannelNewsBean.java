@@ -2,6 +2,7 @@ package com.boboyuwu.xnews.beans;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
@@ -37,13 +38,21 @@ public class ChannelNewsBean implements Serializable {
     @Transient
     public static final int CHANNEL_TYPE_MORE=22;
 
-  /*  @Id
-    private long Id;*/
+/*    @Id(autoincrement = true)*/
+    /**
+     *  这样直接设置id主键目前会造成相同数据排序插入无效,读取后还是原来的顺序,怀疑是GreenDao或者SQLite问题待排查
+     * */
+    @Id
+    private Long id;
     private String channelName;
     private String channelId;
+    //这个是请求参数中的频道类型  (headline、house、list)
     private String channelType;
+    //是不是固定定死的五个频道
     private boolean isFixChannel;
+    //这个type 是频道还是title
     private int type;
+    //所属type是我的频道还是更多频道
     private int channelManagerType;
     public int getChannelManagerType() {
         return this.channelManagerType;
@@ -81,10 +90,16 @@ public class ChannelNewsBean implements Serializable {
     public void setChannelName(String channelName) {
         this.channelName = channelName;
     }
-    @Generated(hash = 1639382036)
-    public ChannelNewsBean(String channelName, String channelId,
-            String channelType, boolean isFixChannel, int type,
-            int channelManagerType) {
+    public Long getId() {
+        return this.id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+    @Generated(hash = 891076542)
+    public ChannelNewsBean(Long id, String channelName, String channelId, String channelType,
+            boolean isFixChannel, int type, int channelManagerType) {
+        this.id = id;
         this.channelName = channelName;
         this.channelId = channelId;
         this.channelType = channelType;
@@ -95,9 +110,6 @@ public class ChannelNewsBean implements Serializable {
     @Generated(hash = 796839396)
     public ChannelNewsBean() {
     }
-
-
-   
 
 
 }

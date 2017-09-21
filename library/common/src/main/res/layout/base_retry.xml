@@ -16,7 +16,7 @@
             android:layout_width="200dp"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/network_exception" />
+            android:src="@drawable/ic_wifi_off" />
 
         <TextView
             android:id="@+id/errorStateContentTextView"
@@ -28,17 +28,17 @@
             android:textColor="@color/gray"
             android:textSize="@dimen/font_m" />
 
-        <TextView
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/bt_operate"
             android:layout_width="wrap_content"
-            android:id="@+id/btn_retry"
-            android:layout_marginTop="@dimen/space_xxl"
-            android:paddingBottom="@dimen/space_m"
-            android:paddingLeft="@dimen/space_sl"
-            android:paddingRight="@dimen/space_sl"
-            android:paddingTop="@dimen/space_m"
-            android:text="@string/reload"
-            android:textColor="@color/blue" />
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/toast_stroke_gray"
+            android:paddingBottom="5dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="5dp"
+            android:text="@string/reload"/>
 
     </LinearLayout>
 

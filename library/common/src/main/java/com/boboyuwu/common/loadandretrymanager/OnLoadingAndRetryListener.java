@@ -1,4 +1,4 @@
-package com.boboyuwu.common.loadingandretrymanager;
+package com.boboyuwu.common.loadandretrymanager;
 
 import android.view.View;
 
@@ -46,23 +46,17 @@ public abstract class OnLoadingAndRetryListener
 
     public boolean isSetLoadingLayout()
     {
-        if (generateLoadingLayoutId() != LoadingAndRetryManager.NO_LAYOUT_ID || generateLoadingLayout() != null)
-            return true;
-        return false;
+        return generateLoadingLayoutId() != LoadingAndRetryManager.NO_LAYOUT_ID || generateLoadingLayout() != null;
     }
 
     public boolean isSetRetryLayout()
     {
-        if (generateRetryLayoutId() != LoadingAndRetryManager.NO_LAYOUT_ID || generateRetryLayout() != null)
-            return true;
-        return false;
+        return generateRetryLayoutId() != LoadingAndRetryManager.NO_LAYOUT_ID || generateRetryLayout() != null;
     }
 
     public boolean isSetEmptyLayout()
     {
-        if (generateEmptyLayoutId() != LoadingAndRetryManager.NO_LAYOUT_ID || generateEmptyLayout() != null)
-            return true;
-        return false;
+        return generateEmptyLayoutId() != LoadingAndRetryManager.NO_LAYOUT_ID || generateEmptyLayout() != null;
     }
 
 

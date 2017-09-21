@@ -7,8 +7,18 @@
 
 
     <include layout="@layout/include_toolbar_layout"/>
+    <View
+        android:background="#f00"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
 
-
+    <com.boboyuwu.xnews.common.widget.ItemWidgetView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:showSwitchView="true"
+        app:wpadding="10dp"
+        app:leftOneText="夜间模式"/>
 
 
 

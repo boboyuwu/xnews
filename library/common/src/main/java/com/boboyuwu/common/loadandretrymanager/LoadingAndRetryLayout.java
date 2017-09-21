@@ -1,4 +1,4 @@
-package com.boboyuwu.common.loadingandretrymanager;
+package com.boboyuwu.common.loadandretrymanager;
 
 import android.content.Context;
 import android.os.Looper;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 /**
- * Created by wubo on 15/8/26.
+ * Created by hongyonglang on 15/8/26.
  */
 public class LoadingAndRetryLayout extends FrameLayout
 {

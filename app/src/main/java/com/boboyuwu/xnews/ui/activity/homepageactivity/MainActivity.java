@@ -13,13 +13,12 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 import com.boboyuwu.xnews.common.constants.Keys;
-import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
 import com.boboyuwu.xnews.ui.fragment.minefragment.MineFragment;
+import com.boboyuwu.xnews.ui.fragment.prettyphotofragment.PrettyPhotoFragment;
 import com.boboyuwu.xnews.ui.fragment.videofragment.VideoFragment;
-import com.boboyuwu.xnews.ui.fragment.womanphotofragment.WomanPhotoFragment;
 import com.example.boboyuwu.zhihunews.R;
 
 public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implements OnTabChangeListener {
@@ -27,7 +26,7 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
     private String[] mTabs = {"首页", "美女", "视频", "我"};
     private int[] mUnSelectedImages = {R.mipmap.ic_home_normal, R.mipmap.ic_girl_normal, R.mipmap.ic_video_normal, R.mipmap.ic_care_normal};
     private int[] mSelectedImages = {R.mipmap.ic_home_selected, R.mipmap.ic_girl_selected, R.mipmap.ic_video_selected, R.mipmap.ic_care_selected};
-    private Class[] mFragments = {HomePageNewsFragment.class, WomanPhotoFragment.class, VideoFragment.class, MineFragment.class};
+    private Class[] mFragments = {HomePageNewsFragment.class, PrettyPhotoFragment.class, VideoFragment.class, MineFragment.class};
 
 
     private SparseArray<View> mBottomTabSparse = new SparseArray<>();
@@ -72,8 +71,8 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
 
     private View getTabView(int i) {
         View inflate = LayoutInflater.from(this).inflate( R.layout.item_bottom_tab_host, null,false);
-        TextView text_tv = (TextView) inflate.findViewById(R.id.text_tv);
-        ImageView icon_iv = (ImageView) inflate.findViewById(R.id.icon_iv);
+        TextView text_tv =  inflate.findViewById(R.id.text_tv);
+        ImageView icon_iv = inflate.findViewById(R.id.icon_iv);
         text_tv.setText(mTabs[i]);
         icon_iv.setImageResource(mUnSelectedImages[i]);
         return inflate;
@@ -90,6 +89,7 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
         getActivityComponent().injectActivity(this);
     }
 
+    //newTabSpec 中设置的标签
     @Override
     public void onTabChanged(String tabId) {
         switch (tabId) {
@@ -125,6 +125,7 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
             }
         }
     }
+
 
 
 }
