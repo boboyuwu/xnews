@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dp"
-    tools:showIn="@layout/item_homepage_news_list">
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/news_iv"
@@ -27,7 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:lines="2"
-            android:textColor="@android:color/black"
+            android:textColor="@color/news_title_color"
             android:textSize="14sp"/>
 
         <TextView
@@ -36,7 +35,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/news_digest_color"
             android:textSize="10sp"/>
 
         <TextView
@@ -44,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/news_digest_color"
             android:textSize="10sp"/>
     </LinearLayout>
 </LinearLayout>

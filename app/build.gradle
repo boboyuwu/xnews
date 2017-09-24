@@ -17,9 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
+
     }
 }
-/*com.boboyuwu.xnews.greendao*/
 greendao {
     schemaVersion 1
     daoPackage 'com.boboyuwu.xnews.greendao.gen'

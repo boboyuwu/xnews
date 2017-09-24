@@ -1,6 +1,7 @@
 package com.boboyuwu.xnews.beans;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * Created by wubo on 2017/8/30.
  */
 
-public class HeadLineNews implements android.os.Parcelable {
+public class HeadLineNews implements Parcelable {
     //
     // list T1348649580692   headline T1348647909107
     private List<HeadLineNewsBean> mHeadLineNewsBeanList;
@@ -21,7 +22,7 @@ public class HeadLineNews implements android.os.Parcelable {
     public void setHeadLineNewsList(List<HeadLineNewsBean> headLineNewsList) {
         mHeadLineNewsBeanList = headLineNewsList;
     }
-    public static class HeadLineNewsBean implements android.os.Parcelable {
+    public static class HeadLineNewsBean implements Parcelable {
         /**
          * imgextra : [{"imgsrc":"http://cms-bucket.nosdn.127.net/5283488080eb434c9b44124b4ce7db8020170831120016.jpeg"},{"imgsrc":"http://cms-bucket.nosdn.127.net/1b714caa0d93484087b71a85cc2eb3d220170831120015.png"}]
          * template : normal1
@@ -396,7 +397,7 @@ public class HeadLineNews implements android.os.Parcelable {
             this.ads = ads;
         }
 
-        public static class ImgextraBean implements android.os.Parcelable {
+        public static class ImgextraBean implements Parcelable {
             /**
              * imgsrc : http://cms-bucket.nosdn.127.net/5283488080eb434c9b44124b4ce7db8020170831120016.jpeg
              */
@@ -441,7 +442,7 @@ public class HeadLineNews implements android.os.Parcelable {
             };
         }
 
-        public static class AdsBean implements android.os.Parcelable {
+        public static class AdsBean implements Parcelable {
             /**
              * subtitle :
              * skipType : photoset

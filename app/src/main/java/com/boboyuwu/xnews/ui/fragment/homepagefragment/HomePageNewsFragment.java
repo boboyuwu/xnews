@@ -12,11 +12,9 @@ import android.widget.LinearLayout;
 import com.boboyuwu.common.basefragentpageadapter.BaseTabLayoutFragmentAdapter;
 import com.boboyuwu.common.util.RxBus;
 import com.boboyuwu.common.util.RxBusEventKeys;
-import com.boboyuwu.xnews.app.NewsApplication;
 import com.boboyuwu.xnews.beans.ChannelNewsBean;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.ChannelTypeUtil;
-import com.boboyuwu.xnews.mvp.model.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity;
 import com.boboyuwu.xnews.ui.fragment.basefragment.SupportToolBarFragment;
@@ -74,7 +72,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
 
     private void initObservable() {
         mUpdateChannelObservable = RxBus.get().register(RxBusEventKeys.UPDATE_CHANNEL, Boolean.class);
-        mUpdateChannelObservable.subscribe(new Consumer<Boolean>() {
+        addDispose( mUpdateChannelObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if(aBoolean){
@@ -83,7 +81,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
                     initView();
                 }
             }
-        });
+        }));
     }
 
     private void setListener() {
@@ -117,18 +115,17 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
     }
 
     private void setTabLayout() {
-        mTabLayout.setTabTextColors(getResources().getColor(R.color.alpha_50_white), getResources().getColor(R.color.white));
-        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_select), getResources().getColor(R.color.tablayout_text_color_unselect));
+        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tablayout_indicator_bg_color));
         mTabLayout.setupWithViewPager(mViewpager);
-        mTablayoutLinearLayout.setBackgroundColor(getResources().getColor(R.color.spark_orange));
+        mTablayoutLinearLayout.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
     }
 
     /**
      * 初始化News频道标签
      */
     private void initNewsChannelTab() {
-        GreenDaoHelper greenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
-        List<ChannelNewsBean> channels = greenDaoHelper.getChannelList();
+        List<ChannelNewsBean> channels = mGreenDaoHelper.getChannelList();
         mChannelList = new ArrayList<>();
         if (channels == null || (channels != null && channels.size() <= 0)) {
             List<String> channelName = Arrays.asList(getResources().getStringArray(R.array.news_channel_name_static));
@@ -145,7 +142,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         } else {
             mChannelList.addAll(channels);
         }
-        greenDaoHelper.setChannelList(mChannelList);
+        mGreenDaoHelper.setChannelList(mChannelList);
     }
 
     private void findViews() {

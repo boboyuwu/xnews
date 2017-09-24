@@ -32,4 +32,11 @@ public interface HomeNewsApi {
                                                                             @Path("pageIndex")String pageIndex);
 
 
+    /**
+     * 获取新闻列表详情
+     * */
+    @GET("nc/article/{channelType}/{channelId}/{pageIndex}-20.html")
+    public Flowable<Map<String, List<HeadLineNewsBean>>>getHomePageNewsDetail(@Path("channelType") String channelType,
+                                                                            @Path("channelId")String channelId,
+                                                                            @Path("pageIndex")String pageIndex);
 }

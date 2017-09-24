@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boboyuwu.common.util.ToastUtils;
+import com.boboyuwu.xnews.app.NewsApplication;
+import com.boboyuwu.xnews.app.helper.DayNightHelper;
+import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.dagger.component.DaggerFragmentComponent;
 import com.boboyuwu.xnews.dagger.component.FragmentComponent;
@@ -30,7 +33,8 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     @Inject
     protected P mPresenter;
 
-
+    protected GreenDaoHelper mGreenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
+    protected DayNightHelper mDayNightHelper= NewsApplication.getAppComponent().getDayNightHelper();
     //activity依附上来
     @Override
     public void onAttach(Context context) {

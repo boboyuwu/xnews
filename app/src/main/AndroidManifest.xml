@@ -11,8 +11,9 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.SplashActivity">
+        android:theme="@style/CustomDayNightTheme">
+        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.SplashActivity"
+                  android:theme="@style/SplashCustomDayNightTheme">>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -20,8 +21,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.MainActivity"></activity>
-        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity"></activity>
+        <activity
+            android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.MainActivity"/>
+        <activity
+            android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity"/>
+        <activity
+            android:name="com.boboyuwu.xnews.ui.activity.baseactivity.WebViewActivity"/>
+
     </application>
 
 </manifest>

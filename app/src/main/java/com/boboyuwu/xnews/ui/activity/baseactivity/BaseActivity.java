@@ -7,11 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.boboyuwu.xnews.app.NewsApplication;
+import com.boboyuwu.xnews.app.helper.DayNightHelper;
+import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.dagger.component.ActivityComponent;
 import com.boboyuwu.xnews.dagger.component.DaggerActivityComponent;
-import com.boboyuwu.xnews.mvp.model.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
@@ -28,7 +29,7 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
     protected P mPresenter;
 
     protected GreenDaoHelper mGreenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
-
+    protected DayNightHelper mDayNightHelper= NewsApplication.getAppComponent().getDayNightHelper();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +46,6 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
         intent.putExtra(Keys.BUNDLE,bundle);
         startActivity(intent);
     }
-
 
 
 

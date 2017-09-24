@@ -8,11 +8,12 @@
 
     <include layout="@layout/include_toolbar_layout"/>
     <View
-        android:background="#f00"
+        android:background="@color/toolbar_bg_color"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
 
     <com.boboyuwu.xnews.common.widget.ItemWidgetView
+        android:id="@+id/dayNightItemWidgetView"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -14,14 +14,14 @@ import android.widget.TextView;
 
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
-import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
+import com.boboyuwu.xnews.ui.activity.baseactivity.SupportToolBarActivity;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
 import com.boboyuwu.xnews.ui.fragment.minefragment.MineFragment;
 import com.boboyuwu.xnews.ui.fragment.prettyphotofragment.PrettyPhotoFragment;
 import com.boboyuwu.xnews.ui.fragment.videofragment.VideoFragment;
 import com.example.boboyuwu.zhihunews.R;
 
-public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implements OnTabChangeListener {
+public class MainActivity extends SupportToolBarActivity<HomePageNewsPresenter> implements OnTabChangeListener {
     private FragmentTabHost mFragmentTabHost;
     private String[] mTabs = {"首页", "美女", "视频", "我"};
     private int[] mUnSelectedImages = {R.mipmap.ic_home_normal, R.mipmap.ic_girl_normal, R.mipmap.ic_video_normal, R.mipmap.ic_care_normal};
@@ -43,6 +43,7 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
         initFragmentTabHost();
         initBottomTab();
     }
+
 
     private void initBottomTab() {
         setBottomTabSelected(0);
@@ -117,10 +118,10 @@ public class MainActivity extends RxManageActivity<HomePageNewsPresenter> implem
             TextView text_tv = tabView.findViewById(R.id.text_tv);
             ImageView icon_iv =tabView.findViewById(R.id.icon_iv);
             if (i == indexSelected) {
-                text_tv.setTextColor(getResources().getColor(R.color.spark_orange));
+                text_tv.setTextColor(getResources().getColor(R.color.fgtabhost_text_color_select));
                 icon_iv.setImageResource(mSelectedImages[indexSelected]);
             } else {
-                text_tv.setTextColor(getResources().getColor(R.color.gray));
+                text_tv.setTextColor(getResources().getColor(R.color.fgtabhost_text_color_unselect));
                 icon_iv.setImageResource(mUnSelectedImages[i]);
             }
         }

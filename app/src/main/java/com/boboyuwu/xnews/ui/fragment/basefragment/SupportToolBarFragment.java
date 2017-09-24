@@ -36,7 +36,7 @@ public abstract class SupportToolBarFragment<P extends BasePresenter> extends Rx
     private void initToolBar() {
         mToolbar = getView(R.id.toolBar);
         if (mToolbar != null) {
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.spark_orange));
+            mToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
             mTitleTv = mToolbar.findViewById(R.id.title_tv);
             mRight1Tv =  mToolbar.findViewById(R.id.right1_tv);
             mRight2Tv = mToolbar.findViewById(R.id.right2_tv);

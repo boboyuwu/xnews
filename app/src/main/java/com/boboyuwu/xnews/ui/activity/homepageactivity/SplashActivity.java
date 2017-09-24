@@ -9,14 +9,14 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
-import com.boboyuwu.xnews.ui.activity.baseactivity.RxManageActivity;
+import com.boboyuwu.xnews.ui.activity.baseactivity.SupportToolBarActivity;
 import com.example.boboyuwu.zhihunews.R;
 
 /**
  * Created by wubo on 2017/6/10.
  */
 
-public class SplashActivity extends RxManageActivity <HomePageNewsPresenter>{
+public class SplashActivity extends SupportToolBarActivity<HomePageNewsPresenter> {
 
     private TextView mLogoTv;
 
@@ -42,7 +42,8 @@ public class SplashActivity extends RxManageActivity <HomePageNewsPresenter>{
         PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.3f, 1f);
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0.3f, 1f);
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0.3f, 1f);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mLogoTv, alpha, scaleX, scaleY);
+        PropertyValuesHolder rotate = PropertyValuesHolder.ofFloat("rotation", 0, 360);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mLogoTv, alpha, scaleX, scaleY,rotate);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(objectAnimator);
         animatorSet.setInterpolator(new AccelerateInterpolator());

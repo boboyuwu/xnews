@@ -7,13 +7,21 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.boboyuwu.common.util.RxBus;
+import com.boboyuwu.common.util.RxBusEventKeys;
 import com.boboyuwu.common.util.SizeUtils;
+import com.boboyuwu.xnews.common.utils.RxUtil;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+
 /**
  * Created by wubo on 2017/6/10.
- * 设计设个Support类的目的在于支持常见的一些Bar格式,多变灵活设置Bar格式、样式 并且支持切换bar颜色
+ * 设计设个Support类的目的在于支持常见的一些Bar格式,多变灵活设置Bar格式、样式 并且支持切换bar颜色  支持夜间模式切换
  * ToolBar设置的Menu本身text不支持设置字体颜色  这个类抽取与一些沉浸式等bar上样式的功能
  * 这个类需要好好设计一下
  */
@@ -26,19 +34,35 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     private TextView mRight2Tv;
     private TextView mRight3Tv;
     private ImageView mBackIv;
-
+    private Observable<Boolean> mRecreateObservable;
     @Override
     protected void init() {
         super.init();
         initToolBar();
         setToolBar();
+        initObservable();
     }
+
+
+    private void initObservable() {
+        mRecreateObservable = RxBus.get().register(RxBusEventKeys.RECREATE, Boolean.class);
+        addDispose(mRecreateObservable
+                .delay(100,TimeUnit.MILLISECONDS)
+                .compose(RxUtil.<Boolean>schedulerObservableOnIoThread())
+                .subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                recreate();
+            }
+        }));
+    }
+
 
     //继承这个activity的toolbar id设置为资源id中的toolBar
     private void initToolBar() {
         mToolbar = getView(R.id.toolBar);
         if (mToolbar != null) {
-            mToolbar.setBackgroundColor(getResources().getColor(R.color.spark_orange));
+            mToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
             mTitleTv = mToolbar.findViewById(R.id.title_tv);
             mRight1Tv =  mToolbar.findViewById(R.id.right1_tv);
             mRight2Tv = mToolbar.findViewById(R.id.right2_tv);
@@ -184,4 +208,14 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
 
     }
 
+
+    protected  void setNightMode(){
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(RxBusEventKeys.RECREATE,mRecreateObservable);
+    }
 }

@@ -12,7 +12,6 @@ import android.support.v4.widget.TextViewCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -488,7 +487,6 @@ public final class ToastUtils {
                 return toast;
             }
         }
-        Log.e(TAG, "getToastFromWR: ", new NullPointerException("Toast is null"));
         return null;
     }
 

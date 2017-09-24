@@ -32,8 +32,9 @@ public class HomePageNewsPresenter extends BasePresenter <HomePageView>{
      * 首页新闻列表分页加载
      * */
     public void getHomePageMoreNewsList(final String channelType, final String channelId, final String pageIndex){
+
         addDispose(mHomePageNewsModel.getHomePageNewsList(channelType,channelId,pageIndex)
-                .compose(RxUtil.<Map<String, List<HeadLineNewsBean>>>schedulerOnIoThread())
+                .compose(RxUtil.<Map<String, List<HeadLineNewsBean>>>schedulerFlowableOnIoThread())
                 .subscribeWith(new RxSubscriber<Map<String, List<HeadLineNewsBean>>>(mBaseView, RxSubscriberState.builder()
                         .setLoadMode(RxSubscriberState.MORE_LOAD)
                         .build()) {
@@ -54,7 +55,7 @@ public class HomePageNewsPresenter extends BasePresenter <HomePageView>{
      * */
     public void getHomePageNewsList(final String channelType, String channelId, String pageIndex){
         addDispose(mHomePageNewsModel.getHomePageNewsList(channelType,channelId,pageIndex)
-                .compose(RxUtil.<Map<String, List<HeadLineNewsBean>>>schedulerOnIoThread())
+                .compose(RxUtil.<Map<String, List<HeadLineNewsBean>>>schedulerFlowableOnIoThread())
                 .subscribeWith(new RxSubscriber<Map<String, List<HeadLineNewsBean>>>(mBaseView, RxSubscriberState.builder()
                         .setLoadMode(RxSubscriberState.LOAD)
                         .build()) {

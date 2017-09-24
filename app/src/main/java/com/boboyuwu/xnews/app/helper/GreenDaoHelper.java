@@ -1,4 +1,4 @@
-package com.boboyuwu.xnews.mvp.model.helper;
+package com.boboyuwu.xnews.app.helper;
 
 import android.database.sqlite.SQLiteDatabase;
 

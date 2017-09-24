@@ -2,7 +2,8 @@ package com.boboyuwu.xnews.dagger.module;
 
 import android.content.Context;
 
-import com.boboyuwu.xnews.mvp.model.helper.GreenDaoHelper;
+import com.boboyuwu.xnews.app.helper.DayNightHelper;
+import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 
 import javax.inject.Singleton;
 
@@ -31,6 +32,13 @@ public class AppModule {
     @Provides
     public GreenDaoHelper provideGreenDaoHelper(){
         return new GreenDaoHelper();
+    }
+
+
+    @Singleton
+    @Provides
+    public DayNightHelper provideDayNightHelper(){
+        return new DayNightHelper();
     }
 
 }

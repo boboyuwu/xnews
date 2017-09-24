@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textColor="@color/alpha_05_gray"
+        android:textColor="@color/itemwidget_text_color"
         android:textSize="16sp" >
     </TextView>
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/rightOneImg"
         android:layout_centerVertical="true"
-        android:textColor="@color/alpha_105_white"
+        android:textColor="@color/itemwidget_text_color"
         android:textSize="12sp" >
     </TextView>
 

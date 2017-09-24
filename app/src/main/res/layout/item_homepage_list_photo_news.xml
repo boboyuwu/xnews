@@ -5,15 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:orientation="vertical"
-    tools:showIn="@layout/item_homepage_news_list">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/photo_title_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:textColor="@color/black"/>
+        android:textColor="@color/news_title_color"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -27,6 +26,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="10sp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/news_digest_color"
         android:layout_gravity="right"/>
 </LinearLayout>

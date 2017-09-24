@@ -15,6 +15,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.boboyuwu.common.basequickadapter.BaseAdapterHelper;
+import com.boboyuwu.common.basequickadapter.MultiItemTypeSupport;
 import com.boboyuwu.common.basequickadapter.QuickAdapter;
 import com.boboyuwu.common.loadmorerecyclerview.EndlessRecyclerOnScrollListener;
 import com.boboyuwu.common.loadmorerecyclerview.HeaderAndFooterRecyclerViewAdapter;
@@ -28,6 +29,7 @@ import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.mvp.view.HomePageView;
+import com.boboyuwu.xnews.ui.activity.homepageactivity.NewsDetailActivity;
 import com.boboyuwu.xnews.ui.fragment.basefragment.LazyFragment;
 import com.bumptech.glide.Glide;
 import com.example.boboyuwu.zhihunews.R;
@@ -48,6 +50,9 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
     private static final String TAG = HomePageNewsTabFragment.class.getSimpleName();
     private RecyclerView mRecyclerview;
+
+    private final int TYPE_NEWS=1;
+    private final int TYPE_PhotoNews=2;
 
 
     private int loadDataPageCurr = 0;
@@ -134,10 +139,17 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
     private void initView() {
         //初始化recyclerview
-        mQuickAdapter = new QuickAdapter<HeadLineNewsBean>(mActivity.get(), R.layout.item_homepage_news_list) {
+        mQuickAdapter = new QuickAdapter<HeadLineNewsBean>(mActivity.get(), mMultiItemTypeSupport) {
             @Override
             protected void convert(BaseAdapterHelper helper, HeadLineNewsBean item) {
-                processNormalItem(helper, item);
+                switch (helper.getItemViewType()){
+                    case TYPE_NEWS+Integer.MAX_VALUE/2:
+                        processNews(helper, item);
+                        break;
+                    case TYPE_PhotoNews+Integer.MAX_VALUE/2:
+                        processPhotoNews(helper, item);
+                        break;
+                }
             }
         };
         mHeaderAndFooterRecyclerViewAdapter = new HeaderAndFooterRecyclerViewAdapter(mQuickAdapter);
@@ -153,40 +165,33 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     }
 
 
-    private void processNormalItem(BaseAdapterHelper helper, HeadLineNewsBean item) {
-        if (TextUtils.equals("photoset", item.getSkipType())) {
-            processPhotoNews(helper, item);
-        } else if (TextUtils.equals("live", item.getSkipType())) {
-            processLiveNews(helper, item);
-        } else {
-            processNews(helper, item);
+    private MultiItemTypeSupport<HeadLineNewsBean> mMultiItemTypeSupport=new MultiItemTypeSupport<HeadLineNewsBean>() {
+        @Override
+        public int getLayoutId(int viewType) {
+            int layoutId=0;
+            switch (viewType){
+                case TYPE_NEWS:
+                    layoutId=R.layout.item_homepage_list_news;
+                    break;
+                case TYPE_PhotoNews:
+                    layoutId=R.layout.item_homepage_list_photo_news;
+                    break;
+            }
+
+            return layoutId;
         }
 
-
-    }
-
-    private void processLiveNews(BaseAdapterHelper helper, HeadLineNewsBean item) {
-        helper.getView(R.id.news_layout).setVisibility(View.GONE);
-        helper.getView(R.id.photo_layout).setVisibility(View.VISIBLE);
-        LinearLayout linearLayout = helper.getView(R.id.photo_ll);
-        helper.getTextView(R.id.photo_title_tv).setText(item.getTitle());
-        helper.getTextView(R.id.photo_time_tv).setText(item.getPtime());
-        if (linearLayout.getChildCount() > 0) {
-            linearLayout.removeAllViews();
+        @Override
+        public int getItemViewType(int position, HeadLineNewsBean headLineNewsBean) {
+            if (!TextUtils.isEmpty(headLineNewsBean.getDigest())){
+                return TYPE_NEWS;
+            }else{
+                return TYPE_PhotoNews;
+            }
         }
-        ImageView imageView = new ImageView(mActivity.get());
-        imageView.setScaleType(ScaleType.FIT_XY);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT);
-        layoutParams.leftMargin = 10;
-        layoutParams.rightMargin = 10;
-        layoutParams.weight = 1;
-        linearLayout.addView(imageView, layoutParams);
-        Glide.with(this).load(item.getImgsrc()).into(imageView);
-    }
+    };
 
     private void processPhotoNews(BaseAdapterHelper helper, HeadLineNewsBean item) {
-        helper.getView(R.id.news_layout).setVisibility(View.GONE);
-        helper.getView(R.id.photo_layout).setVisibility(View.VISIBLE);
         helper.getTextView(R.id.photo_title_tv).setText(item.getTitle());
         LinearLayout linearLayout = helper.getView(R.id.photo_ll);
         if (linearLayout.getChildCount() > 0) {
@@ -221,11 +226,16 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
 
     private void processNews(BaseAdapterHelper helper, HeadLineNewsBean item) {
-        helper.getView(R.id.news_layout).setVisibility(View.VISIBLE);
-        helper.getView(R.id.photo_layout).setVisibility(View.GONE);
         helper.getTextView(R.id.news_title_tv).setText(item.getLtitle());
         helper.getTextView(R.id.news_digest_tv).setText(item.getDigest());
         helper.getTextView(R.id.news_time_tv).setText(item.getPtime());
+        helper.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                NewsDetailActivity.startNewsDetailActivity(mActivity.get(),bundle);
+            }
+        });
         Glide.with(this).load(item.getImgsrc())
                 .into(helper.getImageView(R.id.news_iv));
     }

@@ -15,4 +15,21 @@ public class Keys {
     public static final String CHANNEL="channel";
     public static final String CHANNEL_ID="channel_id";
     public static final String CHANNEL_TYPE="channel_type";
+
+    /**
+     * 设置夜间模式 key
+     * true 夜间模式
+     * false 日间模式
+     */
+
+
+    public static final String IS_NIGHT_MODE="is_night_mode";
+
+
+    //webview keys
+    public static final String WEB_URL="web_url";
+
+
+    public static final String javascript_object_name="javascript_object_name";
+
 }

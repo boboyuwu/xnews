@@ -7,36 +7,34 @@
     <color name="colorAccent">#FF4081</color>
 
 
-    <!--白天模式下选中和未选中文字颜色-->
+    <!--夜间模式下选中和未选中文字颜色-->
 
-    <color name="fgtabhost_text_color_select">@color/orange</color>
+    <color name="fgtabhost_text_color_select">@color/spark_orange</color>
     <color name="fgtabhost_text_color_unselect">@color/gray</color>
 
 
     <!--fragmenttabhost-->
-    <color name="fgtabhost_bg_color">@color/white</color>
+    <color name="fgtabhost_bg_color">@color/alpha_20_black</color>
 
 
     <!--tablayout text-->
-    <color name="tablayout_text_color_select">@color/white</color>
+    <color name="tablayout_text_color_select">@color/spark_orange</color>
     <color name="tablayout_text_color_unselect">@color/alpha_50_white</color>
 
 
     <!--toolbar bg  tablayout bg-->
-    <color name="toolbar_bg_color">@color/spark_orange</color>
+    <color name="toolbar_bg_color">@color/alpha_20_black</color>
 
 
     <!--toolbar bg  tablayout bg-->
-    <color name="tablayout_indicator_bg_color">@color/white</color>
+    <color name="tablayout_indicator_bg_color">@color/alpha_70_white</color>
 
 
-   <!-- mine itemwidget text -->
-    <color name="itemwidget_text_color">@color/alpha_10_gray</color>
-
+    <!-- mine itemwidget text -->
+    <color name="itemwidget_text_color">@color/alpha_70_white</color>
 
 
     <!--homepage  news item text  title color-->
-    <color name="news_title_color">@color/black</color>
+    <color name="news_title_color">@color/alpha_15_gray</color>
     <color name="news_digest_color">@color/alpha_15_gray</color>
-
 </resources>
