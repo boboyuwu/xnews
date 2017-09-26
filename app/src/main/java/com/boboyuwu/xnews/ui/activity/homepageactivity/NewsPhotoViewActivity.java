@@ -1,4 +1,3 @@
-/*
 package com.boboyuwu.xnews.ui.activity.homepageactivity;
 
 import android.content.Context;
@@ -10,10 +9,9 @@ import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.LoadingAndRetryActivity;
 import com.example.boboyuwu.zhihunews.R;
 
-*/
 /**
- * Created by wubo on 2017/9/26.
- *//*
+ *  Created by wubo on 2017/9/26.
+ */
 
 
 public class NewsPhotoViewActivity extends LoadingAndRetryActivity<HomePageNewsPresenter>{
@@ -51,11 +49,10 @@ public class NewsPhotoViewActivity extends LoadingAndRetryActivity<HomePageNewsP
     }
 
     private void initViewPager() {
-
+        //mViewPager.setAdapter();
     }
 
     private void findViews() {
         mViewPager = getView(R.id.viewpager);
     }
 }
-*/

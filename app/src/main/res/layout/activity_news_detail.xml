@@ -7,20 +7,19 @@
 
     <include layout="@layout/include_toolbar_layout"/>
 
-    <ProgressBar
+<!--    <ProgressBar
         android:id="@+id/progressBar"
         style="?android:progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/space_2"
-        android:layout_below="@id/titleView"
         android:alpha="0.8"
-        android:progressDrawable="@drawable/progress_bg"
-        android:visibility="gone"/>
+        android:progressDrawable="@drawable/progress_bg"/>-->
 
     <android.support.v4.widget.NestedScrollView
-        android:background="@color/webview_bg_color"
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/webview_bg_color">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,16 +36,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/news_title_color"
                     android:layout_margin="5dp"
+                    android:textColor="@color/news_title_color"
                     android:textSize="@dimen/font_xxxl"/>
 
                 <TextView
                     android:id="@+id/ptime_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/news_digest_color"
                     android:textSize="@dimen/font_xs"/>
             </LinearLayout>

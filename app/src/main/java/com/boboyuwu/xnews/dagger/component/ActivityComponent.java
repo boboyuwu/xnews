@@ -4,6 +4,7 @@ package com.boboyuwu.xnews.dagger.component;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.MainActivity;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.NewsDetailActivity;
+import com.boboyuwu.xnews.ui.activity.homepageactivity.NewsPhotoViewActivity;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.SplashActivity;
 
 import dagger.Component;
@@ -18,6 +19,6 @@ public interface ActivityComponent {
       void injectActivity(SplashActivity splashActivity);
       void injectActivity(AddChannelActivity addChannelActivity);
       void injectActivity(NewsDetailActivity newsDetailActivity);
-      //void injectActivity(NewsPhotoViewActivity newsPhotoViewActivity);
+      void injectActivity(NewsPhotoViewActivity newsPhotoViewActivity);
 
 }

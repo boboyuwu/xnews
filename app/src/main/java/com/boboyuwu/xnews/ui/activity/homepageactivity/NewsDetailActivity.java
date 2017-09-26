@@ -3,13 +3,10 @@ package com.boboyuwu.xnews.ui.activity.homepageactivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.boboyuwu.xnews.beans.NewsDetail;
@@ -32,7 +29,7 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
     private WebView mWebview;
     private TextView mPtimeTv;
     private TextView mTitleTv;
-    private ProgressBar mProgressBar;
+    private NestedScrollView mNestedScrollView;
 
     public static void startNewsDetailActivity(Context context, Bundle bundle) {
         Intent intent = new Intent(context, NewsDetailActivity.class);
@@ -50,10 +47,20 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
     @Override
     protected void init() {
         super.init();
-        findViews();
         initWebView();
         getExtras();
         enableBackPress();
+    }
+
+    @Override
+    protected void preInit() {
+        findViews();
+        super.preInit();
+    }
+
+    @Override
+    protected View initManagerView() {
+        return mNestedScrollView;
     }
 
     private void initWebView() {
@@ -78,12 +85,12 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
 
         webSettings.setAllowFileAccess(true); //设置可以访问文件
 
-        mWebview.setWebChromeClient(new WebChromeClient() {
+      /*  mWebview.setWebChromeClient(new WebChromeClient() {
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                mProgressBar.setProgress(newProgress);
+                Logger.d("newProgress:"+newProgress);
             }
 
             @Override
@@ -95,17 +102,18 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
         mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                mProgressBar.setVisibility(View.VISIBLE);
+                Logger.d("shouldOverrideUrlLoading:");
                 return super.shouldOverrideUrlLoading(view, request);
             }
+
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                mProgressBar.setVisibility(View.GONE);
+                Logger.d("onPageFinished:");
             }
 
-        });
+        });*/
 
         mWebview.setBackgroundColor(getResources().getColor(R.color.webview_bg_color));
     }
@@ -113,6 +121,7 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
     private void getExtras() {
         Bundle bundle = getIntent().getExtras();
         mNewsId = bundle.getString(Keys.NEWS_ID);
+        showLoading();
         mPresenter.getNewsDetail(mNewsId);
     }
 
@@ -120,7 +129,7 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
         mWebview = getView(R.id.webview);
         mTitleTv = getView(R.id.title_tv);
         mPtimeTv = getView(R.id.ptime_tv);
-        mProgressBar = getView(R.id.progressBar);
+        mNestedScrollView = getView(R.id.nestedScrollView);
     }
 
     @Override
@@ -134,15 +143,15 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
         String webViewColor = mDayNightHelper.getMode() ? "#303030" : "FFFFFFFF";
         String webViewTextColor = mDayNightHelper.getMode() ? "#aaa" : "#FF000000";
         String htmlBody =
-                "<html>\n" +
-                        "<head><meta charset=\"utf-8\"><title></title><style>body" +
+                "<html><head><meta charset=\"utf-8\"><title></title><style>body" +
                         "{background-color:" + webViewColor + ";}" +
                         "p{color:" + webViewTextColor + ";font-family:\"Times New Roman\";font-size:42px;}" +
                         "</style></head><body>" + newsDetail.getBody()
                         + "</body></html>";
+        mWebview.loadDataWithBaseURL(null, htmlBody, "text/html", "utf-8", null);
         mTitleTv.setText(newsDetail.getTitle());
         mPtimeTv.setText(newsDetail.getSource() + "  " + newsDetail.getPtime());
-        mWebview.loadDataWithBaseURL(null, htmlBody, "text/html", "utf-8", null);
+        showContent();
         Logger.i("newsDetail:" + newsDetail.toString());
     }
 
@@ -150,6 +159,8 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
     public void onLoadNewsBodyHtmlPhoto(ResponseBody photoPath) {
 
     }
+
+
 
 
 }

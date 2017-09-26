@@ -45,7 +45,12 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
 
         preInit();
         init();
+        afterInit();
         setListener();
+    }
+
+    protected void afterInit() {
+
     }
 
     protected void setListener() {
