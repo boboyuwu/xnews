@@ -12,7 +12,8 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.common.constants.Keys;
+import com.boboyuwu.common.util.AppUtils;
+import com.boboyuwu.common.util.ToastUtils;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.SupportToolBarActivity;
 import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsFragment;
@@ -30,6 +31,7 @@ public class MainActivity extends SupportToolBarActivity<HomePageNewsPresenter> 
 
 
     private SparseArray<View> mBottomTabSparse = new SparseArray<>();
+    private long mFirstClickTime;
 
     @Override
     protected int getLayout() {
@@ -56,7 +58,7 @@ public class MainActivity extends SupportToolBarActivity<HomePageNewsPresenter> 
     public static void startMainActivity(Context context, Bundle bundle) {
         Intent intent = new Intent(context, MainActivity.class);
         if (bundle != null)
-        intent.putExtra(Keys.BUNDLE, bundle);
+            intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
@@ -127,6 +129,14 @@ public class MainActivity extends SupportToolBarActivity<HomePageNewsPresenter> 
         }
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        if(System.currentTimeMillis() - mFirstClickTime > 2000) {
+            //这里弹出toast
+            mFirstClickTime = System.currentTimeMillis();
+            ToastUtils.showShort("再按一次退出");
+        } else {
+            AppUtils.exitApp();
+        }
+    }
 }

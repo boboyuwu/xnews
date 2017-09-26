@@ -39,4 +39,7 @@
     <color name="news_title_color">@color/black</color>
     <color name="news_digest_color">@color/alpha_15_gray</color>
 
+    <!--newsdetail webview background color-->
+    <color name="webview_bg_color">@color/white</color>
+
 </resources>

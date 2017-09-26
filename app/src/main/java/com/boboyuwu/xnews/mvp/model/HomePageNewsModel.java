@@ -25,4 +25,6 @@ public class HomePageNewsModel {
     public Flowable<Map<String, List<HeadLineNewsBean>>>getHomePageNewsList(String channelType, String channelId, String pageIndex){
         return mHomeNewsApi.getHomePageNewsList(channelType,channelId,pageIndex);
     }
+
+
 }

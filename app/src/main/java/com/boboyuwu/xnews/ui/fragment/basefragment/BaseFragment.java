@@ -80,6 +80,11 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         //当view创建成功
         preInit();
         init();
+        setListener();
+    }
+
+    protected void setListener() {
+
     }
 
     protected abstract int getLayout();

@@ -12,7 +12,7 @@ import java.util.List;
  * 请实现isPinnedViewType()方法，如果有Header请重写getItemCount方法
  */
 
-public abstract class PinnedQuickAdapter<T> extends QuickAdapter<T> implements AdapterStick<BaseAdapterHelper>{
+public abstract class PinnedQuickAdapter<T> extends QuickAdapter<T> implements AdapterStick<BaseAdapterHelper> {
     public PinnedQuickAdapter(Context context, int layoutResId) {
         super(context, layoutResId);
     }

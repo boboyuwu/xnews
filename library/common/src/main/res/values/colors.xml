@@ -46,6 +46,9 @@
     <color name="line_recent_contact">#FFEEEEEE</color>
     <color name="light_gray">#808080</color>
     <color name="light_white">#33ffffff</color>
+
+    <color name="day_night_bg_gray">#303030</color>
+
     <color name="chat_tip_color">#FFcccccc</color>
 
     <color name="main_blue">#3598db</color>

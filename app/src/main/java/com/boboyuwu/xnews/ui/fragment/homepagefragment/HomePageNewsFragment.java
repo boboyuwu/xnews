@@ -67,15 +67,14 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         initFragment();
         initView();
         initObservable();
-        setListener();
     }
 
     private void initObservable() {
         mUpdateChannelObservable = RxBus.get().register(RxBusEventKeys.UPDATE_CHANNEL, Boolean.class);
-        addDispose( mUpdateChannelObservable.subscribe(new Consumer<Boolean>() {
+        addDispose(mUpdateChannelObservable.subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
-                if(aBoolean){
+                if (aBoolean) {
                     initNewsChannelTab();
                     initFragment();
                     initView();
@@ -84,7 +83,8 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
         }));
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         mAddIv.setOnClickListener(this);
     }
 
@@ -164,6 +164,6 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RxBus.get().unregister(RxBusEventKeys.UPDATE_CHANNEL,mUpdateChannelObservable);
+        RxBus.get().unregister(RxBusEventKeys.UPDATE_CHANNEL, mUpdateChannelObservable);
     }
 }

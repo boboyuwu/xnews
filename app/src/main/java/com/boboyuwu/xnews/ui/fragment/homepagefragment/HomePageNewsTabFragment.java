@@ -21,8 +21,8 @@ import com.boboyuwu.common.loadmorerecyclerview.EndlessRecyclerOnScrollListener;
 import com.boboyuwu.common.loadmorerecyclerview.HeaderAndFooterRecyclerViewAdapter;
 import com.boboyuwu.common.loadmorerecyclerview.NetworkUtils;
 import com.boboyuwu.common.loadmorerecyclerview.RecyclerViewStateUtils;
-import com.boboyuwu.common.widget.LoadingFooter.StateEnum;
-import com.boboyuwu.common.widget.LoadingFooter.StateInfo;
+import com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.StateEnum;
+import com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.StateInfo;
 import com.boboyuwu.xnews.beans.ChannelNewsBean;
 import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
 import com.boboyuwu.xnews.common.constants.Keys;
@@ -87,7 +87,6 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         getChannel();
         findViews();
         initView();
-        setListener();
         //第一个Fragment是没有执行onLazyLoadData,所以需要单独加载列表
         //其他的Fragemnt由于onLazyLoadData在init之前执行所以这里根据onLazyLoadData中标记判断一下加载第一个Fragment
         //后面mHasLazyLoad可以换成请求的时间戳等
@@ -97,7 +96,8 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         }
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mRecyclerview.addOnScrollListener(mEndlessRecyclerOnScrollListener);
     }
@@ -225,7 +225,7 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     }
 
 
-    private void processNews(BaseAdapterHelper helper, HeadLineNewsBean item) {
+    private void processNews(BaseAdapterHelper helper, final HeadLineNewsBean item) {
         helper.getTextView(R.id.news_title_tv).setText(item.getLtitle());
         helper.getTextView(R.id.news_digest_tv).setText(item.getDigest());
         helper.getTextView(R.id.news_time_tv).setText(item.getPtime());
@@ -233,6 +233,7 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
+                bundle.putString(Keys.NEWS_ID,item.getPostid());
                 NewsDetailActivity.startNewsDetailActivity(mActivity.get(),bundle);
             }
         });
@@ -290,8 +291,10 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         }else{
             RecyclerViewStateUtils.setFooterViewState(mRecyclerview, new StateInfo(StateEnum.Normal, null));
         }
+        //排序时间  mQuickAdapter.getData().size(), list.size()
         mQuickAdapter.getData().addAll(list);
-        mQuickAdapter.notifyItemRangeInserted(mQuickAdapter.getData().size(), list.size());
+        sortData( mQuickAdapter.getData());
+        mQuickAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -314,9 +317,10 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         showRetry();
     }
 
+
     @Override
-    protected void onRetryClick() {
-        super.onRetryClick();
+    protected void onRetryClick(View view) {
+        super.onRetryClick(view);
         showLoading();
         mPresenter.getHomePageNewsList(mChannelNewsBean.getChannelType(), mChannelNewsBean.getChannelId(), String.valueOf(loadDataPageCurr));
     }

@@ -29,7 +29,7 @@ import io.reactivex.functions.Consumer;
 public abstract class SupportToolBarActivity<P extends BasePresenter> extends RxManageActivity<P> implements OnClickListener {
 
     private Toolbar mToolbar;
-    private TextView mTitleTv;
+    private TextView mToolBarTitleTv;
     private TextView mRight1Tv;
     private TextView mRight2Tv;
     private TextView mRight3Tv;
@@ -40,7 +40,18 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
         super.init();
         initToolBar();
         setToolBar();
+        initDayNightBackground();
         initObservable();
+    }
+
+    /**
+     * 初始化所有界面的背景颜色
+     * */
+    protected void initDayNightBackground() {
+        if(mDayNightHelper.getMode()){
+            View content = findViewById(android.R.id.content);
+            content.setBackgroundColor(getResources().getColor(R.color.day_night_bg_gray));
+        }
     }
 
 
@@ -63,7 +74,7 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
         mToolbar = getView(R.id.toolBar);
         if (mToolbar != null) {
             mToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
-            mTitleTv = mToolbar.findViewById(R.id.title_tv);
+            mToolBarTitleTv = mToolbar.findViewById(R.id.toolbar_title_tv);
             mRight1Tv =  mToolbar.findViewById(R.id.right1_tv);
             mRight2Tv = mToolbar.findViewById(R.id.right2_tv);
             mRight3Tv =  mToolbar.findViewById(R.id.right3_tv);
@@ -76,6 +87,9 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     }
 
 
+    /**
+     * 开启左侧返回按钮
+     * */
     protected void enableBackPress(){
         mBackIv.setVisibility(View.VISIBLE);
         mBackIv.setOnClickListener(this);
@@ -89,8 +103,8 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
         if (mToolbar == null) {
             throw new RuntimeException("this method must set the toolbar id be toolbar!");
         }
-        if (mTitleTv != null) {
-            mTitleTv.setText(title);
+        if (mToolBarTitleTv != null) {
+            mToolBarTitleTv.setText(title);
         }
 
     }

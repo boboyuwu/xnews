@@ -1,6 +1,7 @@
 package com.boboyuwu.xnews.ui.activity.baseactivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -11,31 +12,25 @@ import android.widget.ProgressBar;
 
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
-import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.example.boboyuwu.zhihunews.R;
 
 import java.util.HashMap;
 
 /**
  * Created by wubo on 2017/9/24.
- * 提供基本webview样式的基类
+ * 提供只基本加载Url地址的webview样式的基类
  */
 
-public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActivity<HomePageNewsPresenter> {
+public class WebViewActivity<P extends BasePresenter> extends LoadingAndRetryActivity<P> {
 
-    private WebView mWebview;
+    protected WebView mWebview;
     private String mUrl;
     private ProgressBar mProgressBar;
-    private HashMap<String,String> mHttpHeaders=new HashMap<>();
+    protected HashMap<String,String> mHttpHeaders=new HashMap<>();
 
     @Override
     protected int getLayout() {
         return R.layout.activity_webview;
-    }
-
-    @Override
-    protected void initInject() {
-
     }
 
     @Override
@@ -44,6 +39,7 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
         findViews();
         getExtras();
         initWebView();
+        enableBackPress();
     }
 
 
@@ -51,6 +47,9 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
     private void initWebView() {
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
+        //设置字体
+        mWebview.getSettings().setDefaultFontSize(42);
 
         //设置自适应屏幕，两者合用
         webSettings.setUseWideViewPort(true); //将图片调整到适合webview的大小
@@ -69,6 +68,7 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
 
         setWebViewSettings(webSettings);
         setHttpHeaders(mHttpHeaders);
+        setJavascriptObject(mWebview);
 
         mWebview.setWebChromeClient(new WebChromeClient() {
 
@@ -78,6 +78,10 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
                 mProgressBar.setProgress(newProgress);
             }
 
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+            }
         });
 
         mWebview.setWebViewClient(new WebViewClient() {
@@ -92,11 +96,22 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
                 super.onPageFinished(view, url);
                 mProgressBar.setVisibility(View.GONE);
             }
+
         });
 
-        mWebview.loadUrl(mUrl,mHttpHeaders);
+        if(!TextUtils.isEmpty(mUrl)){
+            mWebview.loadUrl(mUrl,mHttpHeaders);
+        }
     }
 
+
+    /**
+     * 提供设置javascript对象等一些设置
+     * */
+    protected void setJavascriptObject(WebView webview) {
+
+
+    }
 
 
     /**
@@ -128,7 +143,6 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if(mWebview.canGoBack()){
             mWebview.goBack();
             return;
@@ -137,9 +151,18 @@ public class WebViewActivity<P extends BasePresenter> extends SupportToolBarActi
     }
 
     @Override
+    protected void initInject() {
+
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+      /*  ((ViewGroup)mWebview.getParent()).removeView(mWebview);
         mWebview.destroy();
-        System.exit(0);
+        mWebview=null;
+        System.exit(0);*/
     }
+
+
 }

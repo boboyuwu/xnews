@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.boboyuwu.common.util.ToastUtils;
 import com.boboyuwu.xnews.app.NewsApplication;
 import com.boboyuwu.xnews.app.helper.DayNightHelper;
 import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
@@ -33,11 +34,39 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getLayout());
         initInject();
-        if(mPresenter==null)
+
+        if(mPresenter==null) {
             throw new RuntimeException("请实现initInject方法,使用getActivityComponent()获取ActivityComponent对象调用injectActivity" +
                     "方法将自己传递进去!");
+        }
         mPresenter.attachView(this);
+
+        preInit();
+        init();
+        setListener();
+    }
+
+    protected void setListener() {
+
+    }
+
+
+    protected abstract int getLayout();
+
+
+    /**
+     * 所有初始化都在这里面做
+     * */
+    protected  void init(){
+
+    }
+
+    /**
+     * 所有初始化之前的操作都在这里面做
+     * */
+    protected void preInit() {
 
     }
 
@@ -73,7 +102,7 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
 
     @Override
     public void onError(RxSubscriberState msg) {
-
+        ToastUtils.showShort(msg.getErrorMsg());
     }
 
     @Override

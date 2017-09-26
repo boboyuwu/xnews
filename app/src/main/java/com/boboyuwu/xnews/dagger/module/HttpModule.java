@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.boboyuwu.common.loadmorerecyclerview.NetworkUtils;
 import com.boboyuwu.xnews.api.HomeNewsApi;
-import com.boboyuwu.xnews.common.constants.ConstantsPath;
+import com.boboyuwu.xnews.api.NewsDetailPhotoApi;
+import com.boboyuwu.xnews.common.constants.Constants;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by wubo on 2017/8/29.
+ * 提供所有Api的Module
  */
 
 @Module
@@ -79,13 +81,13 @@ public class HttpModule {
                 if (NetworkUtils.isNetAvailable(context)) {
                     //有网的时候读接口上的@Headers里的配置，你可以在这里进行统一的设置
                     //String cacheControl = request.cacheControl().toString();
-                    int maxAge = 60; // read from cache     有网络的时候缓存60秒失效 先统一缓存设置
+                    int maxAge = 60*3; // read from cache     有网络的时候缓存60秒失效 先统一缓存设置
                     return originalResponse.newBuilder()
                             .removeHeader("Pragma")    //Pragma跟noCache一样最好也移除Cache-Control
                             .header("Cache-Control", "public,max-age=" + maxAge)
                             .build();
                 } else {
-                    int maxStale = 60 * 3; // tolerate 4-weeks stale       没有网络的时候缓存3分钟
+                    int maxStale = 60*60*60 * 3; // tolerate 4-weeks stale       没有网络的时候缓存3分钟
                     return originalResponse.newBuilder()
                             .removeHeader("Pragma")
                             .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
@@ -94,7 +96,7 @@ public class HttpModule {
             }
         };
         //缓存文件夹
-        File cacheFile = new File(ConstantsPath.PATH_CACHE);
+        File cacheFile = new File(Constants.PATH_CACHE);
         //缓存大小为50M
         int cacheSize = 50 * 1024 * 1024;
         //创建缓存对象
@@ -134,6 +136,28 @@ public class HttpModule {
     @Singleton
     @Named("HomeNews")
     public Retrofit provideHomeNewsRetrofit(OkHttpClient okHttpClient,Retrofit.Builder builder){
-        return provideRetrofit(okHttpClient,builder,HomeNewsApi.HOST);
+        return provideRetrofit(okHttpClient,builder,HomeNewsApi.NEWS_HOST);
     }
+
+
+    /**
+     *   获取详情中图片
+     * */
+
+    @Provides
+    @Singleton
+    public NewsDetailPhotoApi provideNewsBodyHtmlPhoto(@Named("NewsBodyHtmlPhoto") Retrofit retrofit){
+        return retrofit.create(NewsDetailPhotoApi.class);
+    }
+
+
+    @Provides
+    @Singleton
+    @Named("NewsBodyHtmlPhoto")
+    public Retrofit provideNewsBodyHtmlPhotoRetrofit(OkHttpClient okHttpClient,Retrofit.Builder builder){
+        return provideRetrofit(okHttpClient,builder,NewsDetailPhotoApi.NEWS_PHOTO_HOST);
+    }
+
+
+
 }

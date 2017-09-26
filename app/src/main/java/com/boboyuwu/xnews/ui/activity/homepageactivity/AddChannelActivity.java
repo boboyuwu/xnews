@@ -23,10 +23,9 @@ import com.boboyuwu.common.util.RxBus;
 import com.boboyuwu.common.util.RxBusEventKeys;
 import com.boboyuwu.common.util.SizeUtils;
 import com.boboyuwu.xnews.beans.ChannelNewsBean;
-import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.ChannelTypeUtil;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
-import com.boboyuwu.xnews.ui.activity.baseactivity.SupportToolBarActivity;
+import com.boboyuwu.xnews.ui.activity.baseactivity.LoadingAndRetryActivity;
 import com.example.boboyuwu.zhihunews.R;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ import io.reactivex.functions.Predicate;
  * 频道管理界面
  */
 
-public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPresenter> {
+public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPresenter> {
 
     private RecyclerView mRecyclerView;
     private QuickAdapter<ChannelNewsBean> mQuickAdapter;
@@ -60,6 +59,7 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
         initRecyclerView();
         initChannel();
     }
+
 
     @Override
     protected void setToolBar() {
@@ -282,7 +282,7 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
     public static void startAddChannelActivity(Context context, Bundle bundle) {
         Intent intent = new Intent(context, AddChannelActivity.class);
         if (bundle != null)
-            intent.putExtra(Keys.BUNDLE, bundle);
+            intent.putExtras(bundle);
         context.startActivity(intent);
     }
 
@@ -299,12 +299,11 @@ public class AddChannelActivity extends SupportToolBarActivity<HomePageNewsPrese
     /**
      *   自己实现的一套CallBack
      * */
-    static class ChannelManagerCallBack extends ItemTouchHelper.Callback {
+   public static class ChannelManagerCallBack extends ItemTouchHelper.Callback {
         private static final String TAG = "ChannelManagerCallBack";
         private QuickAdapter<ChannelNewsBean> mQuickAdapter;
 
         public ChannelManagerCallBack(QuickAdapter<ChannelNewsBean> quickAdapter) {
-
             mQuickAdapter = quickAdapter;
         }
 

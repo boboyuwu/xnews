@@ -43,7 +43,7 @@ public class SplashActivity extends SupportToolBarActivity<HomePageNewsPresenter
         PropertyValuesHolder scaleX = PropertyValuesHolder.ofFloat("scaleX", 0.3f, 1f);
         PropertyValuesHolder scaleY = PropertyValuesHolder.ofFloat("scaleY", 0.3f, 1f);
         PropertyValuesHolder rotate = PropertyValuesHolder.ofFloat("rotation", 0, 360);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mLogoTv, alpha, scaleX, scaleY,rotate);
+        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mLogoTv, alpha, scaleX, scaleY, rotate);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(objectAnimator);
         animatorSet.setInterpolator(new AccelerateInterpolator());
@@ -56,7 +56,7 @@ public class SplashActivity extends SupportToolBarActivity<HomePageNewsPresenter
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                MainActivity.startMainActivity(SplashActivity.this,null);
+                MainActivity.startMainActivity(SplashActivity.this, null);
                 finish();
             }
 

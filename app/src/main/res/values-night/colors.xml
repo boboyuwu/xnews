@@ -37,4 +37,8 @@
     <!--homepage  news item text  title color-->
     <color name="news_title_color">@color/alpha_15_gray</color>
     <color name="news_digest_color">@color/alpha_15_gray</color>
+
+
+    <!--newsdetail webview background color-->
+    <color name="webview_bg_color">@color/day_night_bg_gray</color>
 </resources>

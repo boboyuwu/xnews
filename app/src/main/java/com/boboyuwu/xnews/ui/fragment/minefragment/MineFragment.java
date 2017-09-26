@@ -44,14 +44,14 @@ public class MineFragment extends SupportToolBarFragment<HomePageNewsPresenter> 
         super.init();
         findViews();
         initView();
-        setListener();
     }
 
     private void initView() {
         mSwitchView.setOpened(mDayNightHelper.getMode());
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         mSwitchView.setOnStateChangedListener(this);
     }
 

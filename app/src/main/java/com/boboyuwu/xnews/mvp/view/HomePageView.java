@@ -13,4 +13,5 @@ public interface HomePageView extends BaseView{
 
     void onLoadNewsList(List<HeadLineNewsBean> list);
     void onLoadMoreNewsList(List<HeadLineNewsBean> list);
+
 }

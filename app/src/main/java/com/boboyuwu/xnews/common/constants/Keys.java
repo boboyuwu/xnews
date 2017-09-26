@@ -28,6 +28,7 @@ public class Keys {
 
     //webview keys
     public static final String WEB_URL="web_url";
+    public static final String NEWS_ID="news_id";
 
 
     public static final String javascript_object_name="javascript_object_name";

@@ -1,4 +1,4 @@
-package com.boboyuwu.xnews.ui.fragment.basefragment;
+package com.boboyuwu.xnews.ui.activity.baseactivity;
 
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,11 +9,12 @@ import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
 
 /**
- * Created by wubo on 2017/9/21.
+ * Created by wubo on 2017/9/26.
  * 提供加载状态控制的Fragment基类
  */
 
-public abstract class LoadingAndRetryFragment <P extends BasePresenter> extends RxManageFragment<P>{
+public abstract class LoadingAndRetryActivity <P extends BasePresenter>  extends SupportToolBarActivity<P>{
+
     private LoadingAndRetryManager mLoadingAndRetryManager;
 
     @Override
@@ -76,32 +77,32 @@ public abstract class LoadingAndRetryFragment <P extends BasePresenter> extends 
 
         @Override
         public int generateLoadingLayoutId() {
-            return LoadingAndRetryFragment.this.generateLoadingLayoutId();
+            return LoadingAndRetryActivity.this.generateLoadingLayoutId();
         }
 
         @Override
         public int generateRetryLayoutId() {
-            return LoadingAndRetryFragment.this.generateRetryLayoutId();
+            return LoadingAndRetryActivity.this.generateRetryLayoutId();
         }
 
         @Override
         public int generateEmptyLayoutId() {
-            return LoadingAndRetryFragment.this.generateEmptyLayoutId();
+            return LoadingAndRetryActivity.this.generateEmptyLayoutId();
         }
 
         @Override
         public View generateLoadingLayout() {
-            return LoadingAndRetryFragment.this.generateLoadingLayout();
+            return LoadingAndRetryActivity.this.generateLoadingLayout();
         }
 
         @Override
         public View generateRetryLayout() {
-            return LoadingAndRetryFragment.this.generateRetryLayout();
+            return LoadingAndRetryActivity.this.generateRetryLayout();
         }
 
         @Override
         public View generateEmptyLayout() {
-            return LoadingAndRetryFragment.this.generateEmptyLayout();
+            return LoadingAndRetryActivity.this.generateEmptyLayout();
         }
     };
     /**
@@ -166,5 +167,6 @@ public abstract class LoadingAndRetryFragment <P extends BasePresenter> extends 
     protected void onRetryClick(View view) {
 
     }
+
 
 }

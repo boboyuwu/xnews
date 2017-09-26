@@ -1,6 +1,7 @@
 package com.boboyuwu.xnews.api;
 
 import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
+import com.boboyuwu.xnews.beans.NewsDetail;
 
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,11 @@ import retrofit2.http.Path;
 
 
 public interface HomeNewsApi {
+    //基类接口
     /**
      * 首页新闻列表接口
      */
-    public static final String HOST = "http://c.m.163.com/";
+    public static final String NEWS_HOST = "http://c.m.163.com/";
 
 
     /**
@@ -39,4 +41,8 @@ public interface HomeNewsApi {
     public Flowable<Map<String, List<HeadLineNewsBean>>>getHomePageNewsDetail(@Path("channelType") String channelType,
                                                                             @Path("channelId")String channelId,
                                                                             @Path("pageIndex")String pageIndex);
+
+    @GET("nc/article/{postId}/full.html")
+    public Flowable<Map<String, NewsDetail>> getNewDetail(
+            @Path("postId") String postId);
 }

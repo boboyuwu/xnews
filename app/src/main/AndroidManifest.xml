@@ -25,9 +25,14 @@
             android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.MainActivity"/>
         <activity
             android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity"/>
-        <activity
-            android:name="com.boboyuwu.xnews.ui.activity.baseactivity.WebViewActivity"/>
 
+        <activity android:name="com.boboyuwu.xnews.ui.activity.baseactivity.WebViewActivity"
+                  />
+
+        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.NewsDetailActivity"
+                  />
+       <!-- <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.NewsPhotoViewActivity"
+            />-->
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@ package com.boboyuwu.xnews.dagger.component;
 
 
 import com.boboyuwu.xnews.api.HomeNewsApi;
+import com.boboyuwu.xnews.api.NewsDetailPhotoApi;
 import com.boboyuwu.xnews.app.helper.DayNightHelper;
 import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.dagger.module.AppModule;
@@ -22,7 +23,15 @@ public interface AppComponent {
     //SPHelper getSPHelper();
     //RetrofitHelper getRetrofitHelper();
     //DBHelper getDBHelper();
+
+    /**
+     * 提供所有网络请求的Api
+     * @return
+     */
     HomeNewsApi getHomeNewsApi();
+    NewsDetailPhotoApi getNewsDetailPhotoApi();
+
+
     GreenDaoHelper getGreenDaoHelper();
     DayNightHelper getDayNightHelper();
 

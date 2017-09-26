@@ -18,5 +18,6 @@ public interface ActivityComponent {
       void injectActivity(SplashActivity splashActivity);
       void injectActivity(AddChannelActivity addChannelActivity);
       void injectActivity(NewsDetailActivity newsDetailActivity);
+      //void injectActivity(NewsPhotoViewActivity newsPhotoViewActivity);
 
 }

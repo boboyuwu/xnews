@@ -1,4 +1,4 @@
-package com.boboyuwu.common.widget;
+package com.boboyuwu.common.loadmorerecyclerview;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.boboyuwu.common.R;
 
-import static com.boboyuwu.common.widget.LoadingFooter.StateEnum.Normal;
+import static com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.StateEnum.Normal;
 
 
 /**
@@ -50,7 +50,7 @@ public class LoadingFooter extends RelativeLayout {
         inflate(context, R.layout.sample_common_list_footer, this);
         setOnClickListener(null);
 
-        StateInfo stateInfo = new StateInfo(Normal,"");
+        State stateInfo = new StateInfo(Normal,"");
         setState(stateInfo, true);
     }
 

@@ -34,6 +34,7 @@ public abstract class RxSubscriber<T> extends ResourceSubscriber<T> {
 
     @Override
     public void onError(Throwable e) {
+        //自己设置了错误信息
         if(mRxSubscriberState!=null&&!TextUtils.isEmpty(mRxSubscriberState.getErrorMsg())){
             mRxSubscriberState.getBuilder().setErrorType(RxSubscriberState.NORMAL_ERROR);
             processError();
@@ -43,7 +44,7 @@ public abstract class RxSubscriber<T> extends ResourceSubscriber<T> {
             processError();
         }else {
             mRxSubscriberState.getBuilder().setErrorType(RxSubscriberState.HTTP_ERROR);
-            mRxSubscriberState.getBuilder().setErrorMsg("服务器访问失败!");
+            mRxSubscriberState.getBuilder().setErrorMsg(NewsApplication.getApplication().getResources().getString(R.string.network_service_error));
             processError();
         }
 

@@ -8,7 +8,9 @@ package com.boboyuwu.xnews.common.utils;
 public class RxSubscriberState {
 
     private Builder mBuilder;
+    //首次加载状态
     public static final int LOAD =1;
+    //加载更多状态
     public static final int MORE_LOAD =2;
 
     public static final int NORMAL_ERROR=-1;

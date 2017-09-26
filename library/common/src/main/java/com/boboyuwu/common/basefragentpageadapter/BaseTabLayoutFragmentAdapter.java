@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by wubo on 2017/7/10.
+ * 一个快捷的带title的FragmentPagerAdapter
  */
 
 public abstract class BaseTabLayoutFragmentAdapter extends BaseFragmentPagerAdapter{

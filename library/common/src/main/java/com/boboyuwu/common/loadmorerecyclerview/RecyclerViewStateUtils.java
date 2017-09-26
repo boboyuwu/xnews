@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.boboyuwu.common.widget.LoadingFooter;
-import com.boboyuwu.common.widget.LoadingFooter.State;
-import com.boboyuwu.common.widget.LoadingFooter.StateEnum;
+import com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.State;
+import com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.StateEnum;
 
 
 /**
