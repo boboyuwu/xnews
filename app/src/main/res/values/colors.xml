@@ -39,4 +39,9 @@
 
     <!--news photo text color-->
     <color name="news_photo_text_color">@color/day_night_bg_gray</color>
+
+
+    <!--loading color-->
+    <color name="loading_view_color">@color/black</color>
+    <color name="loading_eyes_color">@color/white</color>
 </resources>

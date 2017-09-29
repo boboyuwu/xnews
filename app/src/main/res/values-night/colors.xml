@@ -40,4 +40,9 @@
     <!--news photo text color-->
     <color name="news_photo_text_color">@color/white</color>
 
+
+    <!--loading color-->
+    <color name="loading_view_color">@color/white</color>
+    <color name="loading_eyes_color">@color/black</color>
+
 </resources>

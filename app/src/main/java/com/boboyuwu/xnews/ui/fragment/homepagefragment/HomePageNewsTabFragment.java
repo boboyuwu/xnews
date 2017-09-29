@@ -285,8 +285,8 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         }
         sortData(list);
         if(list.size()>0){
-            showContent();
             mQuickAdapter.replaceAll(list);
+            showContent();
         }else{
             showEmpty();
         }
@@ -354,9 +354,9 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     public void onLoadMoreError(RxSubscriberState msg) {
         super.onLoadMoreError(msg);
         if (msg.getErrorType() == RxSubscriberState.NETWORK_ERROR) {
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError, ""), mOnClickListener);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, REQUEST_PAGESIZE, new StateInfo(StateEnum.NetWorkError, ""), mOnClickListener);
         } else {
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError, ""), mOnClickListener);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, REQUEST_PAGESIZE, new StateInfo(StateEnum.NetWorkError, ""), mOnClickListener);
         }
     }
 }

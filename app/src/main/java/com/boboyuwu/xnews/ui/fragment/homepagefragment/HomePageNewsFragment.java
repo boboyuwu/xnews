@@ -115,7 +115,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
     }
 
     private void setTabLayout() {
-        mTabLayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_select), getResources().getColor(R.color.tablayout_text_color_unselect));
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_unselect), getResources().getColor(R.color.tablayout_text_color_select));
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tablayout_indicator_bg_color));
         mTabLayout.setupWithViewPager(mViewpager);
         mTablayoutLinearLayout.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));

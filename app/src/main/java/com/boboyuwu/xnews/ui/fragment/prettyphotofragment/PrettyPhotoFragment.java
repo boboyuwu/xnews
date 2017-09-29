@@ -65,7 +65,6 @@ public class PrettyPhotoFragment extends LoadingAndRetryFragment<PrettyPhotoPres
     protected void init() {
         super.init();
         initView();
-        initRecyclerview();
         showLoading();
         mPresenter.getPrettyPhotoNewsList(String.valueOf(mPageIndex));
     }
@@ -77,6 +76,7 @@ public class PrettyPhotoFragment extends LoadingAndRetryFragment<PrettyPhotoPres
                 android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        initRecyclerview();
     }
 
     @Override

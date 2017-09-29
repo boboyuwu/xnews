@@ -2,9 +2,12 @@ package com.boboyuwu.xnews.ui.fragment.basefragment;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.boboyuwu.common.loadandretrymanager.LoadingAndRetryManager;
 import com.boboyuwu.common.loadandretrymanager.OnLoadingAndRetryListener;
+import com.boboyuwu.common.widget.loadingviewlib.view.LVEatBeans;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
 
@@ -15,6 +18,7 @@ import com.example.boboyuwu.zhihunews.R;
 
 public abstract class LoadingAndRetryFragment <P extends BasePresenter> extends SupportToolBarFragment<P>{
     private LoadingAndRetryManager mLoadingAndRetryManager;
+    private LVEatBeans mLvEatBeans;
 
 
     @Override
@@ -36,19 +40,23 @@ public abstract class LoadingAndRetryFragment <P extends BasePresenter> extends 
      * 空状态、加载中、网络错误状态...
      * */
     protected void showContent(){
+        mLvEatBeans.stopAnim();
         mLoadingAndRetryManager.showContent();
     }
 
     protected void showLoading(){
+        mLvEatBeans.startAnim();
         mLoadingAndRetryManager.showLoading();
     }
 
 
     protected void showEmpty(){
+        mLvEatBeans.stopAnim();
         mLoadingAndRetryManager.showEmpty();
     }
 
     protected  void showRetry(){
+        mLvEatBeans.stopAnim();
         mLoadingAndRetryManager.showRetry();
     }
 
@@ -129,7 +137,11 @@ public abstract class LoadingAndRetryFragment <P extends BasePresenter> extends 
      * 重设数据为空..view
      * */
     protected  View generateLoadingLayout(){
-        return null;
+        mLvEatBeans = new LVEatBeans(mActivity.get());
+        mLvEatBeans.setLayoutParams(new MarginLayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        mLvEatBeans.setViewColor(getResources().getColor(R.color.loading_view_color));
+        mLvEatBeans.setEyeColor(getResources().getColor(R.color.loading_eyes_color));
+        return mLvEatBeans;
     }
     /**
      * 重设数据为空..布局

@@ -55,7 +55,7 @@ public class VideoFragment extends SupportToolBarFragment<HomePageNewsPresenter>
     }
 
     private void setTabLayout() {
-        mTablayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_select), getResources().getColor(R.color.tablayout_text_color_unselect));
+        mTablayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_unselect), getResources().getColor(R.color.tablayout_text_color_select));
         mTablayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tablayout_indicator_bg_color));
         mTablayout.setupWithViewPager(mViewpager);
         mTablayout.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
