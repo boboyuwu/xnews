@@ -11,8 +11,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import okhttp3.ResponseBody;
-
 /**
  * Created by wubo on 2017/9/25.
  * 获取详情页Presenter
@@ -40,20 +38,7 @@ public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
                         mBaseView.onLoadNewsDetail(detail.get(postId));
                     }
                 }));
-
     }
 
-
-    public void getNewsBodyHtmlPhoto(String photoPath) {
-        addDispose(mNewsDetailModel.getNewsBodyHtmlPhoto(photoPath).compose(RxUtil.<ResponseBody>schedulerFlowableOnIoThread())
-                .subscribeWith(new RxSubscriber<ResponseBody>(mBaseView, RxSubscriberState.builder()
-                        .setLoadMode(RxSubscriberState.LOAD).build()) {
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                       mBaseView.onLoadNewsBodyHtmlPhoto(responseBody);
-                    }
-                })
-        );
-    }
 
 }

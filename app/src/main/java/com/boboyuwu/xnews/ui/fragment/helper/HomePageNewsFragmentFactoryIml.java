@@ -10,7 +10,7 @@ import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsTabFragment;
  */
 
 
-public class HomePageNewsTabFragmentIml implements FragmentFactory {
+public class HomePageNewsFragmentFactoryIml implements FragmentFactory {
 
     @Override
     public Fragment createFragment(String tab, Bundle bundle) {

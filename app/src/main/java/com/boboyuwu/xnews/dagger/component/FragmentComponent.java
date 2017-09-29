@@ -6,6 +6,7 @@ import com.boboyuwu.xnews.ui.fragment.homepagefragment.HomePageNewsTabFragment;
 import com.boboyuwu.xnews.ui.fragment.minefragment.MineFragment;
 import com.boboyuwu.xnews.ui.fragment.videofragment.VideoFragment;
 import com.boboyuwu.xnews.ui.fragment.prettyphotofragment.PrettyPhotoFragment;
+import com.boboyuwu.xnews.ui.fragment.videofragment.VideoNewsTabFragment;
 
 import dagger.Component;
 
@@ -20,4 +21,5 @@ public interface FragmentComponent {
     void injectFragment(PrettyPhotoFragment prettyPhotoFragment);
     void injectFragment(VideoFragment videoFragment);
     void injectFragment(MineFragment mineFragment);
+    void injectFragment(VideoNewsTabFragment videoNewsTabFragment);
 }

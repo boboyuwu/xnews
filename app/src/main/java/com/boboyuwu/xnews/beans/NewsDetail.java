@@ -357,6 +357,16 @@ public class NewsDetail implements Serializable{
         public void setSrc(String src) {
             this.src = src;
         }
+
+        @Override
+        public String toString() {
+            return "ImgBean{" +
+                    "ref='" + ref + '\'' +
+                    ", pixel='" + pixel + '\'' +
+                    ", alt='" + alt + '\'' +
+                    ", src='" + src + '\'' +
+                    '}';
+        }
     }
 
     public static class TopiclistNewsBean implements Serializable{

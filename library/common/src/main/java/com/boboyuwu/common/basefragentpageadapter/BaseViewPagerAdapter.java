@@ -5,6 +5,9 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -41,18 +44,19 @@ public abstract class BaseViewPagerAdapter <T> extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        View inflateView=null;
+        View inflateView;
         if(mLayoutId==NO_LAYOUT){
-            inflateView=getItemView(position,mList.get(position));
+            inflateView=getItemView(container,position,mList.get(position));
             if(inflateView==null){
-                throw new RuntimeException("请重写getItemView(int position,T t)方法返回view");
+                throw new RuntimeException("请重写 getItemView(int position,T t) 方法返回view!");
             }
-            container.addView(inflateView);
         }else{
             inflateView = LayoutInflater.from(mContext).inflate(mLayoutId, container, false);
         }
-        convert(inflateView,position,mList.get(position));
-        return container;
+        // Now just add PhotoView to ViewPager and return it
+        container.addView(inflateView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        //convert(inflateView,position,mList.get(position));
+        return inflateView;
     }
 
 
@@ -60,10 +64,12 @@ public abstract class BaseViewPagerAdapter <T> extends PagerAdapter{
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+        Logger.d("destroyItem:"+position);
     }
 
-    protected View getItemView(int position,T t){
+    protected View getItemView(ViewGroup container,int position,T t){
         return null;
     }
-    protected abstract View convert(View inflateView,int position,T t);
+
+    //protected abstract void convert(View inflateView,int position,T t);
 }

@@ -1,9 +1,11 @@
 package com.boboyuwu.common.loadmorerecyclerview;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.LayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 
 import java.util.ArrayList;
 
@@ -17,6 +19,12 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     private static final int TYPE_HEADER_VIEW = Integer.MIN_VALUE;
     private static final int TYPE_FOOTER_VIEW = Integer.MIN_VALUE + 1;
 
+
+    /**
+     *  瀑布流时第一次FooterView布局会出现一些问题,因为第一次还没添加到RecyclerView时onBindViewHolder中
+     *  layoutparams为空的,所以这时我们第一次就要手动设置一下FooterView的params然后setFullSpan(true)
+     */
+    private LayoutManager mLayoutManager;
     /**
      * RecyclerView使用的，真正的Adapter
      */
@@ -58,6 +66,7 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
             notifyItemRangeChanged(fromPosition + headerViewsCountCount, toPosition + headerViewsCountCount + itemCount);
         }
     };
+
 
     public HeaderAndFooterRecyclerViewAdapter() {
     }
@@ -176,6 +185,12 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
             if(layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
                 ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
             }
+            if(layoutParams==null && mLayoutManager instanceof  StaggeredGridLayoutManager){
+                StaggeredGridLayoutManager.LayoutParams StaggeredGridLayoutParams
+                        = new StaggeredGridLayoutManager.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                StaggeredGridLayoutParams.setFullSpan(true);
+                holder.itemView.setLayoutParams(StaggeredGridLayoutParams);
+            }
         }
     }
 
@@ -191,7 +206,6 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
         if (position < headerViewsCountCount) {
             return TYPE_HEADER_VIEW + position;
         } else if (headerViewsCountCount <= position && position < headerViewsCountCount + innerCount) {
-
             int innerItemViewType = mInnerAdapter.getItemViewType(position - headerViewsCountCount);
             if(innerItemViewType >= Integer.MAX_VALUE / 2) {
                 throw new IllegalArgumentException("your adapter's return value of getViewTypeCount() must < Integer.MAX_VALUE / 2");
@@ -215,7 +229,7 @@ public class HeaderAndFooterRecyclerViewAdapter extends RecyclerView.Adapter<Rec
     @Override
     public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
         mInnerAdapter.onAttachedToRecyclerView(recyclerView);
-
+        mLayoutManager = recyclerView.getLayoutManager();
     }
 
 }

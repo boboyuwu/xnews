@@ -2,7 +2,8 @@ package com.boboyuwu.xnews.dagger.component;
 
 
 import com.boboyuwu.xnews.api.HomeNewsApi;
-import com.boboyuwu.xnews.api.NewsDetailPhotoApi;
+import com.boboyuwu.xnews.api.PrettyPhotoApi;
+import com.boboyuwu.xnews.api.VideoApi;
 import com.boboyuwu.xnews.app.helper.DayNightHelper;
 import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.dagger.module.AppModule;
@@ -29,7 +30,8 @@ public interface AppComponent {
      * @return
      */
     HomeNewsApi getHomeNewsApi();
-    NewsDetailPhotoApi getNewsDetailPhotoApi();
+    PrettyPhotoApi getPrettyPhotoApi();
+    VideoApi getVideoApi();
 
 
     GreenDaoHelper getGreenDaoHelper();

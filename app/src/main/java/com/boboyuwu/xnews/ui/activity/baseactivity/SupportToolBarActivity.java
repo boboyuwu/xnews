@@ -1,9 +1,13 @@
 package com.boboyuwu.xnews.ui.activity.baseactivity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +17,7 @@ import com.boboyuwu.common.util.SizeUtils;
 import com.boboyuwu.xnews.common.utils.RxUtil;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,20 +40,49 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     private TextView mRight3Tv;
     private ImageView mBackIv;
     private Observable<Boolean> mRecreateObservable;
+
     @Override
     protected void init() {
         super.init();
         initToolBar();
         setToolBar();
         initDayNightBackground();
+        initSystembartint();
         initObservable();
+    }
+
+
+    /**
+     * 沉浸式状态栏
+     */
+    private void initSystembartint() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+        }
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        tintManager.setStatusBarTintEnabled(true);
+        tintManager.setStatusBarTintResource(R.color.toolbar_bg_color);
+    }
+
+
+    @TargetApi(19)
+    private void setTranslucentStatus(boolean on) {
+        Window win = getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 
     /**
      * 初始化所有界面的背景颜色
-     * */
+     */
     protected void initDayNightBackground() {
-        if(mDayNightHelper.getMode()){
+        if (mDayNightHelper.getMode()) {
             View content = findViewById(android.R.id.content);
             content.setBackgroundColor(getResources().getColor(R.color.day_night_bg_gray));
         }
@@ -58,14 +92,14 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     private void initObservable() {
         mRecreateObservable = RxBus.get().register(RxBusEventKeys.RECREATE, Boolean.class);
         addDispose(mRecreateObservable
-                .delay(100,TimeUnit.MILLISECONDS)
+                .delay(100, TimeUnit.MILLISECONDS)
                 .compose(RxUtil.<Boolean>schedulerObservableOnIoThread())
                 .subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                recreate();
-            }
-        }));
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        recreate();
+                    }
+                }));
     }
 
 
@@ -75,9 +109,9 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
         if (mToolbar != null) {
             mToolbar.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
             mToolBarTitleTv = mToolbar.findViewById(R.id.toolbar_title_tv);
-            mRight1Tv =  mToolbar.findViewById(R.id.right1_tv);
+            mRight1Tv = mToolbar.findViewById(R.id.right1_tv);
             mRight2Tv = mToolbar.findViewById(R.id.right2_tv);
-            mRight3Tv =  mToolbar.findViewById(R.id.right3_tv);
+            mRight3Tv = mToolbar.findViewById(R.id.right3_tv);
             mBackIv = mToolbar.findViewById(R.id.back_iv);
             mRight1Tv.setOnClickListener(this);
             mRight2Tv.setOnClickListener(this);
@@ -89,11 +123,14 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
 
     /**
      * 开启左侧返回按钮
-     * */
-    protected void enableBackPress(){
-        mBackIv.setVisibility(View.VISIBLE);
-        mBackIv.setOnClickListener(this);
+     */
+    protected void enableBackPress() {
+        if (mBackIv != null) {
+            mBackIv.setVisibility(View.VISIBLE);
+            mBackIv.setOnClickListener(this);
+        }
     }
+
     protected void onBackClick() {
         finish();
     }
@@ -117,9 +154,8 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     }
 
 
-
-    protected void setToolBarRight1Text(String text){
-        setToolBarRight1Text(text,getResources().getColor(R.color.white));
+    protected void setToolBarRight1Text(String text) {
+        setToolBarRight1Text(text, getResources().getColor(R.color.white));
     }
 
     protected void setToolBarRight1Text(String text, int color) {
@@ -130,8 +166,8 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
         }
     }
 
-    protected void setToolBarRight2Text(String text){
-        setToolBarRight2Text(text,getResources().getColor(R.color.white));
+    protected void setToolBarRight2Text(String text) {
+        setToolBarRight2Text(text, getResources().getColor(R.color.white));
     }
 
 
@@ -144,8 +180,8 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     }
 
 
-    protected void setToolBarRight3Text(String text){
-        setToolBarRight3Text(text,getResources().getColor(R.color.white));
+    protected void setToolBarRight3Text(String text) {
+        setToolBarRight3Text(text, getResources().getColor(R.color.white));
     }
 
     protected void setToolBarRight3Text(String text, int color) {
@@ -191,7 +227,7 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.back_iv:
                 onBackClick();
                 break;
@@ -208,8 +244,8 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
     }
 
     /**
-     *  需要右侧按钮点击事件的请具体实现这些方法
-     * */
+     * 需要右侧按钮点击事件的请具体实现这些方法
+     */
     protected void onRight3Click() {
 
     }
@@ -218,18 +254,18 @@ public abstract class SupportToolBarActivity<P extends BasePresenter> extends Rx
 
     }
 
-    protected  void onRight1Click(){
+    protected void onRight1Click() {
 
     }
 
 
-    protected  void setNightMode(){
+    protected void setNightMode() {
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        RxBus.get().unregister(RxBusEventKeys.RECREATE,mRecreateObservable);
+        RxBus.get().unregister(RxBusEventKeys.RECREATE, mRecreateObservable);
     }
 }

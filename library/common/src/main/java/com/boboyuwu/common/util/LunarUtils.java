@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  * 提供一些农历相关信息  可以将农历日期转成相关节日的工具类
  * 
  */
-public class LunarUtil {
+public class LunarUtils {
 
 	private final static int[] lunarInfo = {
 		0x4bd8, 0x4ae0, 0xa570, 0x54d5, 0xd260, 0xd950, 0x5554, 0x56af,
@@ -121,10 +121,10 @@ public class LunarUtil {
 		int lD = this.getLunarDay();
 		int sy = this.getSolarYear();
 		Matcher m;
-		for (int i = 0; i< LunarUtil.sFtv.length; i++) {
-			m = LunarUtil.sFreg.matcher(LunarUtil.sFtv[i]);
+		for (int i = 0; i< LunarUtils.sFtv.length; i++) {
+			m = LunarUtils.sFreg.matcher(LunarUtils.sFtv[i]);
 			if (m.find()) {
-				if (sM == LunarUtil.toInt(m.group(1)) && sD == LunarUtil.toInt(m.group(2))) {
+				if (sM == LunarUtils.toInt(m.group(1)) && sD == LunarUtils.toInt(m.group(2))) {
 					this.isSFestival = true;
 					this.sFestivalName = m.group(4);
 					if ("*".equals(m.group(3))) this.isHoliday = true;
@@ -132,10 +132,10 @@ public class LunarUtil {
 				}
 			}
 		}
-		for (int i = 0; i< LunarUtil.lFtv.length; i++) {
-			m = LunarUtil.sFreg.matcher(LunarUtil.lFtv[i]);
+		for (int i = 0; i< LunarUtils.lFtv.length; i++) {
+			m = LunarUtils.sFreg.matcher(LunarUtils.lFtv[i]);
 			if (m.find()) {
-				if (lM == LunarUtil.toInt(m.group(1)) && lD == LunarUtil.toInt(m.group(2))) {
+				if (lM == LunarUtils.toInt(m.group(1)) && lD == LunarUtils.toInt(m.group(2))) {
 					this.isLFestival = true;
 					this.lFestivalName = m.group(4);
 					if ("*".equals(m.group(3))) this.isHoliday = true;
@@ -146,12 +146,12 @@ public class LunarUtil {
 
 		// 月周节日
 		int w, d;
-		for (int i = 0; i< LunarUtil.wFtv.length; i++) {
-			m = LunarUtil.wFreg.matcher(LunarUtil.wFtv[i]);
+		for (int i = 0; i< LunarUtils.wFtv.length; i++) {
+			m = LunarUtils.wFreg.matcher(LunarUtils.wFtv[i]);
 			if (m.find()) {
-				if (this.getSolarMonth() == LunarUtil.toInt(m.group(1))) {
-					w = LunarUtil.toInt(m.group(2));
-					d = LunarUtil.toInt(m.group(3));
+				if (this.getSolarMonth() == LunarUtils.toInt(m.group(1))) {
+					w = LunarUtils.toInt(m.group(2));
+					d = LunarUtils.toInt(m.group(3));
 					if (this.solar.get(Calendar.WEEK_OF_MONTH)==w &&
 							this.solar.get(Calendar.DAY_OF_WEEK)==d) {
 						this.isSFestival = true;
@@ -188,7 +188,7 @@ public class LunarUtil {
 		// 数据表中,每个农历年用16bit来表示,
 		// 前12bit分别表示12个月份的大小月,最后4bit表示闰月
 		// 若4bit全为1或全为0,表示没闰, 否则4bit的值为闰月月份
-		int leapMonth = LunarUtil.lunarInfo[lunarYear - 1900] & 0xf;
+		int leapMonth = LunarUtils.lunarInfo[lunarYear - 1900] & 0xf;
 		leapMonth = (leapMonth == 0xf ? 0 : leapMonth);
 		return leapMonth;
 	}
@@ -203,7 +203,7 @@ public class LunarUtil {
 		// 下一年最后4bit为1111,返回30(大月)
 		// 下一年最后4bit不为1111,返回29(小月)
 		// 若该年没有闰月,返回0
-		return LunarUtil.getLunarLeapMonth(lunarYear) > 0 ? ((LunarUtil.lunarInfo[lunarYear - 1899] & 0xf) == 0xf ? 30
+		return LunarUtils.getLunarLeapMonth(lunarYear) > 0 ? ((LunarUtils.lunarInfo[lunarYear - 1899] & 0xf) == 0xf ? 30
 				: 29)
 				: 0;
 	}
@@ -220,11 +220,11 @@ public class LunarUtil {
 		// 前12bit分别表示12个月份的大小月,最后4bit表示闰月
 		// 每个大月累加一天
 		for (int i = 0x8000; i > 0x8; i >>= 1) {
-			daysInLunarYear += ((LunarUtil.lunarInfo[lunarYear - 1900] & i) != 0) ? 1
+			daysInLunarYear += ((LunarUtils.lunarInfo[lunarYear - 1900] & i) != 0) ? 1
 					: 0;
 		}
 		// 加上闰月天数
-		daysInLunarYear += LunarUtil.getLunarLeapDays(lunarYear);
+		daysInLunarYear += LunarUtils.getLunarLeapDays(lunarYear);
 
 		return daysInLunarYear;
 	}
@@ -240,7 +240,7 @@ public class LunarUtil {
 	private static int getLunarMonthDays(int lunarYear, int lunarMonth) {
 		// 数据表中,每个农历年用16bit来表示,
 		// 前12bit分别表示12个月份的大小月,最后4bit表示闰月
-		int daysInLunarMonth = ((LunarUtil.lunarInfo[lunarYear - 1900] & (0x10000 >> lunarMonth)) != 0) ? 30
+		int daysInLunarMonth = ((LunarUtils.lunarInfo[lunarYear - 1900] & (0x10000 >> lunarMonth)) != 0) ? 30
 				: 29;
 		return daysInLunarMonth;
 	}
@@ -251,7 +251,7 @@ public class LunarUtil {
 	 * @return UTC 全球标准时间 (UTC) 表示的日期
 	 */
 	public static synchronized int getUTCDay(Date date) {
-			LunarUtil.makeUTCCalendar();
+			LunarUtils.makeUTCCalendar();
 			synchronized (utcCal) {
 				utcCal.clear();
 				utcCal.setTimeInMillis(date.getTime());
@@ -260,8 +260,8 @@ public class LunarUtil {
 	}
 	private static GregorianCalendar utcCal = null;
 	private static synchronized void makeUTCCalendar() {
-		if (LunarUtil.utcCal == null) {
-			LunarUtil.utcCal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+		if (LunarUtils.utcCal == null) {
+			LunarUtils.utcCal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 		}
 	}
 	/**
@@ -275,7 +275,7 @@ public class LunarUtil {
 	 * @return 全球标准时间 (UTC) (或 GMT) 的 1970 年 1 月 1 日到所指定日期之间所间隔的毫秒数
 	 */
 	public static synchronized long UTC(int y, int m, int d, int h, int min, int sec) {
-		LunarUtil.makeUTCCalendar();
+		LunarUtils.makeUTCCalendar();
 		synchronized (utcCal) {
 			utcCal.clear();
 			utcCal.set(y, m, d, h, min, sec);
@@ -292,8 +292,8 @@ public class LunarUtil {
 	private static int getSolarTermDay(int solarYear, int index) {
 		long l = (long)31556925974.7 * (solarYear - 1900) + 
         solarTermInfo[index] * 60000L;
-		l = l + LunarUtil.UTC(1900,0,6,2,5,0);
-		return LunarUtil.getUTCDay(new Date(l));
+		l = l + LunarUtils.UTC(1900,0,6,2,5,0);
+		return LunarUtils.getUTCDay(new Date(l));
 	}
 
 	private Calendar solar;
@@ -314,7 +314,7 @@ public class LunarUtil {
 	 * 通过 Date 对象构建农历信息
 	 * @param date 指定日期对象
 	 */
-	public LunarUtil(Date date) {
+	public LunarUtils(Date date) {
 		if (date == null)
 			date = new Date();
 		this.init(date.getTime());
@@ -324,7 +324,7 @@ public class LunarUtil {
 	 * 通过 TimeInMillis 构建农历信息
 	 * @param TimeInMillis
 	 */
-	public LunarUtil(long TimeInMillis) {
+	public LunarUtils(long TimeInMillis) {
 		this.init(TimeInMillis);
 	}
 
@@ -336,17 +336,17 @@ public class LunarUtil {
 		long offset = (TimeInMillis - baseDate.getTimeInMillis()) / 86400000;
 		// 按农历年递减每年的农历天数，确定农历年份
 		this.lunarYear = 1900;
-		int daysInLunarYear = LunarUtil.getLunarYearDays(this.lunarYear);
+		int daysInLunarYear = LunarUtils.getLunarYearDays(this.lunarYear);
 		while (this.lunarYear < 2100 && offset >= daysInLunarYear) {
 			offset -= daysInLunarYear;
-			daysInLunarYear = LunarUtil.getLunarYearDays(++this.lunarYear);
+			daysInLunarYear = LunarUtils.getLunarYearDays(++this.lunarYear);
 		}
 		// 农历年数字
 
 		// 按农历月递减每月的农历天数，确定农历月份
 		int lunarMonth = 1;
 		// 所在农历年闰哪个月,若没有返回0
-		int leapMonth = LunarUtil.getLunarLeapMonth(this.lunarYear);
+		int leapMonth = LunarUtils.getLunarLeapMonth(this.lunarYear);
 		// 是否闰年
 		this.isLeapYear = leapMonth > 0;
 		// 闰月是否递减
@@ -356,11 +356,11 @@ public class LunarUtil {
 		while (lunarMonth<13 && offset>0) {
 			if (isLeap && leapDec) { // 如果是闰年,并且是闰月
 				// 所在农历年闰月的天数
-				daysInLunarMonth = LunarUtil.getLunarLeapDays(this.lunarYear);
+				daysInLunarMonth = LunarUtils.getLunarLeapDays(this.lunarYear);
 				leapDec = false;
 			} else {
 				// 所在农历年指定月的天数
-				daysInLunarMonth = LunarUtil.getLunarMonthDays(this.lunarYear, lunarMonth);
+				daysInLunarMonth = LunarUtils.getLunarMonthDays(this.lunarYear, lunarMonth);
 			}
 			if (offset < daysInLunarMonth) {
 				break;
@@ -401,7 +401,7 @@ public class LunarUtil {
 		int cyclicalDay = 0;
 
 		// 干支年 1900年立春後为庚子年(60进制36)
-		int term2 = LunarUtil.getSolarTermDay(solarYear, 2); // 立春日期
+		int term2 = LunarUtils.getSolarTermDay(solarYear, 2); // 立春日期
 		// 依节气调整二月分的年柱, 以立春为界
 		if (solarMonth < 1 || (solarMonth == 1 && solarDay < term2)) {
 			cyclicalYear = (solarYear - 1900 + 36 - 1) % 60;
@@ -410,7 +410,7 @@ public class LunarUtil {
 		}
 
 		// 干支月 1900年1月小寒以前为 丙子月(60进制12)
-		int firstNode = LunarUtil.getSolarTermDay(solarYear, solarMonth * 2); // 传回当月「节」为几日开始
+		int firstNode = LunarUtils.getSolarTermDay(solarYear, solarMonth * 2); // 传回当月「节」为几日开始
 		// 依节气月柱, 以「节」为界
 		if (solarDay < firstNode) {
 			cyclicalMonth = ((solarYear - 1900) * 12 + solarMonth + 12) % 60;
@@ -420,7 +420,7 @@ public class LunarUtil {
 
 		// 当月一日与 1900/1/1 相差天数
 		// 1900/1/1与 1970/1/1 相差25567日, 1900/1/1 日柱为甲戌日(60进制10)
-		cyclicalDay = (int) (LunarUtil.UTC(solarYear, solarMonth, solarDay, 0, 0, 0) / 86400000 + 25567 + 10) % 60;
+		cyclicalDay = (int) (LunarUtils.UTC(solarYear, solarMonth, solarDay, 0, 0, 0) / 86400000 + 25567 + 10) % 60;
 		this.cyclicalYear = cyclicalYear;
 		this.cyclicalMonth = cyclicalMonth;
 		this.cyclicalDay = cyclicalDay;
@@ -431,7 +431,7 @@ public class LunarUtil {
 	 * @return 农历年生肖(例:龙)
 	 */
 	public String getAnimalString() {
-		return LunarUtil.Animals[(this.lunarYear - 4) % 12];
+		return LunarUtils.Animals[(this.lunarYear - 4) % 12];
 	}
 
 	/**
@@ -441,10 +441,10 @@ public class LunarUtil {
 	public String getTermString() {
 		// 二十四节气
 		String termString = "";
-		if (LunarUtil.getSolarTermDay(solarYear, solarMonth * 2) == solarDay) {
-			termString = LunarUtil.solarTerm[solarMonth * 2];
-		} else if (LunarUtil.getSolarTermDay(solarYear, solarMonth * 2 + 1) == solarDay) {
-			termString = LunarUtil.solarTerm[solarMonth * 2 + 1];
+		if (LunarUtils.getSolarTermDay(solarYear, solarMonth * 2) == solarDay) {
+			termString = LunarUtils.solarTerm[solarMonth * 2];
+		} else if (LunarUtils.getSolarTermDay(solarYear, solarMonth * 2 + 1) == solarDay) {
+			termString = LunarUtils.solarTerm[solarMonth * 2 + 1];
 		}
 		return termString;
 	}
@@ -465,7 +465,7 @@ public class LunarUtil {
 	 * @return 年份天干
 	 */
 	public int getTiananY() {
-		return LunarUtil.getTianan(this.cyclicalYear);
+		return LunarUtils.getTianan(this.cyclicalYear);
 	}
 
 	/**
@@ -473,7 +473,7 @@ public class LunarUtil {
 	 * @return 月份天干
 	 */
 	public int getTiananM() {
-		return LunarUtil.getTianan(this.cyclicalMonth);
+		return LunarUtils.getTianan(this.cyclicalMonth);
 	}
 
 	/**
@@ -481,7 +481,7 @@ public class LunarUtil {
 	 * @return 日期天干
 	 */
 	public int getTiananD() {
-		return LunarUtil.getTianan(this.cyclicalDay);
+		return LunarUtils.getTianan(this.cyclicalDay);
 	}
 
 	/**
@@ -489,7 +489,7 @@ public class LunarUtil {
 	 * @return 年分地支
 	 */
 	public int getDeqiY() {
-		return LunarUtil.getDeqi(this.cyclicalYear);
+		return LunarUtils.getDeqi(this.cyclicalYear);
 	}
 
 	/**
@@ -497,7 +497,7 @@ public class LunarUtil {
 	 * @return 月份地支
 	 */
 	public int getDeqiM() {
-		return LunarUtil.getDeqi(this.cyclicalMonth);
+		return LunarUtils.getDeqi(this.cyclicalMonth);
 	}
 
 	/**
@@ -505,7 +505,7 @@ public class LunarUtil {
 	 * @return 日期地支
 	 */
 	public int getDeqiD() {
-		return LunarUtil.getDeqi(this.cyclicalDay);
+		return LunarUtils.getDeqi(this.cyclicalDay);
 	}
 
 	/**
@@ -513,7 +513,7 @@ public class LunarUtil {
 	 * @return 干支年字符串
 	 */
 	public String getCyclicaYear() {
-		return LunarUtil.getCyclicalString(this.cyclicalYear);
+		return LunarUtils.getCyclicalString(this.cyclicalYear);
 	}
 
 	/**
@@ -521,7 +521,7 @@ public class LunarUtil {
 	 * @return 干支月字符串
 	 */
 	public String getCyclicaMonth() {
-		return LunarUtil.getCyclicalString(this.cyclicalMonth);
+		return LunarUtils.getCyclicalString(this.cyclicalMonth);
 	}
 
 	/**
@@ -529,7 +529,7 @@ public class LunarUtil {
 	 * @return 干支日字符串
 	 */
 	public String getCyclicaDay() {
-		return LunarUtil.getCyclicalString(this.cyclicalDay);
+		return LunarUtils.getCyclicalString(this.cyclicalDay);
 	}
 
 	/**
@@ -537,7 +537,7 @@ public class LunarUtil {
 	 * @return 农历日期字符串
 	 */
 	public String getLunarDayString() {
-		return LunarUtil.getLunarDayString(this.lunarDay);
+		return LunarUtils.getLunarDayString(this.lunarDay);
 	}
 
 	/**
@@ -545,7 +545,7 @@ public class LunarUtil {
 	 * @return 农历日期字符串
 	 */
 	public String getLunarMonthString() {
-		return (this.isLeap() ? "闰" : "") + LunarUtil.getLunarMonthString(this.lunarMonth);
+		return (this.isLeap() ? "闰" : "") + LunarUtils.getLunarMonthString(this.lunarMonth);
 	}
 
 	/**
@@ -553,7 +553,7 @@ public class LunarUtil {
 	 * @return 农历日期字符串
 	 */
 	public String getLunarYearString() {
-		return LunarUtil.getLunarYearString(this.lunarYear);
+		return LunarUtils.getLunarYearString(this.lunarYear);
 	}
 
 	/**
@@ -739,7 +739,7 @@ public class LunarUtil {
 	 * @return 干支字符串
 	 */
 	private static String getCyclicalString(int cyclicalNumber) {
-		return LunarUtil.Tianan[LunarUtil.getTianan(cyclicalNumber)] + LunarUtil.Deqi[LunarUtil.getDeqi(cyclicalNumber)];
+		return LunarUtils.Tianan[LunarUtils.getTianan(cyclicalNumber)] + LunarUtils.Deqi[LunarUtils.getDeqi(cyclicalNumber)];
 	}
 
 	/**
@@ -766,7 +766,7 @@ public class LunarUtil {
 	 * @return 农历年份字符串
 	 */
 	private static String getLunarYearString(int lunarYear) {
-		return LunarUtil.getCyclicalString(lunarYear - 1900 + 36);
+		return LunarUtils.getCyclicalString(lunarYear - 1900 + 36);
 	}
 
 	/**
@@ -777,12 +777,12 @@ public class LunarUtil {
 	private static String getLunarMonthString(int lunarMonth) {
 		String lunarMonthString = "";
 		if (lunarMonth == 1) {
-			lunarMonthString = LunarUtil.lunarString2[4];
+			lunarMonthString = LunarUtils.lunarString2[4];
 		} else {
 			if (lunarMonth > 9)
-				lunarMonthString += LunarUtil.lunarString2[1];
+				lunarMonthString += LunarUtils.lunarString2[1];
 			if (lunarMonth % 10 > 0)
-				lunarMonthString += LunarUtil.lunarString1[lunarMonth % 10];
+				lunarMonthString += LunarUtils.lunarString1[lunarMonth % 10];
 		}
 		return lunarMonthString;
 	}
@@ -796,10 +796,10 @@ public class LunarUtil {
 		if (lunarDay<1 || lunarDay>30) return "";
 		int i1 = lunarDay / 10;
 		int i2 = lunarDay % 10;
-		String c1 = LunarUtil.lunarString2[i1];
-		String c2 = LunarUtil.lunarString1[i2];
-		if (lunarDay < 11) c1 = LunarUtil.lunarString2[0];
-		if (i2 == 0) c2 = LunarUtil.lunarString2[1];
+		String c1 = LunarUtils.lunarString2[i1];
+		String c2 = LunarUtils.lunarString1[i2];
+		if (lunarDay < 11) c1 = LunarUtils.lunarString2[0];
+		if (i2 == 0) c2 = LunarUtils.lunarString2[1];
 		return c1 + c2;
 	}
 }

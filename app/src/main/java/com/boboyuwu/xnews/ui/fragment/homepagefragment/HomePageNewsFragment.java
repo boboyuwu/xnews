@@ -18,7 +18,8 @@ import com.boboyuwu.xnews.common.utils.ChannelTypeUtil;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity;
 import com.boboyuwu.xnews.ui.fragment.basefragment.SupportToolBarFragment;
-import com.boboyuwu.xnews.ui.fragment.helper.HomePageNewsTabFragmentIml;
+import com.boboyuwu.xnews.ui.fragment.helper.FragmentFactory;
+import com.boboyuwu.xnews.ui.fragment.helper.HomePageNewsFragmentFactoryIml;
 import com.example.boboyuwu.zhihunews.R;
 
 import java.util.ArrayList;
@@ -90,11 +91,11 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
 
     private void initFragment() {
         mFragments = new ArrayList<>();
-        HomePageNewsTabFragmentIml homePageNewsTabFragmentIml = new HomePageNewsTabFragmentIml();
+        FragmentFactory homePageNewsFragmentFactoryIml = new HomePageNewsFragmentFactoryIml();
         for (ChannelNewsBean channelNewsBean : mChannelList) {
             Bundle bundle = new Bundle();
             bundle.putSerializable(Keys.CHANNEL, channelNewsBean);
-            mFragments.add(homePageNewsTabFragmentIml.createFragment(channelNewsBean.getChannelId(), bundle));
+            mFragments.add(homePageNewsFragmentFactoryIml.createFragment(channelNewsBean.getChannelId(), bundle));
         }
     }
 
@@ -110,7 +111,6 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
                 return mChannelList.get(position).getChannelName();
             }
         });
-        mViewpager.setOffscreenPageLimit(1);
         //mViewpager.setPageTransformer();
     }
 

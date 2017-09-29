@@ -15,6 +15,7 @@ import com.orhanobut.logger.Logger;
 
 /**
  * Created by wubo on 2017/8/28.
+ * 我
  */
 
 public class MineFragment extends SupportToolBarFragment<HomePageNewsPresenter> implements OnStateChangedListener {

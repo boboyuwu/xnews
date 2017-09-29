@@ -661,6 +661,49 @@ public class HeadLineNews implements Parcelable {
                 return new HeadLineNewsBean[size];
             }
         };
+
+        @Override
+        public String toString() {
+            return "HeadLineNewsBean{" +
+                    "template='" + template + '\'' +
+                    ", skipID='" + skipID + '\'' +
+                    ", lmodify='" + lmodify + '\'' +
+                    ", postid='" + postid + '\'' +
+                    ", source='" + source + '\'' +
+                    ", title='" + title + '\'' +
+                    ", mtime='" + mtime + '\'' +
+                    ", hasImg=" + hasImg +
+                    ", topic_background='" + topic_background + '\'' +
+                    ", digest='" + digest + '\'' +
+                    ", photosetID='" + photosetID + '\'' +
+                    ", boardid='" + boardid + '\'' +
+                    ", alias='" + alias + '\'' +
+                    ", hasAD=" + hasAD +
+                    ", imgsrc='" + imgsrc + '\'' +
+                    ", ptime='" + ptime + '\'' +
+                    ", daynum='" + daynum + '\'' +
+                    ", hasHead=" + hasHead +
+                    ", order=" + order +
+                    ", votecount=" + votecount +
+                    ", hasCover=" + hasCover +
+                    ", docid='" + docid + '\'' +
+                    ", tname='" + tname + '\'' +
+                    ", priority=" + priority +
+                    ", ename='" + ename + '\'' +
+                    ", replyCount=" + replyCount +
+                    ", imgsum=" + imgsum +
+                    ", hasIcon=" + hasIcon +
+                    ", skipType='" + skipType + '\'' +
+                    ", cid='" + cid + '\'' +
+                    ", url_3w='" + url_3w + '\'' +
+                    ", url='" + url + '\'' +
+                    ", ltitle='" + ltitle + '\'' +
+                    ", subtitle='" + subtitle + '\'' +
+                    ", specialID='" + specialID + '\'' +
+                    ", imgextra=" + imgextra +
+                    ", ads=" + ads +
+                    '}';
+        }
     }
 
     @Override
@@ -691,4 +734,6 @@ public class HeadLineNews implements Parcelable {
             return new HeadLineNews[size];
         }
     };
+
+
 }

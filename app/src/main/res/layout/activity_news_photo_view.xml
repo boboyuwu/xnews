@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fitsSystemWindows="true">
 
-    <android.support.v4.view.ViewPager
+    <include
+        android:id="@+id/toolBar"
+        layout="@layout/include_toolbar_layout"/>
+
+    <com.boboyuwu.common.widget.HackyViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_centerInParent="true"
-        android:id="@+id/viewpager"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolBar"/>
 
+
+    <TextView
+        android:id="@+id/photo_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:padding="@dimen/dp_22"
+        android:textColor="@color/news_photo_text_color"
+        android:textSize="@dimen/sp_16"/>
 
 </RelativeLayout>

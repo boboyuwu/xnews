@@ -18,14 +18,11 @@ public abstract class LoadingAndRetryActivity <P extends BasePresenter>  extends
     private LoadingAndRetryManager mLoadingAndRetryManager;
 
     @Override
-    protected void preInit() {
-        super.preInit();
+    protected void init() {
+        super.init();
         mLoadingAndRetryManager = LoadingAndRetryManager.generate(initManagerView()==null?this:initManagerView(), mOnLoadingAndRetryListener);
         mLoadingAndRetryManager.showContent();
     }
-
-
-
 
     /**
      * 如果不想管理默认的整个界面调用这个方法返回需要设置的view

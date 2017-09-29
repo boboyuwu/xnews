@@ -125,7 +125,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     @Override
-    public void disMissDialog() {
+    public void dissMissDialog() {
 
     }
 
