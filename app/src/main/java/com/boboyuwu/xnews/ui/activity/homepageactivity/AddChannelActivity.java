@@ -22,7 +22,7 @@ import com.boboyuwu.common.basequickadapter.QuickAdapter;
 import com.boboyuwu.common.util.RxBus;
 import com.boboyuwu.common.util.RxBusEventKeys;
 import com.boboyuwu.common.util.SizeUtils;
-import com.boboyuwu.xnews.beans.ChannelNewsBean;
+import com.boboyuwu.xnews.greendao.data.ChannelNewsData;
 import com.boboyuwu.xnews.common.utils.ChannelTypeUtil;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.baseactivity.LoadingAndRetryActivity;
@@ -45,8 +45,8 @@ import io.reactivex.functions.Predicate;
 public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPresenter> {
 
     private RecyclerView mRecyclerView;
-    private QuickAdapter<ChannelNewsBean> mQuickAdapter;
-    private ArrayList<ChannelNewsBean> mChannelList;
+    private QuickAdapter<ChannelNewsData> mQuickAdapter;
+    private ArrayList<ChannelNewsData> mChannelList;
     @Override
     protected int getLayout() {
         return R.layout.activity_add_channel;
@@ -89,10 +89,10 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
 
     private void backAndUpdateChannel(){
         //跟新首页的所有频道到数据库
-        List<ChannelNewsBean> channels = mQuickAdapter.getData();
+        List<ChannelNewsData> channels = mQuickAdapter.getData();
         int moreChannelPosition = getMoreChannelPosition(channels);
-        List<ChannelNewsBean> mineChannels = channels.subList(1, moreChannelPosition);
-        mGreenDaoHelper.setChannelList(mineChannels);
+        List<ChannelNewsData> mineChannels = channels.subList(1, moreChannelPosition);
+        mPresenter.setChannelList(mineChannels);
         RxBus.get().post(RxBusEventKeys.UPDATE_CHANNEL,true);
         finish();
     }
@@ -101,60 +101,60 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
     //初始化频道
     private void initChannel() {
         mChannelList = new ArrayList();
-        final List<ChannelNewsBean> channel = mGreenDaoHelper.getChannelList();
+        final List<ChannelNewsData> channel = mPresenter.getChannelList();
         //mine title
-        ChannelNewsBean mineChannelTitle = new ChannelNewsBean();
-        mineChannelTitle.setType(ChannelNewsBean.TYPE_TITLE);
+        ChannelNewsData mineChannelTitle = new ChannelNewsData();
+        mineChannelTitle.setType(ChannelNewsData.TYPE_TITLE);
         mineChannelTitle.setChannelName("我的频道");
         mChannelList.add(mineChannelTitle);
 
-        for (ChannelNewsBean newsBean : channel) {
-            newsBean.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MINE);
-            newsBean.setType(ChannelNewsBean.TYPE_CHANNEL);
+        for (ChannelNewsData newsBean : channel) {
+            newsBean.setChannelManagerType(ChannelNewsData.CHANNEL_TYPE_MINE);
+            newsBean.setType(ChannelNewsData.TYPE_CHANNEL);
             mChannelList.add(newsBean);
         }
 
         //more title
-        ChannelNewsBean moreChannelTitle = new ChannelNewsBean();
-        moreChannelTitle.setType(ChannelNewsBean.TYPE_TITLE);
+        ChannelNewsData moreChannelTitle = new ChannelNewsData();
+        moreChannelTitle.setType(ChannelNewsData.TYPE_TITLE);
         moreChannelTitle.setChannelName("更多频道");
         mChannelList.add(moreChannelTitle);
 
-        ArrayList<ChannelNewsBean> moreChannelList = new ArrayList<>();
+        ArrayList<ChannelNewsData> moreChannelList = new ArrayList<>();
         List<String> channelName = Arrays.asList(getResources().getStringArray(R.array.news_channel_name));
         List<String> channelId = Arrays.asList(getResources().getStringArray(R.array.news_channel_id));
         for (int i = 0; i < channelName.size(); i++) {
-            ChannelNewsBean channelNewsBean = new ChannelNewsBean();
-            channelNewsBean.setChannelName(channelName.get(i));
-            channelNewsBean.setChannelId(channelId.get(i));
-            channelNewsBean.setChannelType(ChannelTypeUtil.getChannelType(channelId.get(i)));
-            moreChannelList.add(channelNewsBean);
+            ChannelNewsData channelNewsData = new ChannelNewsData();
+            channelNewsData.setChannelName(channelName.get(i));
+            channelNewsData.setChannelId(channelId.get(i));
+            channelNewsData.setChannelType(ChannelTypeUtil.getChannelType(channelId.get(i)));
+            moreChannelList.add(channelNewsData);
         }
         //过滤频道
-        addDispose(Observable.fromIterable(moreChannelList).filter(new Predicate<ChannelNewsBean>() {
+        addDispose(Observable.fromIterable(moreChannelList).filter(new Predicate<ChannelNewsData>() {
             @Override
-            public boolean test(ChannelNewsBean channelNewsBean) throws Exception {
+            public boolean test(ChannelNewsData channelNewsData) throws Exception {
                 boolean hasMoreContainMineDate=false;
-                for (ChannelNewsBean newsBean : channel) {
-                    if(TextUtils.equals(newsBean.getChannelName(),channelNewsBean.getChannelName())){
+                for (ChannelNewsData newsBean : channel) {
+                    if(TextUtils.equals(newsBean.getChannelName(), channelNewsData.getChannelName())){
                         hasMoreContainMineDate=true;
                     }
                 }
                 return !hasMoreContainMineDate;
             }
-        }).subscribe(new Consumer<ChannelNewsBean>() {
+        }).subscribe(new Consumer<ChannelNewsData>() {
             @Override
-            public void accept(ChannelNewsBean channelNewsBean) throws Exception {
-                channelNewsBean.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MORE);
-                channelNewsBean.setType(ChannelNewsBean.TYPE_CHANNEL);
-                mChannelList.add(channelNewsBean);
+            public void accept(ChannelNewsData channelNewsData) throws Exception {
+                channelNewsData.setChannelManagerType(ChannelNewsData.CHANNEL_TYPE_MORE);
+                channelNewsData.setType(ChannelNewsData.TYPE_CHANNEL);
+                mChannelList.add(channelNewsData);
             }
         }));
         mQuickAdapter.replaceAll(mChannelList);
     }
 
     private void initRecyclerView() {
-        mQuickAdapter = new QuickAdapter<ChannelNewsBean>(this, mMultiItemTypeSupport) {
+        mQuickAdapter = new QuickAdapter<ChannelNewsData>(this, mMultiItemTypeSupport) {
             @Override
             public void onAttachedToRecyclerView(RecyclerView recyclerView) {
                 super.onAttachedToRecyclerView(recyclerView);
@@ -165,7 +165,7 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
                         @Override
                         public int getSpanSize(int position) {
                             int itemViewType = getItemViewType(position);
-                            if (itemViewType == ChannelNewsBean.TYPE_TITLE) {
+                            if (itemViewType == ChannelNewsData.TYPE_TITLE) {
                                 return gridLayoutManager.getSpanCount();
                             } else {
                                 return 1;
@@ -175,13 +175,13 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
                 }
             }
             @Override
-            protected void convert(BaseAdapterHelper helper, ChannelNewsBean item) {
+            protected void convert(BaseAdapterHelper helper, ChannelNewsData item) {
                 int layoutPosition = helper.getLayoutPosition();
                 switch (getItemViewType(layoutPosition)) {
-                    case ChannelNewsBean.TYPE_TITLE:
+                    case ChannelNewsData.TYPE_TITLE:
                         processTitle(helper, item);
                         break;
-                    case ChannelNewsBean.TYPE_CHANNEL:
+                    case ChannelNewsData.TYPE_CHANNEL:
                         processChannel(helper, item);
                         processChannelClick(helper, item);
                         break;
@@ -210,7 +210,7 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
 
     }
 
-    private void processChannelClick(final BaseAdapterHelper helper, final ChannelNewsBean item) {
+    private void processChannelClick(final BaseAdapterHelper helper, final ChannelNewsData item) {
         helper.itemView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -220,43 +220,43 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
 
     }
 
-    private void processChannel(BaseAdapterHelper helper, ChannelNewsBean item) {
+    private void processChannel(BaseAdapterHelper helper, ChannelNewsData item) {
         helper.getTextView(R.id.normal_tv).setText(item.getChannelName());
         helper.itemView.setEnabled(item.getIsFixChannel() ? false : true);
     }
 
-    private void swapChannel(BaseAdapterHelper helper, ChannelNewsBean item) {
-        List<ChannelNewsBean> data = mQuickAdapter.getData();
-        if(item.getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MORE){
+    private void swapChannel(BaseAdapterHelper helper, ChannelNewsData item) {
+        List<ChannelNewsData> data = mQuickAdapter.getData();
+        if(item.getChannelManagerType() == ChannelNewsData.CHANNEL_TYPE_MORE){
             //移动到我的频道
             int moreChannelPosition = getMoreChannelPosition(data);
             data.remove(item);
             data.add(moreChannelPosition,item);
-            item.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MINE);
-        }else if(item.getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MINE){
+            item.setChannelManagerType(ChannelNewsData.CHANNEL_TYPE_MINE);
+        }else if(item.getChannelManagerType() == ChannelNewsData.CHANNEL_TYPE_MINE){
             //移动到更多频道
             data.remove(item);
             data.add(data.size(),item);
-            item.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MORE);
+            item.setChannelManagerType(ChannelNewsData.CHANNEL_TYPE_MORE);
         }
         mQuickAdapter.notifyDataSetChanged();
     }
 
 
-    private void processTitle(BaseAdapterHelper helper, ChannelNewsBean item) {
+    private void processTitle(BaseAdapterHelper helper, ChannelNewsData item) {
         helper.getTextView(R.id.title_tv).setText(item.getChannelName());
     }
 
 
-    private MultiItemTypeSupport<ChannelNewsBean> mMultiItemTypeSupport = new MultiItemTypeSupport<ChannelNewsBean>() {
+    private MultiItemTypeSupport<ChannelNewsData> mMultiItemTypeSupport = new MultiItemTypeSupport<ChannelNewsData>() {
         @Override
         public int getLayoutId(int viewType) {
             int layout = 0;
             switch (viewType) {
-                case ChannelNewsBean.TYPE_TITLE:
+                case ChannelNewsData.TYPE_TITLE:
                     layout = R.layout.item_add_channel_title;
                     break;
-                case ChannelNewsBean.TYPE_CHANNEL:
+                case ChannelNewsData.TYPE_CHANNEL:
                     layout = R.layout.item_add_channel_normal;
                     break;
             }
@@ -264,8 +264,8 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
         }
 
         @Override
-        public int getItemViewType(int position, ChannelNewsBean channelNewsBean) {
-            return channelNewsBean.getType();
+        public int getItemViewType(int position, ChannelNewsData channelNewsData) {
+            return channelNewsData.getType();
         }
     };
 
@@ -286,7 +286,7 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
         context.startActivity(intent);
     }
 
-    private static int getMoreChannelPosition(List<ChannelNewsBean> list){
+    private static int getMoreChannelPosition(List<ChannelNewsData> list){
         int position=0;
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(list.get(i).getChannelName(), "更多频道")) {
@@ -301,20 +301,20 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
      * */
    public static class ChannelManagerCallBack extends ItemTouchHelper.Callback {
         private static final String TAG = "ChannelManagerCallBack";
-        private QuickAdapter<ChannelNewsBean> mQuickAdapter;
+        private QuickAdapter<ChannelNewsData> mQuickAdapter;
 
-        public ChannelManagerCallBack(QuickAdapter<ChannelNewsBean> quickAdapter) {
+        public ChannelManagerCallBack(QuickAdapter<ChannelNewsData> quickAdapter) {
             mQuickAdapter = quickAdapter;
         }
 
         @Override
         public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
             int adapterPosition = viewHolder.getAdapterPosition();
-            ChannelNewsBean channelNewsBean = mQuickAdapter.getData().get(adapterPosition);
+            ChannelNewsData channelNewsData = mQuickAdapter.getData().get(adapterPosition);
             int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN
                     | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-            return (channelNewsBean.getIsFixChannel()||
-                    channelNewsBean.getChannelManagerType()!=ChannelNewsBean.CHANNEL_TYPE_MINE)
+            return (channelNewsData.getIsFixChannel()||
+                    channelNewsData.getChannelManagerType()!= ChannelNewsData.CHANNEL_TYPE_MINE)
                     ?makeMovementFlags(0, 0):makeMovementFlags(dragFlags, 0);
         }
 
@@ -333,12 +333,12 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
         }
         @Override
         public boolean canDropOver(RecyclerView recyclerView, ViewHolder current, ViewHolder target) {
-            List<ChannelNewsBean> data = mQuickAdapter.getData();
+            List<ChannelNewsData> data = mQuickAdapter.getData();
             int currentPosition = current.getLayoutPosition();
             int targetPosition = target.getLayoutPosition();
             int moreChannelTitlePosition = getMoreChannelPosition(data);
             boolean moveFlag = false;
-            if (data.get(currentPosition).getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MINE) {
+            if (data.get(currentPosition).getChannelManagerType() == ChannelNewsData.CHANNEL_TYPE_MINE) {
                 if ( !data.get(currentPosition).getIsFixChannel() &&
                      !data.get(targetPosition).getIsFixChannel() &&
                      targetPosition < moreChannelTitlePosition && targetPosition > 0) {
@@ -347,7 +347,7 @@ public class AddChannelActivity extends LoadingAndRetryActivity<HomePageNewsPres
                     moveFlag = false;
                 }
             }
-        /*    if (data.get(currentPosition).getChannelManagerType() == ChannelNewsBean.CHANNEL_TYPE_MORE) {
+        /*    if (data.get(currentPosition).getChannelManagerType() == ChannelNewsData.CHANNEL_TYPE_MORE) {
                 if (targetPosition > moreChannelTitlePosition) {
                     moveFlag = true;
                 } else {

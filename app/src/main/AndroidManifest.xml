@@ -31,8 +31,9 @@
 
         <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.NewsDetailActivity"
                   />
-       <!-- <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.NewsPhotoViewActivity"
-            />-->
+        <activity android:name="com.boboyuwu.xnews.ui.activity.homepageactivity.NewsPhotoViewActivity"
+            />
+
     </application>
 
 </manifest>

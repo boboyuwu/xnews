@@ -1,6 +1,8 @@
 package com.boboyuwu.xnews.mvp.presenter;
 
 
+import com.boboyuwu.xnews.app.NewsApplication;
+import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.mvp.view.BaseView;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -15,6 +17,7 @@ public class BasePresenter<T extends BaseView> {
 
     protected T mBaseView;
     private CompositeDisposable mCompositeDisposable=new CompositeDisposable();
+    protected GreenDaoHelper mGreenDaoHelper= NewsApplication.getAppComponent().getGreenDaoHelper();
     /*@Inject*/
     public BasePresenter(){
 

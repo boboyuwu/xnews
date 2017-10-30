@@ -15,6 +15,6 @@ public interface BaseView {
     //加载更多数据时发生了错误
     void onLoadMoreError(RxSubscriberState msg);
     void showDialog();
-    void disMissDialog();
+    void dissMissDialog();
 
 }

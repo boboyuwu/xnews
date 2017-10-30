@@ -1,5 +1,6 @@
 package com.boboyuwu.xnews.ui.fragment.homepagefragment;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
@@ -19,23 +20,26 @@ import com.boboyuwu.common.basequickadapter.MultiItemTypeSupport;
 import com.boboyuwu.common.basequickadapter.QuickAdapter;
 import com.boboyuwu.common.loadmorerecyclerview.EndlessRecyclerOnScrollListener;
 import com.boboyuwu.common.loadmorerecyclerview.HeaderAndFooterRecyclerViewAdapter;
-import com.boboyuwu.common.loadmorerecyclerview.NetworkUtils;
-import com.boboyuwu.common.loadmorerecyclerview.RecyclerViewStateUtils;
 import com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.StateEnum;
 import com.boboyuwu.common.loadmorerecyclerview.LoadingFooter.StateInfo;
-import com.boboyuwu.xnews.beans.ChannelNewsBean;
+import com.boboyuwu.common.loadmorerecyclerview.NetworkUtils;
+import com.boboyuwu.common.loadmorerecyclerview.RecyclerViewStateUtils;
 import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean.ImgextraBean;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.RxSubscriberState;
+import com.boboyuwu.xnews.greendao.data.ChannelNewsData;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.mvp.view.HomePageView;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.NewsDetailActivity;
+import com.boboyuwu.xnews.ui.activity.homepageactivity.NewsPhotoViewActivity;
 import com.boboyuwu.xnews.ui.fragment.basefragment.LazyFragment;
 import com.bumptech.glide.Glide;
 import com.example.boboyuwu.zhihunews.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -55,16 +59,16 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     private final int TYPE_PhotoNews=2;
 
 
-    private int loadDataPageCurr = 0;
+    private int mLoadDataPageCurr = 0;
     /**
      * 提供一个已经lazy加载的标识防止需要Lazy的Fragment重复调用方法
      * if(!mHasLazyLoad && getUserVisibleHint()){
      * mLoadingAndRetryManager.showContent();
-     * mPresenter.getHomePageMoreNewsList(mChannelNewsBean.getChannelType(),mChannelNewsBean.getChannelId(),"0");
+     * mPresenter.getHomePageMoreNewsList(mChannelNewsData.getChannelType(),mChannelNewsData.getChannelId(),"0");
      * }
      */
     private boolean mHasLazyLoad;
-    private ChannelNewsBean mChannelNewsBean;
+    private ChannelNewsData mChannelNewsData;
     private QuickAdapter mQuickAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private HeaderAndFooterRecyclerViewAdapter mHeaderAndFooterRecyclerViewAdapter;
@@ -90,10 +94,17 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         //第一个Fragment是没有执行onLazyLoadData,所以需要单独加载列表
         //其他的Fragemnt由于onLazyLoadData在init之前执行所以这里根据onLazyLoadData中标记判断一下加载第一个Fragment
         //后面mHasLazyLoad可以换成请求的时间戳等
+        loadHomePageNewsFromCache();
         if (!mHasLazyLoad && getUserVisibleHint()) {
             showLoading();
-            mPresenter.getHomePageNewsList(mChannelNewsBean.getChannelType(), mChannelNewsBean.getChannelId(), String.valueOf(loadDataPageCurr));
+            mPresenter.getHomePageNewsList(mChannelNewsData.getChannelType(), mChannelNewsData.getChannelId(), String.valueOf(mLoadDataPageCurr));
         }
+    }
+
+
+    //从缓存中先读取
+    private void loadHomePageNewsFromCache() {
+        mPresenter.getHomePageNewsListFromCache(mChannelNewsData.getChannelId());
     }
 
     @Override
@@ -116,7 +127,7 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
             if (state == StateEnum.TheEnd) {
                 return;
             } else {
-                loadDataPageCurr += REQUEST_PAGESIZE;
+                mLoadDataPageCurr += REQUEST_PAGESIZE;
                 loadMore();
             }
         }
@@ -124,10 +135,10 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
 
     private void loadMore() {
         if (NetworkUtils.isNetAvailable(mActivity.get())) {
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.Loading, "正在加载中......"), null);
-            mPresenter.getHomePageMoreNewsList(mChannelNewsBean.getChannelType(), mChannelNewsBean.getChannelId(), String.valueOf(loadDataPageCurr));
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, REQUEST_PAGESIZE, new StateInfo(StateEnum.Loading, ""), null);
+            mPresenter.getHomePageMoreNewsList(mChannelNewsData.getChannelType(), mChannelNewsData.getChannelId(), String.valueOf(mLoadDataPageCurr));
         } else {
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError, "网络异常,请点击重试!"), mOnClickListener);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, REQUEST_PAGESIZE, new StateInfo(StateEnum.NetWorkError, ""), mOnClickListener);
         }
     }
 
@@ -191,31 +202,51 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
         }
     };
 
-    private void processPhotoNews(BaseAdapterHelper helper, HeadLineNewsBean item) {
+    private void processPhotoNews(BaseAdapterHelper helper, final HeadLineNewsBean item) {
         helper.getTextView(R.id.photo_title_tv).setText(item.getTitle());
+        helper.getTextView(R.id.photo_time_tv).setText(item.getPtime());
+        helper.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Keys.NEWS_PHOTO_ITEM,item);
+                NewsPhotoViewActivity.startNewsPhotoViewActivity(mActivity.get(),bundle);
+            }
+        });
+        /**
+         * 处理一个或多个图片
+         * */
         LinearLayout linearLayout = helper.getView(R.id.photo_ll);
         if (linearLayout.getChildCount() > 0) {
             linearLayout.removeAllViews();
         }
+
+        if (item.getImgextra() == null || item.getImgextra().size()==0) {
+            if(!TextUtils.isEmpty(item.getImgsrc())){
+                ArrayList<ImgextraBean> imgextras = new ArrayList();
+                ImgextraBean imgextraBean = new ImgextraBean();
+                imgextraBean.setImgsrc(item.getImgsrc());
+                imgextras.add(imgextraBean);
+                item.setImgextra(imgextras);
+            }
+        }
+        //当getImgsrc为null时这个可能会null
         if (item.getImgextra() != null) {
             for (int i = 0; i < item.getImgextra().size(); i++) {
-                ImageView photoImageView = getPhotoImageView();
+                ImageView photoImageView = getPhotoImageView(item.getImgextra().size()==1);
                 linearLayout.addView(photoImageView);
                 if(!TextUtils.isEmpty(item.getImgextra().get(i).getImgsrc()))
-                Glide.with(this).load(item.getImgextra().get(i).getImgsrc()).into(photoImageView);
+                Glide.with(this).load(item.getImgextra().get(i).getImgsrc())
+                        .placeholder(new ColorDrawable(getResources().getColor(R.color.alpha_15_gray)))
+                        .into(photoImageView);
             }
-        } else {
-            ImageView photoImageView = getPhotoImageView();
-            linearLayout.addView(photoImageView);
-            if(!TextUtils.isEmpty(item.getImgsrc()))
-            Glide.with(this).load(item.getImgsrc()).into(photoImageView);
         }
-        helper.getTextView(R.id.photo_time_tv).setText(item.getPtime());
     }
 
-    private ImageView getPhotoImageView() {
+    private ImageView getPhotoImageView(boolean onlyOneImg) {
         ImageView imageView = new ImageView(mActivity.get());
-        imageView.setScaleType(ScaleType.CENTER_CROP);
+        if(onlyOneImg)
+            imageView.setScaleType(ScaleType.CENTER_CROP);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT);
         layoutParams.leftMargin = 10;
         layoutParams.rightMargin = 10;
@@ -238,30 +269,37 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
             }
         });
         Glide.with(this).load(item.getImgsrc())
+                .placeholder(new ColorDrawable(getResources().getColor(R.color.alpha_15_gray)))
                 .into(helper.getImageView(R.id.news_iv));
     }
 
     private void getChannel() {
         Bundle arguments = getArguments();
-        mChannelNewsBean = (ChannelNewsBean) arguments.getSerializable(Keys.CHANNEL);
+        mChannelNewsData = (ChannelNewsData) arguments.getSerializable(Keys.CHANNEL);
     }
 
 
     @Override
     protected void onLazyLoadData() {
-        mHasLazyLoad = true;
-        showLoading();
-        mPresenter.getHomePageNewsList(mChannelNewsBean.getChannelType(), mChannelNewsBean.getChannelId(), String.valueOf(loadDataPageCurr));
+        if(!mHasLazyLoad){
+            showLoading();
+            mPresenter.getHomePageNewsList(mChannelNewsData.getChannelType(), mChannelNewsData.getChannelId(), String.valueOf(mLoadDataPageCurr));
+        }
     }
 
 
     @Override
     public void onLoadNewsList(List<HeadLineNewsBean> list) {
         //排序时间
-        sortData(list);
+        if(mSwipeRefreshLayout.isRefreshing()){
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
         if(list.size()>0){
-            showContent();
+            sortData(list);
+            mPresenter.setHomePageNewsListToCache(mChannelNewsData.getChannelId(),list,mLoadDataPageCurr);
             mQuickAdapter.replaceAll(list);
+            showContent();
+            mHasLazyLoad = true;
         }else{
             showEmpty();
         }
@@ -298,10 +336,15 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     }
 
     @Override
+    public void onLoadNewsListFromCache(List<HeadLineNewsBean> list) {
+        mQuickAdapter.replaceAll(list);
+    }
+
+    @Override
     public void onRefresh() {
-        loadDataPageCurr = 0;
-        mPresenter.getHomePageNewsList(mChannelNewsBean.getChannelType(), mChannelNewsBean.getChannelId(), String.valueOf(loadDataPageCurr));
-        mSwipeRefreshLayout.setRefreshing(false);
+        mLoadDataPageCurr = 0;
+        mPresenter.getHomePageNewsList(mChannelNewsData.getChannelType(), mChannelNewsData.getChannelId(), String.valueOf(mLoadDataPageCurr));
+        //mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private OnClickListener mOnClickListener = new OnClickListener() {
@@ -322,16 +365,16 @@ public class HomePageNewsTabFragment extends LazyFragment<HomePageNewsPresenter>
     protected void onRetryClick(View view) {
         super.onRetryClick(view);
         showLoading();
-        mPresenter.getHomePageNewsList(mChannelNewsBean.getChannelType(), mChannelNewsBean.getChannelId(), String.valueOf(loadDataPageCurr));
+        mPresenter.getHomePageNewsList(mChannelNewsData.getChannelType(), mChannelNewsData.getChannelId(), String.valueOf(mLoadDataPageCurr));
     }
 
     @Override
     public void onLoadMoreError(RxSubscriberState msg) {
         super.onLoadMoreError(msg);
         if (msg.getErrorType() == RxSubscriberState.NETWORK_ERROR) {
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError, "网络异常,请点击重试!"), mOnClickListener);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, REQUEST_PAGESIZE, new StateInfo(StateEnum.NetWorkError, getResources().getString(R.string.network_unconnect)), mOnClickListener);
         } else {
-            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, 10, new StateInfo(StateEnum.NetWorkError, "请求失败,请点击重试!"), mOnClickListener);
+            RecyclerViewStateUtils.setFooterViewState(mActivity.get(), mRecyclerview, REQUEST_PAGESIZE, new StateInfo(StateEnum.NetWorkError, getResources().getString(R.string.network_service_error)), mOnClickListener);
         }
     }
 }

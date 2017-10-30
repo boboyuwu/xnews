@@ -1,7 +1,7 @@
 package com.boboyuwu.xnews.api;
 
 import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
-import com.boboyuwu.xnews.beans.NewsDetail;
+import com.boboyuwu.xnews.beans.NewsDetailBean;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +43,6 @@ public interface HomeNewsApi {
                                                                             @Path("pageIndex")String pageIndex);
 
     @GET("nc/article/{postId}/full.html")
-    public Flowable<Map<String, NewsDetail>> getNewDetail(
+    public Flowable<Map<String, NewsDetailBean>> getNewDetail(
             @Path("postId") String postId);
 }

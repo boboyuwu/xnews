@@ -9,15 +9,16 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import com.boboyuwu.xnews.beans.NewsDetail;
+import com.boboyuwu.common.util.CssUtil;
+import com.boboyuwu.xnews.beans.NewsDetailBean;
 import com.boboyuwu.xnews.common.constants.Keys;
+import com.boboyuwu.xnews.common.utils.HtmlUtils;
+import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.mvp.presenter.NewsDetailPresenter;
 import com.boboyuwu.xnews.mvp.view.NewsDetailView;
 import com.boboyuwu.xnews.ui.activity.baseactivity.LoadingAndRetryActivity;
 import com.example.boboyuwu.zhihunews.R;
 import com.orhanobut.logger.Logger;
-
-import okhttp3.ResponseBody;
 
 /**
  * Created by wubo on 2017/9/21.
@@ -45,17 +46,16 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
     }
 
     @Override
+    protected void preInit() {
+        findViews();
+    }
+
+    @Override
     protected void init() {
         super.init();
         initWebView();
         getExtras();
         enableBackPress();
-    }
-
-    @Override
-    protected void preInit() {
-        findViews();
-        super.preInit();
     }
 
     @Override
@@ -137,30 +137,36 @@ public class NewsDetailActivity extends LoadingAndRetryActivity<NewsDetailPresen
         getActivityComponent().injectActivity(this);
     }
 
+    @Override
+    public void onError(RxSubscriberState msg) {
+        super.onError(msg);
+        showRetry();
+    }
 
     @Override
-    public void onLoadNewsDetail(NewsDetail newsDetail) {
+    protected void onRetryClick(View view) {
+        super.onRetryClick(view);
+        mPresenter.getNewsDetail(mNewsId);
+    }
+
+    @Override
+    public void onLoadNewsDetail(NewsDetailBean newsDetailBean) {
         String webViewColor = mDayNightHelper.getMode() ? "#303030" : "FFFFFFFF";
         String webViewTextColor = mDayNightHelper.getMode() ? "#aaa" : "#FF000000";
         String htmlBody =
-                "<html><head><meta charset=\"utf-8\"><title></title><style>body" +
-                        "{background-color:" + webViewColor + ";}" +
-                        "p{color:" + webViewTextColor + ";font-family:\"Times New Roman\";font-size:42px;}" +
-                        "</style></head><body>" + newsDetail.getBody()
+                "<html><head><meta charset=\"utf-8\"><title></title><style>"
+                        + "body"
+                        + "{background-color:" + webViewColor + ";}" +
+                        "p{color:" + webViewTextColor + "}" +
+                        "</style></head><body>" + CssUtil.getWebViewDayCssStyle()
+                        + HtmlUtils.replaceHtmlTag(newsDetailBean.getBody(), newsDetailBean.getImg())
                         + "</body></html>";
         mWebview.loadDataWithBaseURL(null, htmlBody, "text/html", "utf-8", null);
-        mTitleTv.setText(newsDetail.getTitle());
-        mPtimeTv.setText(newsDetail.getSource() + "  " + newsDetail.getPtime());
+        mTitleTv.setText(newsDetailBean.getTitle());
+        mPtimeTv.setText(newsDetailBean.getSource() + "  " + newsDetailBean.getPtime());
         showContent();
-        Logger.i("newsDetail:" + newsDetail.toString());
+        Logger.d("htmlBody : "+htmlBody);
     }
-
-    @Override
-    public void onLoadNewsBodyHtmlPhoto(ResponseBody photoPath) {
-
-    }
-
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.boboyuwu.xnews.app.helper;
 
-import com.boboyuwu.xnews.beans.ChannelNewsBean;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
+import com.boboyuwu.xnews.greendao.data.ChannelNewsData;
 
 import java.util.List;
 
@@ -13,9 +14,14 @@ import java.util.List;
 public interface DBHelper {
 
     //插入和查询当前所有频道
-    void setChannelList(List<ChannelNewsBean> list);
-    void setChannel(ChannelNewsBean channel);
+    void setChannelList(List<ChannelNewsData> list);
+    void setChannel(ChannelNewsData channel);
     void clearAllChannel();
-    List<ChannelNewsBean> getChannelList();
+    void clearAllNews();
+    List<ChannelNewsData> getChannelList();
+
+    //插入和查询新闻列表
+    void setHeadLineNewsBeanList(String channelId,List<HeadLineNewsBean> list,int index);
+    List<HeadLineNewsBean> getHeadLineNewsBeanList(String channelId);
 
 }

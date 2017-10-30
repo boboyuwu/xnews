@@ -1,4 +1,4 @@
-package com.boboyuwu.xnews.beans;
+package com.boboyuwu.xnews.greendao.data;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 
 @Entity
-public class ChannelNewsBean implements Serializable {
+public class ChannelNewsData implements Serializable {
 
     @Transient
     public static final String HEADLINE="headline";
@@ -96,9 +96,10 @@ public class ChannelNewsBean implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    @Generated(hash = 891076542)
-    public ChannelNewsBean(Long id, String channelName, String channelId, String channelType,
-            boolean isFixChannel, int type, int channelManagerType) {
+    @Generated(hash = 657031006)
+    public ChannelNewsData(Long id, String channelName, String channelId,
+            String channelType, boolean isFixChannel, int type,
+            int channelManagerType) {
         this.id = id;
         this.channelName = channelName;
         this.channelId = channelId;
@@ -107,9 +108,9 @@ public class ChannelNewsBean implements Serializable {
         this.type = type;
         this.channelManagerType = channelManagerType;
     }
-    @Generated(hash = 796839396)
-    public ChannelNewsBean() {
+    @Generated(hash = 630126987)
+    public ChannelNewsData() {
     }
-
+  
 
 }

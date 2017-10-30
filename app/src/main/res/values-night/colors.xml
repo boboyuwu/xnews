@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--app中用到color-->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
 
     <!--夜间模式下选中和未选中文字颜色-->
 
@@ -41,4 +36,13 @@
 
     <!--newsdetail webview background color-->
     <color name="webview_bg_color">@color/day_night_bg_gray</color>
+
+    <!--news photo text color-->
+    <color name="news_photo_text_color">@color/white</color>
+
+
+    <!--loading color-->
+    <color name="loading_view_color">@color/white</color>
+    <color name="loading_eyes_color">@color/black</color>
+
 </resources>

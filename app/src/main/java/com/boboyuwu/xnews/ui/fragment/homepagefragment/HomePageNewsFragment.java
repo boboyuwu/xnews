@@ -12,13 +12,14 @@ import android.widget.LinearLayout;
 import com.boboyuwu.common.basefragentpageadapter.BaseTabLayoutFragmentAdapter;
 import com.boboyuwu.common.util.RxBus;
 import com.boboyuwu.common.util.RxBusEventKeys;
-import com.boboyuwu.xnews.beans.ChannelNewsBean;
+import com.boboyuwu.xnews.greendao.data.ChannelNewsData;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.ChannelTypeUtil;
 import com.boboyuwu.xnews.mvp.presenter.HomePageNewsPresenter;
 import com.boboyuwu.xnews.ui.activity.homepageactivity.AddChannelActivity;
 import com.boboyuwu.xnews.ui.fragment.basefragment.SupportToolBarFragment;
-import com.boboyuwu.xnews.ui.fragment.helper.HomePageNewsTabFragmentIml;
+import com.boboyuwu.xnews.ui.fragment.helper.FragmentFactory;
+import com.boboyuwu.xnews.ui.fragment.helper.HomePageNewsFragmentFactoryIml;
 import com.example.boboyuwu.zhihunews.R;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
     private ImageView mAddIv;
 
     private ViewPager mViewpager;
-    private List<ChannelNewsBean> mChannelList;
+    private List<ChannelNewsData> mChannelList;
     private List<Fragment> mFragments;
     private Observable<Boolean> mUpdateChannelObservable;
     private LinearLayout mTablayoutLinearLayout;
@@ -90,11 +91,11 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
 
     private void initFragment() {
         mFragments = new ArrayList<>();
-        HomePageNewsTabFragmentIml homePageNewsTabFragmentIml = new HomePageNewsTabFragmentIml();
-        for (ChannelNewsBean channelNewsBean : mChannelList) {
+        FragmentFactory homePageNewsFragmentFactoryIml = new HomePageNewsFragmentFactoryIml();
+        for (ChannelNewsData channelNewsData : mChannelList) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Keys.CHANNEL, channelNewsBean);
-            mFragments.add(homePageNewsTabFragmentIml.createFragment(channelNewsBean.getChannelId(), bundle));
+            bundle.putSerializable(Keys.CHANNEL, channelNewsData);
+            mFragments.add(homePageNewsFragmentFactoryIml.createFragment(channelNewsData.getChannelId(), bundle));
         }
     }
 
@@ -110,12 +111,11 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
                 return mChannelList.get(position).getChannelName();
             }
         });
-        mViewpager.setOffscreenPageLimit(1);
         //mViewpager.setPageTransformer();
     }
 
     private void setTabLayout() {
-        mTabLayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_select), getResources().getColor(R.color.tablayout_text_color_unselect));
+        mTabLayout.setTabTextColors(getResources().getColor(R.color.tablayout_text_color_unselect), getResources().getColor(R.color.tablayout_text_color_select));
         mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.tablayout_indicator_bg_color));
         mTabLayout.setupWithViewPager(mViewpager);
         mTablayoutLinearLayout.setBackgroundColor(getResources().getColor(R.color.toolbar_bg_color));
@@ -125,24 +125,24 @@ public class HomePageNewsFragment extends SupportToolBarFragment<HomePageNewsPre
      * 初始化News频道标签
      */
     private void initNewsChannelTab() {
-        List<ChannelNewsBean> channels = mGreenDaoHelper.getChannelList();
+        List<ChannelNewsData> channels = mPresenter.getChannelList();
         mChannelList = new ArrayList<>();
         if (channels == null || (channels != null && channels.size() <= 0)) {
             List<String> channelName = Arrays.asList(getResources().getStringArray(R.array.news_channel_name_static));
             List<String> channelId = Arrays.asList(getResources().getStringArray(R.array.news_channel_id_static));
             for (int i = 0; i < channelName.size(); i++) {
-                ChannelNewsBean channelNewsBean = new ChannelNewsBean();
-                channelNewsBean.setChannelName(channelName.get(i));
-                channelNewsBean.setChannelId(channelId.get(i));
-                channelNewsBean.setChannelType(ChannelTypeUtil.getChannelType(channelId.get(i)));
-                channelNewsBean.setIsFixChannel(true);
-                channelNewsBean.setChannelManagerType(ChannelNewsBean.CHANNEL_TYPE_MINE);
-                mChannelList.add(channelNewsBean);
+                ChannelNewsData channelNewsData = new ChannelNewsData();
+                channelNewsData.setChannelName(channelName.get(i));
+                channelNewsData.setChannelId(channelId.get(i));
+                channelNewsData.setChannelType(ChannelTypeUtil.getChannelType(channelId.get(i)));
+                channelNewsData.setIsFixChannel(true);
+                channelNewsData.setChannelManagerType(ChannelNewsData.CHANNEL_TYPE_MINE);
+                mChannelList.add(channelNewsData);
             }
         } else {
             mChannelList.addAll(channels);
         }
-        mGreenDaoHelper.setChannelList(mChannelList);
+        mPresenter.setChannelList(mChannelList);
     }
 
     private void findViews() {

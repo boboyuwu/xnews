@@ -2,9 +2,12 @@ package com.boboyuwu.xnews.ui.activity.baseactivity;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.boboyuwu.common.loadandretrymanager.LoadingAndRetryManager;
 import com.boboyuwu.common.loadandretrymanager.OnLoadingAndRetryListener;
+import com.boboyuwu.common.widget.loadingviewlib.view.LVEatBeans;
 import com.boboyuwu.xnews.mvp.presenter.BasePresenter;
 import com.example.boboyuwu.zhihunews.R;
 
@@ -16,16 +19,14 @@ import com.example.boboyuwu.zhihunews.R;
 public abstract class LoadingAndRetryActivity <P extends BasePresenter>  extends SupportToolBarActivity<P>{
 
     private LoadingAndRetryManager mLoadingAndRetryManager;
+    private LVEatBeans mLvEatBeans;
 
     @Override
-    protected void preInit() {
-        super.preInit();
-        mLoadingAndRetryManager = LoadingAndRetryManager.generate(initManagerView()==null?this:initManagerView(), mOnLoadingAndRetryListener);
+    protected void init() {
+        super.init();
+        mLoadingAndRetryManager = LoadingAndRetryManager.generate(this, mOnLoadingAndRetryListener);
         mLoadingAndRetryManager.showContent();
     }
-
-
-
 
     /**
      * 如果不想管理默认的整个界面调用这个方法返回需要设置的view
@@ -38,19 +39,23 @@ public abstract class LoadingAndRetryActivity <P extends BasePresenter>  extends
      * 空状态、加载中、网络错误状态...
      * */
     protected void showContent(){
+        mLvEatBeans.stopAnim();
         mLoadingAndRetryManager.showContent();
     }
 
     protected void showLoading(){
+        mLvEatBeans.startAnim();
         mLoadingAndRetryManager.showLoading();
     }
 
 
     protected void showEmpty(){
+        mLvEatBeans.stopAnim();
         mLoadingAndRetryManager.showEmpty();
     }
 
     protected  void showRetry(){
+        mLvEatBeans.stopAnim();
         mLoadingAndRetryManager.showRetry();
     }
 
@@ -131,7 +136,11 @@ public abstract class LoadingAndRetryActivity <P extends BasePresenter>  extends
      * 重设数据为空..view
      * */
     protected  View generateLoadingLayout(){
-        return null;
+        mLvEatBeans = new LVEatBeans(this);
+        mLvEatBeans.setLayoutParams(new MarginLayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+        mLvEatBeans.setViewColor(getResources().getColor(R.color.loading_view_color));
+        mLvEatBeans.setEyeColor(getResources().getColor(R.color.loading_eyes_color));
+        return mLvEatBeans;
     }
     /**
      * 重设数据为空..布局
@@ -161,13 +170,11 @@ public abstract class LoadingAndRetryActivity <P extends BasePresenter>  extends
      * */
     protected void onEmptyClick(View view) {
 
-
     }
     /**
      * 正在加载中,点击按钮
      * */
     protected void onLoadingClick(View view) {
-
 
     }
 

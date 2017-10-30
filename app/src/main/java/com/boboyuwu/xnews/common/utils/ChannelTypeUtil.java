@@ -2,7 +2,7 @@ package com.boboyuwu.xnews.common.utils;
 
 import android.text.TextUtils;
 
-import com.boboyuwu.xnews.beans.ChannelNewsBean;
+import com.boboyuwu.xnews.greendao.data.ChannelNewsData;
 import com.boboyuwu.xnews.common.constants.Constants;
 
 /**
@@ -15,11 +15,11 @@ public class ChannelTypeUtil {
      public static String getChannelType(String channelId){
          String channelType="";
          if (TextUtils.equals(channelId, Constants.HEADLINE_ID)) {
-             channelType=ChannelNewsBean.HEADLINE;
+             channelType= ChannelNewsData.HEADLINE;
          } else if (TextUtils.equals(channelId, Constants.HOUSE_ID)) {
-             channelType=ChannelNewsBean.HOUSE;
+             channelType= ChannelNewsData.HOUSE;
          } else {
-             channelType=ChannelNewsBean.OTHER;
+             channelType= ChannelNewsData.OTHER;
          }
          return channelType;
      }

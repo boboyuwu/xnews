@@ -6,7 +6,7 @@ import java.lang.reflect.ParameterizedType;
  * Created by wubo on 2017/6/13.
  */
 
-public class TypeUtil {
+public class TypeUtils {
 
           public static <T > T getType(Object object, int index){
               try {

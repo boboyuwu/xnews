@@ -3,6 +3,8 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@color/fgtabhost_bg_color"
+              android:fitsSystemWindows="true"
+              android:clipToPadding="false"
               android:orientation="vertical">
 
     <include layout="@layout/include_toolbar_layout"/>

@@ -1,6 +1,6 @@
 package com.boboyuwu.xnews.mvp.presenter;
 
-import com.boboyuwu.xnews.beans.NewsDetail;
+import com.boboyuwu.xnews.beans.NewsDetailBean;
 import com.boboyuwu.xnews.common.utils.RxSubscriber;
 import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.common.utils.RxUtil;
@@ -10,8 +10,6 @@ import com.boboyuwu.xnews.mvp.view.NewsDetailView;
 import java.util.Map;
 
 import javax.inject.Inject;
-
-import okhttp3.ResponseBody;
 
 /**
  * Created by wubo on 2017/9/25.
@@ -32,28 +30,15 @@ public class NewsDetailPresenter extends BasePresenter<NewsDetailView> {
      */
     public void getNewsDetail(final String postId) {
         addDispose(mNewsDetailModel.getNewsDetail(postId)
-                .compose(RxUtil.<Map<String, NewsDetail>>schedulerFlowableOnIoThread())
-                .subscribeWith(new RxSubscriber<Map<String, NewsDetail>>(mBaseView, RxSubscriberState.builder()
+                .compose(RxUtil.<Map<String, NewsDetailBean>>schedulerFlowableOnIoThread())
+                .subscribeWith(new RxSubscriber<Map<String, NewsDetailBean>>(mBaseView, RxSubscriberState.builder()
                         .setLoadMode(RxSubscriberState.LOAD).build()) {
                     @Override
-                    public void onNext(Map<String, NewsDetail> detail) {
+                    public void onNext(Map<String, NewsDetailBean> detail) {
                         mBaseView.onLoadNewsDetail(detail.get(postId));
                     }
                 }));
-
     }
 
-
-    public void getNewsBodyHtmlPhoto(String photoPath) {
-        addDispose(mNewsDetailModel.getNewsBodyHtmlPhoto(photoPath).compose(RxUtil.<ResponseBody>schedulerFlowableOnIoThread())
-                .subscribeWith(new RxSubscriber<ResponseBody>(mBaseView, RxSubscriberState.builder()
-                        .setLoadMode(RxSubscriberState.LOAD).build()) {
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                       mBaseView.onLoadNewsBodyHtmlPhoto(responseBody);
-                    }
-                })
-        );
-    }
 
 }

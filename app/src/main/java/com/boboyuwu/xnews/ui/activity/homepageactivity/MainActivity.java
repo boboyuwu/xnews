@@ -134,7 +134,7 @@ public class MainActivity extends SupportToolBarActivity<HomePageNewsPresenter> 
         if(System.currentTimeMillis() - mFirstClickTime > 2000) {
             //这里弹出toast
             mFirstClickTime = System.currentTimeMillis();
-            ToastUtils.showShort("再按一次退出");
+            ToastUtils.showShort(getResources().getString(R.string.exit));
         } else {
             AppUtils.exitApp();
         }

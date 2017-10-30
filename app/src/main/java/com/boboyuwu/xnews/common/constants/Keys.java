@@ -31,6 +31,15 @@ public class Keys {
     public static final String NEWS_ID="news_id";
 
 
+    /**
+     *   默认javascript对象名
+     */
     public static final String javascript_object_name="javascript_object_name";
+
+
+    /**
+     *   newsphoto
+     */
+    public static final String NEWS_PHOTO_ITEM="news_photo_item";
 
 }

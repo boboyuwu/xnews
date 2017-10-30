@@ -15,6 +15,9 @@ public class Constants {
     // 头条id
     public static final String HEADLINE_ID = "T1348647909107";
 
+
+
+
     //OkHttp默认缓存存放路径
     public static final String PATH_DATA = NewsApplication.getApplication().getCacheDir().getAbsolutePath() + File.separator + "OKHttp";
 

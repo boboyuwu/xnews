@@ -3,11 +3,19 @@ package com.boboyuwu.xnews.app.helper;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.boboyuwu.xnews.app.NewsApplication;
-import com.boboyuwu.xnews.beans.ChannelNewsBean;
-import com.boboyuwu.xnews.greendao.gen.ChannelNewsBeanDao;
+import com.boboyuwu.xnews.beans.HeadLineNews;
+import com.boboyuwu.xnews.beans.HeadLineNews.HeadLineNewsBean;
+import com.boboyuwu.xnews.greendao.data.ChannelNewsData;
+import com.boboyuwu.xnews.greendao.data.HeadLineNewsData;
+import com.boboyuwu.xnews.greendao.gen.ChannelNewsDataDao;
 import com.boboyuwu.xnews.greendao.gen.DaoMaster;
 import com.boboyuwu.xnews.greendao.gen.DaoSession;
+import com.boboyuwu.xnews.greendao.gen.HeadLineNewsDataDao;
+import com.boboyuwu.xnews.greendao.gen.HeadLineNewsDataDao.Properties;
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,31 +43,100 @@ public class GreenDaoHelper implements DBHelper{
      * 存放当前最新的添加频道List
      * */
     @Override
-    public void setChannelList(List<ChannelNewsBean> list) {
+    public void setChannelList(List<ChannelNewsData> list) {
         clearAllChannel();
-        ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
-        for (ChannelNewsBean channelNewsBean : list) {
-            channelNewsBeanDao.insert(channelNewsBean);
+        ChannelNewsDataDao channelNewsDataDao = mDaoSession.getChannelNewsDataDao();
+        for (ChannelNewsData channelNewsData : list) {
+            channelNewsDataDao.insert(channelNewsData);
         }
     }
 
     @Override
-    public void setChannel(ChannelNewsBean channel) {
-        ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
-        channelNewsBeanDao.insertOrReplace(channel);
+    public void setChannel(ChannelNewsData channel) {
+        ChannelNewsDataDao channelNewsDataDao = mDaoSession.getChannelNewsDataDao();
+        channelNewsDataDao.insertOrReplace(channel);
     }
 
 
     @Override
-    public List<ChannelNewsBean> getChannelList() {
-        ChannelNewsBeanDao channelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
-        return channelNewsBeanDao.queryBuilder().build().list();
+    public List<ChannelNewsData> getChannelList() {
+        ChannelNewsDataDao channelNewsDataDao = mDaoSession.getChannelNewsDataDao();
+        return channelNewsDataDao.queryBuilder().build().list();
     }
+
+
 
     @Override
     public void clearAllChannel(){
-        ChannelNewsBeanDao mChannelNewsBeanDao = mDaoSession.getChannelNewsBeanDao();
-        mChannelNewsBeanDao.deleteAll();
+        ChannelNewsDataDao mChannelNewsDataDao= mDaoSession.getChannelNewsDataDao();
+        mChannelNewsDataDao.deleteAll();
+    }
+
+
+    /**
+     *  存放首页新闻频道列表缓存数据
+     */
+
+    @Override
+    public void setHeadLineNewsBeanList(String channelId,List<HeadLineNewsBean> list,int index) {
+        //clearAllNews();
+        HeadLineNews headLineNews =null;
+
+        String str = "";
+
+        HeadLineNewsDataDao mHeadLineNewsDataDao= mDaoSession.getHeadLineNewsDataDao();
+
+        HeadLineNewsData headLineNewsData = mHeadLineNewsDataDao.queryBuilder().where(Properties.ChannelId.eq(channelId)).unique();
+
+
+
+        List<HeadLineNewsBean> newList = new ArrayList<>();
+        if(null!=headLineNewsData){
+            String dataJson = headLineNewsData.getDataJson();
+            headLineNews= new Gson().fromJson(dataJson, HeadLineNews.class);
+            List<HeadLineNewsBean> headLineNewsList = headLineNews.getHeadLineNewsList();
+            headLineNewsList = headLineNewsList.subList(0, index);
+            newList.addAll(headLineNewsList);
+            newList.addAll(list);
+            headLineNews.setHeadLineNewsList(newList);
+            str=new Gson().toJson(headLineNews);
+            headLineNewsData.setDataJson(str);
+            headLineNewsData.setChannelId(channelId);
+            mHeadLineNewsDataDao.update(headLineNewsData);
+        }else{
+            headLineNewsData=new HeadLineNewsData();
+            headLineNews=new HeadLineNews();
+            headLineNews.setHeadLineNewsList(list);
+            str=new Gson().toJson(headLineNews);
+            headLineNewsData.setDataJson(str);
+            headLineNewsData.setChannelId(channelId);
+            mHeadLineNewsDataDao.insert(headLineNewsData);
+        }
+
+    }
+
+    @Override
+    public List<HeadLineNewsBean> getHeadLineNewsBeanList(String channelId) {
+        String dataJson="";
+        HeadLineNewsDataDao mHeadLineNewsDataDao= mDaoSession.getHeadLineNewsDataDao();
+        HeadLineNewsData data = mHeadLineNewsDataDao.queryBuilder().where(Properties.ChannelId.eq(channelId)).unique();
+
+        if(data!=null){
+            dataJson = data.getDataJson();
+
+        }
+
+        HeadLineNews headLineNews = new Gson().fromJson(dataJson, HeadLineNews.class);
+        Logger.e("getHeadLineNewsBeanList:"+dataJson);
+        return headLineNews==null?new ArrayList<HeadLineNewsBean>():headLineNews.getHeadLineNewsList();
+
+    }
+
+
+    @Override
+    public void clearAllNews(){
+        HeadLineNewsDataDao mHeadLineNewsDataDao= mDaoSession.getHeadLineNewsDataDao();
+        mHeadLineNewsDataDao.deleteAll();
     }
 
 

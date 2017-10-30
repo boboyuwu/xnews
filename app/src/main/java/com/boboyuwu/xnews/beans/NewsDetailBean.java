@@ -7,7 +7,7 @@ import java.util.List;
  * Created by wubo on 2017/9/25.
  */
 
-public class NewsDetail implements Serializable{
+public class NewsDetailBean implements Serializable{
 
 
     /**
@@ -357,6 +357,16 @@ public class NewsDetail implements Serializable{
         public void setSrc(String src) {
             this.src = src;
         }
+
+        @Override
+        public String toString() {
+            return "ImgBean{" +
+                    "ref='" + ref + '\'' +
+                    ", pixel='" + pixel + '\'' +
+                    ", alt='" + alt + '\'' +
+                    ", src='" + src + '\'' +
+                    '}';
+        }
     }
 
     public static class TopiclistNewsBean implements Serializable{
@@ -493,7 +503,7 @@ public class NewsDetail implements Serializable{
 
     @Override
     public String toString() {
-        return "NewsDetail{" +
+        return "NewsDetailBean{" +
                 "body='" + body + '\'' +
                 ", replyCount=" + replyCount +
                 ", shareLink='" + shareLink + '\'' +

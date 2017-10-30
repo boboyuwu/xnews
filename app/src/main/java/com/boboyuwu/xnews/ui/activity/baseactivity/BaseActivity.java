@@ -9,7 +9,6 @@ import android.view.View;
 import com.boboyuwu.common.util.ToastUtils;
 import com.boboyuwu.xnews.app.NewsApplication;
 import com.boboyuwu.xnews.app.helper.DayNightHelper;
-import com.boboyuwu.xnews.app.helper.GreenDaoHelper;
 import com.boboyuwu.xnews.common.constants.Keys;
 import com.boboyuwu.xnews.common.utils.RxSubscriberState;
 import com.boboyuwu.xnews.dagger.component.ActivityComponent;
@@ -29,7 +28,7 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
     @Inject
     protected P mPresenter;
 
-    protected GreenDaoHelper mGreenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
+    //protected GreenDaoHelper mGreenDaoHelper = NewsApplication.getAppComponent().getGreenDaoHelper();
     protected DayNightHelper mDayNightHelper= NewsApplication.getAppComponent().getDayNightHelper();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,7 +120,7 @@ public abstract class BaseActivity <P extends BasePresenter>extends AppCompatAct
     }
 
     @Override
-    public void disMissDialog() {
+    public void dissMissDialog() {
 
     }
 
